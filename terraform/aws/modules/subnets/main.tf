@@ -7,7 +7,7 @@ locals {
 }
 
 resource "aws_subnet" "public_sn" {
-  count                    = length(var.subnet_cidr_list)
+  count                    = var.num_of_zones
 
   vpc_id                   = var.vpc_id
   cidr_block               = var.subnet_cidr_list[count.index]

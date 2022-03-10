@@ -30,8 +30,9 @@ module "security_group" {
 module "subnets" {
     source      = "../../modules/subnets"
 
-    vpc_id = module.vpc.vpc_id
-    region = var.region
+    region       = var.region
+    vpc_id       = module.vpc.vpc_id
+    num_of_zones = var.num_of_zones
 
     depends_on = [
       module.vpc

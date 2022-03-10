@@ -6,6 +6,10 @@ variable "vpc_id" {
     description = "vpc id"
 }
 
+variable "num_of_zones" {
+    description = "Number of Availability Zones"
+}
+
 variable "subnet_cidr_list" {
     description = "List of cidr blocks for each subnet in every az"
     default     = ["10.0.85.0/24", "10.0.86.0/24", "10.0.87.0/24", "10.0.88.0/24"]
