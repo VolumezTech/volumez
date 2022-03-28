@@ -96,7 +96,9 @@ module "app_nodes" {
     source = "../../modules/nodes"
 
     num_of_nodes         = var.app_node_count
+    num_of_zones         = var.num_of_zones
     vpc_id               = module.vpc.vpc_id
+    placement_group_ids  = module.placement_group.placement_group_ids
     ami_id               = var.app_node_ami
     ami_username         = var.app_node_ami_username
     iam_role             = var.app_node_iam_role
@@ -119,7 +121,9 @@ module "media_nodes" {
     source = "../../modules/nodes"
 
     num_of_nodes         = var.media_node_count
+    num_of_zones         = var.num_of_zones
     vpc_id               = module.vpc.vpc_id
+    placement_group_ids  = module.placement_group.placement_group_ids
     ami_id               = var.media_node_ami
     ami_username         = var.media_node_ami_username
     iam_role             = var.media_node_iam_role

@@ -50,7 +50,7 @@ variable "path_to_pem" {
 }
 
 variable "tenant_token" {
-    description = "Tenant token to access Cognito run vlzconnector service"
+    description = "Enter your Volumez tenant token (can be reached from Volumez->Add Storage->EC2->Next->(echo -n <tenant token>) )"
     type        = string
 }
 

@@ -1,6 +1,7 @@
 # Volumez
 
 Terraform code which creates VPC resources, Media & Application nodes with vlzconnector configuration
+Terraform creates VPC,subnets,instances and security groups.
 
 # Requirements
 * Terraform > 0.14  
