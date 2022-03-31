@@ -137,7 +137,7 @@ module "media_nodes" {
 
     depends_on = [
         module.vpc, 
-        module.network_interfaces_app_nodes,
+        module.network_interfaces_media_nodes,
         module.ssh_key
     ]
 }
