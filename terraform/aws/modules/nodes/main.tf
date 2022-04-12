@@ -51,7 +51,7 @@ resource "null_resource" "node_config" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/deploy_connector.sh",
-      "sudo /tmp/deploy_connector.sh ${var.tenant_token}"
+      "sudo /tmp/deploy_connector.sh ${var.tenant_token} ${var.signup_domain}"
     ]
   }
  

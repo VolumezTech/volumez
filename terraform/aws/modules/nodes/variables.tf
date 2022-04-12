@@ -70,3 +70,9 @@ variable "tenant_token" {
     description = "Tenant token to access Cognito and pull the connector"
     type        = string
 }
+
+variable "signup_domain" {
+    description = "signup url to take vlzconnector from"  
+    type = string
+    default = "signup.volumez.com"
+}

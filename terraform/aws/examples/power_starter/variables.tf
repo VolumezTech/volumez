@@ -22,6 +22,13 @@ variable "placement_group_strategy" {
     default = "cluster"
 }
 
+variable "signup_domain" {
+    description = "signup url to take vlzconnector from"  
+    type = string
+    default = "signup.volumez.com"
+}
+
+
 ############
 ### Keys ###
 ############

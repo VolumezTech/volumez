@@ -109,6 +109,7 @@ module "app_nodes" {
     path_to_pem          = var.path_to_pem
     tenant_token         = var.tenant_token
     app_node_name_prefix = var.app_node_name_prefix
+    signup_domain        = var.signup_domain
 
     depends_on = [
         module.vpc, 
@@ -134,6 +135,7 @@ module "media_nodes" {
     path_to_pem          = var.path_to_pem
     tenant_token         = var.tenant_token
     app_node_name_prefix = var.media_node_name_prefix
+    signup_domain        = var.signup_domain
 
     depends_on = [
         module.vpc, 
