@@ -60,7 +60,7 @@ variable "media_node_count" {
 
 variable "media_node_type" {
     type    = string
-    default = "i3.large"
+    default = "i3en.3xlarge"
 }
 
 variable "media_node_iam_role" {
