@@ -89,16 +89,30 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    volumez-ng = {
-      desired_size = "${var.number_of_nodes}"
-      min_size     = "${var.number_of_nodes}"
-      max_size     = "${var.number_of_nodes}"
+    volumez-media-ng = {
+      desired_size = var.number_of_media_nodes
+      min_size     = var.number_of_media_nodes
+      max_size     = var.number_of_media_nodes
 
-      instance_types = ["${var.ec2_type}"]
+      instance_types = ["${var.ec2_type_media}"]
       capacity_type  = "ON_DEMAND"
       labels = {
-        Origin     = "Volumez"
-        GithubRepo = "terraform-aws-eks"
+        Origin        = "Volumez"
+        GithubRepo    = "terraform-aws-eks"
+        instance-type = "media-ng"
+      }
+    },
+    volumez-app-ng = {
+      desired_size = var.number_of_app_nodes
+      min_size     = var.number_of_app_nodes
+      max_size     = var.number_of_app_nodes
+
+      instance_types = ["${var.ec2_type_app}"]
+      capacity_type  = "ON_DEMAND"
+      labels = {
+        Origin        = "Volumez"
+        GithubRepo    = "terraform-aws-eks"
+        instance-type = "app-ng"
       }
     }
   }
