@@ -5,8 +5,7 @@ Terraform creates VPC,subnets,instances and security groups.
 
 # Requirements
 * Terraform > 0.14  
-* kubectl
-* Helm
+* Helm (for EKS examples)
 * AWS credentials as environment variables 
 
 # EC2
@@ -18,14 +17,14 @@ Mandatory: Tenant Token (JWT Access Token)
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=123
+export TF_VAR_tenant_token=$TENANT_TOKEN
 terraform init
 terraform apply
 ```
 
 > Custom variables
 ```
-export TF_VAR_tenant_token=123
+export TF_VAR_tenant_token=$TENANT_TOKEN
 terraform init
 terraform apply -var="region=us-east-1" -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
 ```
@@ -95,7 +94,7 @@ helm install vlz volumez-csi --set vlzAuthToken=$CSI_DRIVER_TOKEN
 ```
 > Uninstall CSI driver
 ```
-helm uninstall volumez-csi
+helm uninstall vlz
 ```
 
 ### Examples ### 
