@@ -12,10 +12,10 @@ Terraform creates VPC,subnets,instances and security groups.
 # EC2
 ---
 
-#### Input ####
+### Input ###
 Mandatory: Tenant Token (JWT Access Token) 
 
-#### Usage ###
+### Usage ###
 > Create with default values
 ```
 export TF_VAR_tenant_token=123
@@ -35,7 +35,7 @@ terraform apply -var="region=us-east-1" -var="media_node_ami=ami-08895422b5f3aa6
 terraform destroy
 ```
 
-### Examples
+### Examples ###  
 > easy_starter
 
 * default region: us-east-1  
@@ -67,10 +67,10 @@ No default values, the following should be set in order to execute the terraform
 # EKS
 ---
 
-### Input ####
+### Input ### 
 Mandatory: CSI Driver Token (Refresh Token)  
 
-#### Usage (Terraform) ###
+### Usage (Terraform) ###
 > Create with default values
 ```
 terraform init
@@ -87,7 +87,7 @@ terraform apply -var="region=us-east-1" -var="media_node_count=4" -var="media_no
 ```
 terraform destroy
 ```
-#### Usage (helm) ###
+### Usage (helm) ###
 > Deploy CSI driver deployment with helm
 ```
 cd kubernetes/helm
@@ -98,7 +98,7 @@ helm install vlz volumez-csi --set vlzAuthToken=$CSI_DRIVER_TOKEN
 helm uninstall volumez-csi
 ```
 
-### Examples  
+### Examples ### 
 > easy_starter
 * default region: us-east-1  
 * 4 media nodes
