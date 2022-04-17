@@ -90,11 +90,11 @@ module "eks" {
 
   eks_managed_node_groups = {
     volumez-media-ng = {
-      desired_size = var.number_of_media_nodes
-      min_size     = var.number_of_media_nodes
-      max_size     = var.number_of_media_nodes
+      desired_size = var.media_node_count
+      min_size     = var.media_node_count
+      max_size     = var.media_node_count
 
-      instance_types = ["${var.ec2_type_media}"]
+      instance_types = ["${var.media_node_type}"]
       capacity_type  = "ON_DEMAND"
       labels = {
         Origin        = "Volumez"
@@ -103,11 +103,11 @@ module "eks" {
       }
     },
     volumez-app-ng = {
-      desired_size = var.number_of_app_nodes
-      min_size     = var.number_of_app_nodes
-      max_size     = var.number_of_app_nodes
+      desired_size = var.app_node_count
+      min_size     = var.app_node_count
+      max_size     = var.app_node_count
 
-      instance_types = ["${var.ec2_type_app}"]
+      instance_types = ["${var.app_node_type}"]
       capacity_type  = "ON_DEMAND"
       labels = {
         Origin        = "Volumez"
