@@ -5,9 +5,10 @@ Terraform creates VPC,subnets,instances and security groups.
 
 # Requirements
 * Terraform > 0.14  
+* AWS credentials as environment variables 
+* kubectl (for EKS examples)
 * Helm (for EKS examples)
 * awscli (for EKS examples)
-* AWS credentials as environment variables 
 
 # EC2
 ---
@@ -87,8 +88,28 @@ terraform apply -var="region=us-east-1" -var="media_node_count=4" -var="media_no
 ```
 terraform destroy
 ```
+
+> Output
+```
+terraform output
+```
+Example output:
+```
+cluster_endpoint = "https://759E02F3CB0F242849E6FEE7CF93DF86.gr7.us-east-1.eks.amazonaws.com"
+cluster_id = "Volumez-eks-xWG3D5gq"
+cluster_name = "Volumez-eks-xWG3D5gq"
+cluster_security_group_id = "sg-0a2afe43ebc6abd06"
+region = "us-east-1"
+```
+
 ### Usage (helm) ###
-> Deploy CSI driver deployment with helm
+> Configure kubectl
+
+Configure kubectl so that you can connect to an EKS cluster: 
+```aws eks --region <region> update-kubeconfig --name <cluster_name>```
+**region** and **cluster_name** parameters can be fount in Terraform's output
+
+> Deploy CSI driver deployment with helm 
 ```
 cd kubernetes/helm
 helm install vlz volumez-csi --set vlzAuthToken=$CSI_DRIVER_TOKEN
@@ -120,24 +141,8 @@ No default values, the following should be set in order to execute the terraform
 4. app_node_count           - number of performance hosts
 5. app_node_type            - EC2 type for application node
 
-### Configuration ###
-#### kubectl ####
-To login into your cluster using kubectl, run: ```aws eks --region us-east-1 update-kubeconfig --name cluster_name```
-cluster_name can be found in the Terraform's output:
-```
-Apply complete! Resources: 52 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-cluster_endpoint = "https://759E02F3CB0F242849E6FEE7CF93DF86.gr7.us-east-1.eks.amazonaws.com"
-cluster_id = "Volumez-eks-xWG3D5gq"
-cluster_name = "Volumez-eks-xWG3D5gq"
-cluster_security_group_id = "sg-0a2afe43ebc6abd06"
-region = "us-east-1"
-```
-
-#### Application deployment ####
-power_starter and mix_and_match are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
+### Application deployment ###
+**power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
 ```yaml
 apiVersion: v1
 kind: Pod
