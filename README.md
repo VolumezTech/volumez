@@ -6,6 +6,7 @@ Terraform creates VPC,subnets,instances and security groups.
 # Requirements
 * Terraform > 0.14  
 * Helm (for EKS examples)
+* awscli (for EKS examples)
 * AWS credentials as environment variables 
 
 # EC2
@@ -118,3 +119,42 @@ No default values, the following should be set in order to execute the terraform
 3. media_node_type          - Media EC2 type
 4. app_node_count           - number of performance hosts
 5. app_node_type            - EC2 type for application node
+
+### Configuration ###
+#### kubectl ####
+To login into your cluster using kubectl, run: ```aws eks --region us-east-1 update-kubeconfig --name cluster_name```
+cluster_name can be found in the Terraform's output:
+```
+Apply complete! Resources: 52 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+cluster_endpoint = "https://759E02F3CB0F242849E6FEE7CF93DF86.gr7.us-east-1.eks.amazonaws.com"
+cluster_id = "Volumez-eks-xWG3D5gq"
+cluster_name = "Volumez-eks-xWG3D5gq"
+cluster_security_group_id = "sg-0a2afe43ebc6abd06"
+region = "us-east-1"
+```
+
+#### Application deployment ####
+power_starter and mix_and_match are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: instance-type
+            operator: In
+            values:
+            - volumez-app-ng            
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+```
