@@ -112,7 +112,7 @@ module "eks" {
       labels = {
         Origin        = "Volumez"
         GithubRepo    = "terraform-aws-eks"
-        instance-type = "app-ng"
+        instance-type = "volumez-app-ng"
       }
     }
   }

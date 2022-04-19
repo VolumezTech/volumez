@@ -32,6 +32,8 @@ data "aws_secretsmanager_secret" "ssh_val" {
 
 data "aws_secretsmanager_secret_version" "creds" {
   secret_id = data.aws_secretsmanager_secret.ssh_val.arn
+
+  depends_on = [aws_secretsmanager_secret.ssh_val]
 }
 
 locals {
