@@ -16,20 +16,8 @@ variable "media_node_count" {
   default     = 4
 }
 
-variable "app_node_count" {
-  type        = number
-  description = "Please enter the number of application nodes you desire"
-  default     = 0
-}
-
 variable "media_node_type" {
   type        = string
   description = "Please enter EC2 Instance Type for media nodes. For example: 'i3.large'. You can see a list of them here: https://aws.amazon.com/ec2/instance-types/ "
   default     = "i3en.3xlarge"
-}
-
-variable "app_node_type" {
-  type        = string
-  description = "Please ente EC2 Instance Type for application nodes. For example: 'i3.large'. You can see a list of them here: https://aws.amazon.com/ec2/instance-types/ "
-  default     = "m5n.xlarge"
 }

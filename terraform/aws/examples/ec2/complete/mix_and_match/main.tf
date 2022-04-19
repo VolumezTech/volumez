@@ -3,11 +3,11 @@ provider "aws" {
 }
 
 module "vpc" {
-    source = "../../modules/vpc"
+    source = "../../../../modules/vpc"
 }
 
 module "route_table" {
-    source         = "../../modules/route_table"
+    source = "../../../../modules/route_table"
 
     vpc_id         = module.vpc.vpc_id
     default_rtb_id = module.vpc.default_rtb_id
@@ -18,7 +18,7 @@ module "route_table" {
 }
 
 module "security_group" {
-    source = "../../modules/security_group"
+    source = "../../../../modules/security_group"
     
     vpc_id = module.vpc.vpc_id
 
@@ -28,7 +28,7 @@ module "security_group" {
 }
 
 module "subnets" {
-    source      = "../../modules/subnets"
+    source = "../../../../modules/subnets"
 
     region       = var.region
     vpc_id       = module.vpc.vpc_id
@@ -40,7 +40,7 @@ module "subnets" {
 }
 
 module "placement_group" {
-    source                   = "../../modules/placement_group"
+    source = "../../../../modules/placement_group"
 
     num_of_zones             = var.num_of_zones
     vpc_id                   = module.vpc.vpc_id
@@ -52,7 +52,7 @@ module "placement_group" {
 }
 
 module "network_interfaces_app_nodes" {
-    source = "../../modules/network_interface"
+    source = "../../../../modules/network_interface"
 
     num_of_nodes = var.app_node_count
     vpc_id       = module.vpc.vpc_id
@@ -70,7 +70,7 @@ module "network_interfaces_app_nodes" {
 }
 
 module "network_interfaces_media_nodes" {
-    source = "../../modules/network_interface"
+    source = "../../../../modules/network_interface"
 
     num_of_nodes = var.media_node_count
     vpc_id       = module.vpc.vpc_id
@@ -89,11 +89,11 @@ module "network_interfaces_media_nodes" {
 }
 
 module "ssh_key" {
-    source = "../../modules/ssh_key"
+    source = "../../../../modules/ssh_key"
 }
 
 module "app_nodes" {
-    source = "../../modules/nodes"
+    source = "../../../../modules/nodes"
 
     num_of_nodes         = var.app_node_count
     num_of_zones         = var.num_of_zones
@@ -119,7 +119,7 @@ module "app_nodes" {
 }
 
 module "media_nodes" {
-    source = "../../modules/nodes"
+    source = "../../../../modules/nodes"
 
     num_of_nodes         = var.media_node_count
     num_of_zones         = var.num_of_zones
