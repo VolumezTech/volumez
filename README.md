@@ -105,9 +105,9 @@ region = "us-east-1"
 ### Usage (helm) ###
 > Configure kubectl
 
-Configure kubectl so that you can connect to an EKS cluster: 
-```aws eks --region <region> update-kubeconfig --name <cluster_name>```
-**region** and **cluster_name** parameters can be fount in Terraform's output
+Configure kubectl so that you can connect to an EKS cluster:  
+```aws eks --region <region> update-kubeconfig --name <cluster_name>```  
+**region** and **cluster_name** parameters can be found in Terraform's output
 
 > Deploy CSI driver deployment with helm 
 ```
