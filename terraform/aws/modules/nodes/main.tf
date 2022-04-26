@@ -50,6 +50,12 @@ resource "null_resource" "node_config" {
 
   provisioner "remote-exec" {
     inline = [
+      "sudo hostnamectl set-hostname ${aws_instance.this[count.index].id}.ec2.internal"
+      ]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
       "chmod +x /tmp/deploy_connector.sh",
       "sudo /tmp/deploy_connector.sh ${var.tenant_token} ${var.signup_domain}"
     ]
