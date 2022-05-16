@@ -92,20 +92,20 @@ module "eks" {
     volumez-media-ng = {
       name = "volumez-media-eks"
 
-      enable_bootstrap_user_data = true
-      pre_bootstrap_user_data = <<-EOT
-      MIME-Version: 1.0
-      Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+      # enable_bootstrap_user_data = true
+      # pre_bootstrap_user_data = <<-EOT
+      # MIME-Version: 1.0
+      # Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 
-      --==MYBOUNDARY==
-      Content-Type: text/x-shellscript; charset="us-ascii"
+      # --==MYBOUNDARY==
+      # Content-Type: text/x-shellscript; charset="us-ascii"
 
-      #!/bin/bash
-      uuid=$(uuidgen)
-      sudo hostnamectl set-hostname $uuid
+      # #!/bin/bash
+      # uuid=$(uuidgen)
+      # sudo hostnamectl set-hostname $uuid
 
-      --==MYBOUNDARY==--\\
-      EOT
+      # --==MYBOUNDARY==--\\
+      # EOT
 
       desired_size = var.media_node_count
       min_size     = var.media_node_count
@@ -122,20 +122,20 @@ module "eks" {
     volumez-app-ng = {
       name = "volumez-app-eks"
 
-      enable_bootstrap_user_data = true
-      pre_bootstrap_user_data = <<-EOT
-      MIME-Version: 1.0
-      Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+      # enable_bootstrap_user_data = true
+      # pre_bootstrap_user_data = <<-EOT
+      # MIME-Version: 1.0
+      # Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 
-      --==MYBOUNDARY==
-      Content-Type: text/x-shellscript; charset="us-ascii"
+      # --==MYBOUNDARY==
+      # Content-Type: text/x-shellscript; charset="us-ascii"
 
-      #!/bin/bash
-      uuid=$(uuidgen)
-      sudo hostnamectl set-hostname $uuid
+      # #!/bin/bash
+      # uuid=$(uuidgen)
+      # sudo hostnamectl set-hostname $uuid
 
-      --==MYBOUNDARY==--\\
-      EOT
+      # --==MYBOUNDARY==--\\
+      # EOT
 
       desired_size = var.app_node_count
       min_size     = var.app_node_count
