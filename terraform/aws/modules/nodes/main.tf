@@ -12,6 +12,8 @@ data "aws_ami" "rhel_85" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_instance" "this" {
   count                = var.num_of_nodes
 
@@ -29,6 +31,7 @@ resource "aws_instance" "this" {
   tags = {
     Name        = "${var.app_node_name_prefix}-${count.index}-Volumez"
     Terraform   = "true"
+    Owner       = data.aws_caller_identity.current.user_id
   }
 }
 
