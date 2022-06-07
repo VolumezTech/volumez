@@ -24,10 +24,18 @@ resource "aws_secretsmanager_secret" "secret_key" {
 resource "aws_secretsmanager_secret_version" "secret_key_value" {
   secret_id     = aws_secretsmanager_secret.secret_key.id
   secret_string = tls_private_key.key.private_key_pem
+
+  depends_on = [
+    aws_secretsmanager_secret.secret_key
+  ]
 }
 
 data "aws_secretsmanager_secret" "ssh_val" {
   arn = aws_secretsmanager_secret.secret_key.arn
+
+  depends_on = [
+    aws_secretsmanager_secret.secret_key
+  ]
 }
 
 data "aws_secretsmanager_secret_version" "creds" {

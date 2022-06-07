@@ -3,6 +3,8 @@
 ###############
 
 variable "region" {
+    description = "Enter the region you want to create the environment in (example: us-east-1):"
+    type        = string   
 }
 
 variable "resources_name_suffix" {

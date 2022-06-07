@@ -1,7 +1,6 @@
 variable "region" {
   type        = string
   description = "Please enter the region. For example: us-east-1"
-  default     = "us-east-1"
 }
 
 variable "cluster_owner" {
