@@ -14,12 +14,13 @@ Terraform creates VPC,subnets,instances and security groups.
 ---
 
 ### Input ###
-Mandatory: Tenant Token (JWT Access Token) 
+Mandatory: Tenant Token (JWT Access Token), Region  
 
 ### Usage ###
 > Create with default values
 ```
 export TF_VAR_tenant_token=$TENANT_TOKEN
+export TF_VAR_region=$REGION
 terraform init
 terraform apply
 ```
@@ -39,14 +40,12 @@ terraform destroy
 ### Examples ###  
 > easy_starter
 
-* default region: us-east-1  
 * 4 media nodes accross 2 AZ's  
 * media node type: i3en.3xlarge  
 * default OS: Red Hat 8.5  
 
 > power_starter
 
-* default region: us-east-1  
 * 8 media nodes accross 2 AZ's  
 * 1 application node  
 * media node type: i3en.3xlarge  
@@ -121,12 +120,10 @@ helm uninstall vlz
 
 ### Examples ### 
 > easy_starter
-* default region: us-east-1  
 * 4 media nodes
 * media node type: i3en.3xlarge  
 
 > power_starter
-* default region: us-east-1  
 * 8 media nodes  
 * 1 application node  
 * media node type: i3en.3xlarge  
