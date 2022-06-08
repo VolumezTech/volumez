@@ -34,6 +34,8 @@ terraform apply -var="region=us-east-1" -var="media_node_ami=ami-08895422b5f3aa6
 
 > Destroy
 ```
+export TF_VAR_tenant_token=$TENANT_TOKEN
+export TF_VAR_region=$REGION
 terraform destroy
 ```
 
