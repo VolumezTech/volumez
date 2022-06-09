@@ -121,7 +121,7 @@ Configure kubectl so that you can connect to an EKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 cd kubernetes/helm
-helm install vlz volumez-csi --set vlzAuthToken=$CSI_DRIVER_TOKEN
+helm install vlz volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1...
 ```
 > Uninstall CSI driver
 ```
