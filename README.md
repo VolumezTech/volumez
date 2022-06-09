@@ -16,7 +16,7 @@ Terraform creates VPC,subnets,instances and security groups.
 ### Input ###
 Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
-2. Region
+2. Region - Target AWS region (example: us-east-1)
 
 ### Usage ###
 > Create with default values
@@ -75,6 +75,7 @@ No default values, the following should be set in order to execute the terraform
 ### Input ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+2. Region - Target AWS region (example: us-east-1)  
 
 ### Usage (Terraform) ###
 > Create with default values
