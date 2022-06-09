@@ -7,7 +7,7 @@ Terraform creates VPC,subnets,instances and security groups.
 * Terraform > 0.14  
 * AWS credentials as environment variables 
 * kubectl (for EKS examples)
-* Helm (for EKS examples)
+* Helm v3.8 (for EKS examples) 
 * awscli (for EKS examples)
 
 # EC2
