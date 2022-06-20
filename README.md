@@ -7,46 +7,50 @@ Terraform creates VPC,subnets,instances and security groups.
 * Terraform > 0.14  
 * AWS credentials as environment variables 
 * kubectl (for EKS examples)
-* Helm (for EKS examples)
+* Helm v3.8 (for EKS examples) 
 * awscli (for EKS examples)
 
 # EC2
 ---
 
 ### Input ###
-Mandatory: Tenant Token (JWT Access Token) 
+Mandatory: 
+1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+2. Region - Target AWS region (example: us-east-1)
 
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=$TENANT_TOKEN
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=us-east-1
 terraform init
 terraform apply
 ```
 
-> Custom variables
+> Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_tenant_token=$TENANT_TOKEN
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=us-east-1
 terraform init
-terraform apply -var="region=us-east-1" -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
+terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
 ### Examples ###  
 > easy_starter
 
-* default region: us-east-1  
 * 4 media nodes accross 2 AZ's  
 * media node type: i3en.3xlarge  
 * default OS: Red Hat 8.5  
 
 > power_starter
 
-* default region: us-east-1  
 * 8 media nodes accross 2 AZ's  
 * 1 application node  
 * media node type: i3en.3xlarge  
@@ -57,7 +61,7 @@ terraform destroy
 
 No default values, the following should be set in order to execute the terraform:
 1. region                   - target region
-2. number_of_zone           - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
+2. num_of_zones             - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
 3. placement_group_strategy - Placement grpoup strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'
 4. tenant_token             - Tenant token to access Cognito run vlzconnector service
 5. media_node_count         - Number of media nodes to create
@@ -69,23 +73,28 @@ No default values, the following should be set in order to execute the terraform
 ---
 
 ### Input ### 
-Mandatory: CSI Driver Token (Refresh Token)  
+Mandatory:  
+1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+2. Region - Target AWS region (example: us-east-1)  
 
 ### Usage (Terraform) ###
 > Create with default values
 ```
+export TF_VAR_region=us-east-1
 terraform init
 terraform apply
 ```
 
-> Custom variables
+> Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
+export TF_VAR_region=us-east-1
 terraform init
-terraform apply -var="region=us-east-1" -var="media_node_count=4" -var="media_node_type=i3en.3xlarge"
+terraform apply -var="media_node_count=4" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
+export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
@@ -112,7 +121,7 @@ Configure kubectl so that you can connect to an EKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 cd kubernetes/helm
-helm install vlz volumez-csi --set vlzAuthToken=$CSI_DRIVER_TOKEN
+helm install vlz volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1...
 ```
 > Uninstall CSI driver
 ```
@@ -121,12 +130,10 @@ helm uninstall vlz
 
 ### Examples ### 
 > easy_starter
-* default region: us-east-1  
 * 4 media nodes
 * media node type: i3en.3xlarge  
 
 > power_starter
-* default region: us-east-1  
 * 8 media nodes  
 * 1 application node  
 * media node type: i3en.3xlarge  
