@@ -4,5 +4,5 @@ output "key_name" {
 }
 
 output "key_value" {
-  value = data.aws_secretsmanager_secret_version.creds.secret_string
+  value = aws_secretsmanager_secret_version.secret_key_value.secret_string
 }

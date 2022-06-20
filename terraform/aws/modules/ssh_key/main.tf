@@ -30,20 +30,6 @@ resource "aws_secretsmanager_secret_version" "secret_key_value" {
   ]
 }
 
-data "aws_secretsmanager_secret" "ssh_val" {
-  arn = aws_secretsmanager_secret.secret_key.arn
-
-  depends_on = [
-    aws_secretsmanager_secret.secret_key
-  ]
-}
-
-data "aws_secretsmanager_secret_version" "creds" {
-  secret_id = data.aws_secretsmanager_secret.ssh_val.arn
-
-  depends_on = [data.aws_secretsmanager_secret.ssh_val]
-}
-
 locals {
-  db_creds = data.aws_secretsmanager_secret_version.creds.secret_string
+  db_creds = aws_secretsmanager_secret_version.secret_key_value.secret_string
 }
