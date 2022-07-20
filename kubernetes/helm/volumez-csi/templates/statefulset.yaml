@@ -21,7 +21,8 @@ spec:
           args:
             - "--csi-address=$(ADDRESS)" 
             - "--extra-create-metadata"   
-            - "--feature-gates=Topology=true"            
+            - "--feature-gates=Topology=true"
+            - "--timeout=60s"            
           env:
             - name: ADDRESS
               value: /csi/csi.sock
