@@ -56,7 +56,7 @@ variable "tenant_token" {
 
 variable "media_node_count" {
      type    = number
-     default = 4
+     default = 6
 }
 
 variable "media_node_type" {
