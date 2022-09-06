@@ -125,7 +125,7 @@ helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJK
 ```
 > Uninstall CSI driver
 ```
-helm uninstall vlz
+helm uninstall volumez-csi
 ```
 
 ### Examples ### 
