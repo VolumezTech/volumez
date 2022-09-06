@@ -12,7 +12,7 @@ variable "cluster_owner" {
 variable "media_node_count" {
   type        = number
   description = "Please enter the number of nodes you desire"
-  default     = 4
+  default     = 6
 }
 
 variable "media_node_type" {

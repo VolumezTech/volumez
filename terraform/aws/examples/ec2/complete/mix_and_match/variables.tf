@@ -26,7 +26,7 @@ variable "num_of_zones" {
 }
 
 variable "placement_group_strategy" {
-    description = "Placement group strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'. Our recommendation is 'cluster' - a higher per-flow throughput limit for TCP/IP traffic and are placed in the same high-bisection bandwidth segment of the network."
+    description = "Placement group strategy. Can be 'cluster', 'partition' or 'spread'. Our recommendation is 'cluster' - a higher per-flow throughput limit for TCP/IP traffic and are placed in the same high-bisection bandwidth segment of the network."
     type        = string
 
     validation {

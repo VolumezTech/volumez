@@ -45,7 +45,7 @@ terraform destroy
 ### Examples ###  
 > easy_starter
 
-* 4 media nodes accross 2 AZ's  
+* 6 media nodes accross 2 AZ's  
 * media node type: i3en.3xlarge  
 * default OS: Red Hat 8.5  
 
@@ -130,7 +130,7 @@ helm uninstall volumez-csi
 
 ### Examples ### 
 > easy_starter
-* 4 media nodes
+* 6 media nodes
 * media node type: i3en.3xlarge  
 
 > power_starter
