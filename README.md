@@ -62,8 +62,8 @@ terraform destroy
 No default values, the following should be set in order to execute the terraform:
 1. region                   - target region
 2. num_of_zones             - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-3. placement_group_strategy - Placement grpoup strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'
-4. tenant_token             - Tenant token to access Cognito run vlzconnector service
+3. placement_group_strategy - Placement group strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'
+4. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 5. media_node_count         - Number of media nodes to create
 6. media_node_type          - Media EC2 type
 7. app_node_count           - number of performance hosts
@@ -77,7 +77,7 @@ Mandatory:
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)  
 
-### Usage (Terraform) ###
+### Usage (Terraform) - Create EKS cluster ###
 > Create with default values
 ```
 export TF_VAR_region=us-east-1
@@ -111,7 +111,7 @@ cluster_security_group_id = "sg-0a2afe43ebc6abd06"
 region = "us-east-1"
 ```
 
-### Usage (helm) ###
+### Usage (helm) - Deploy Volumez-CSI configuration ###
 > Configure kubectl
 
 Configure kubectl so that you can connect to an EKS cluster:  
@@ -120,8 +120,8 @@ Configure kubectl so that you can connect to an EKS cluster:
 
 > Deploy CSI driver deployment with helm 
 ```
-cd kubernetes/helm
-helm install vlz volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1...
+helm repo add volumez-csi https://volumeztech.github.io/helm-csi
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 > Uninstall CSI driver
 ```
