@@ -47,7 +47,7 @@ variable "path_to_pem" {
 }
 
 variable "tenant_token" {
-    description = "Enter your Volumez tenant token (can be reached from Volumez->Add Storage->EC2->Next->(echo -n <tenant token>) )"
+    description = "Enter your Volumez Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info"
     type        = string
 }
 

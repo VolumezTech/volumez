@@ -26,7 +26,7 @@ variable "num_of_zones" {
 }
 
 variable "placement_group_strategy" {
-    description = "Placement grpoup strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'"
+    description = "Placement group strategy. Can be 'cluster', 'partition' or 'spread'. Our recommendation is 'cluster' - a higher per-flow throughput limit for TCP/IP traffic and are placed in the same high-bisection bandwidth segment of the network."
     type        = string
 
     validation {
@@ -59,7 +59,7 @@ variable "path_to_pem" {
 }
 
 variable "tenant_token" {
-    description = "Enter your Volumez tenant token (can be reached from Volumez->Add Storage->EC2->Next->(echo -n <tenant token>) )"
+    description = "Enter your Volumez Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info"
     type        = string
 }
 
