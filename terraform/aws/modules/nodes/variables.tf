@@ -61,6 +61,10 @@ variable "app_node_name_prefix" {
     default = "node"
 }
 
+variable "resources_name_suffix" {
+     default = "Volumez"
+}
+
 variable "node_name_prefix" {
     type    = string
     default = "default"
