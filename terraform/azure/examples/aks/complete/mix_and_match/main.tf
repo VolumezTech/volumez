@@ -2,11 +2,6 @@ provider "azurerm" {
   features {}
 }
 
-data "azurerm_ssh_public_key" "this" {
-  name                = var.ssh_key_name
-  resource_group_name = "static"
-}
-
 resource "random_string" "this" {
   length  = 5
   special = false
@@ -47,15 +42,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = module.resource-group.rg_name
   kubernetes_version  = var.k8s_version
   dns_prefix          = var.dns_prefix
-  linux_profile {
-    admin_username = "azureuser"
-    ssh_key {
-      key_data = data.azurerm_ssh_public_key.this.public_key
-    }
-  }
   default_node_pool {
     name                         = "media"
-    zones                        = var.zones_list
+    zones                        = [1]
     node_count                   = var.media_node_count
     vm_size                      = var.media_node_type
     vnet_subnet_id               = module.resource-group.subnet_id

@@ -42,12 +42,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = module.resource-group.rg_name
   kubernetes_version  = var.k8s_version
   dns_prefix          = var.dns_prefix
-  linux_profile {
-    admin_username = "azureuser"
-    ssh_key {
-      key_data = data.azurerm_ssh_public_key.this.public_key
-    }
-  }
   default_node_pool {
     name                         = "media"
     zones                        = [1]
