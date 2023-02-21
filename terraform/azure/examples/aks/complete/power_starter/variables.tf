@@ -9,34 +9,15 @@ variable "resource_group_location" {
 
 variable "resource_prefix" {
   type        = string
-  default     = "ymaymon-aks"
-}
-
-variable "zones_list" {
-  type        = list
-  default     = [1]
-}
-
-variable "address_space" {
-  type    = list(any)
-  default = ["10.1.0.0/16"]
-}
-
-variable "address_prefixes" {
-  type    = list(any)
-  default = ["10.1.0.0/24"]
-}
-
-variable "ssh_key_name" {
-  type    = string
-  default = "automation-kp"
+  default     = "Volumez-power-aks"
+  description = "Please enter the cluster name prefix"
 }
 
 ###########
 ### k8s ###
 ###########
 
-variable "k8s_cluster_version" {
+variable "k8s_version" {
   type        = string
   default     = "1.24"
 }
@@ -60,7 +41,7 @@ variable "media_node_type" {
   default     = "Standard_L8s_v3"
 }
 
-variable "num_of_media_node" {
+variable "media_node_count" {
   type        = number
   default     = 8
 }
@@ -71,10 +52,10 @@ variable "num_of_media_node" {
 
 variable "app_node_type" {
   type        = string
-  default     = "Standard_D64as_v5"
+  default     = "Standard_D64_v5"
 }
 
-variable "num_of_app_node" {
+variable "app_node_count" {
   type        = number
-  default     = 2
+  default     = 1
 }
