@@ -35,7 +35,7 @@ module "eks" {
   source = "terraform-aws-modules/eks/aws"
 
   cluster_name                    = local.cluster_name
-  cluster_version                 = "1.21"
+  cluster_version                 = var.k8s_version
   subnet_ids                      = module.vpc.private_subnets
   vpc_id                          = module.vpc.vpc_id
   cluster_endpoint_private_access = true
@@ -110,6 +110,7 @@ module "eks" {
       desired_size = var.media_node_count
       min_size     = var.media_node_count
       max_size     = var.media_node_count
+      ami_type     = var.media_node_ami_type
 
       instance_types = ["${var.media_node_type}"]
       capacity_type  = "ON_DEMAND"
@@ -140,6 +141,7 @@ module "eks" {
       desired_size = var.app_node_count
       min_size     = var.app_node_count
       max_size     = var.app_node_count
+      ami_type     = var.app_node_ami_type
 
       instance_types = ["${var.app_node_type}"]
       capacity_type  = "ON_DEMAND"
@@ -153,7 +155,7 @@ module "eks" {
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
+  name = module.eks.cluster_name
 }
 
 provider "kubernetes" {
