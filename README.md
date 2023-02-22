@@ -148,6 +148,86 @@ No default values, the following should be set in order to execute the terraform
 4. app_node_count           - number of performance hosts
 5. app_node_type            - EC2 type for application node
 
+
+# AKS
+---
+
+### Input ### 
+Mandatory:  
+1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+2. Region - Target AWS region (example: East US)  
+
+### Usage (Terraform) - Create AKS cluster ###
+> Create with default values
+```
+export TF_VAR_region=East US
+terraform init
+terraform apply
+```
+
+> Custom variables (List of available variables can be found under Examples > mix_and_match)
+```
+export TF_VAR_region=East US
+terraform init
+terraform apply -var="media_node_count=4" -var="media_node_type=Standard_L8s_v3"
+```
+
+> Destroy
+```
+export TF_VAR_region=East US
+terraform destroy
+```
+
+> Output
+```
+terraform output
+```
+Example output:
+```
+cluster_endpoint = "https://759E02F3CB0F242849E6FEE7CF93DF86.gr7.us-east-1.eks.amazonaws.com"
+cluster_id = "Volumez-eks-xWG3D5gq"
+cluster_name = "Volumez-eks-xWG3D5gq"
+cluster_security_group_id = "sg-0a2afe43ebc6abd06"
+region = "us-east-1"
+```
+
+### Usage (helm) - Deploy Volumez-CSI configuration ###
+> Configure kubectl
+
+Configure kubectl so that you can connect to an AKS cluster:  
+```az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>```  
+**resource-group-name** and **aks-cluster-name** parameters can be found in Terraform's output
+
+> Deploy CSI driver deployment with helm 
+```
+helm repo add volumez-csi https://volumeztech.github.io/helm-csi
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```
+> Uninstall CSI driver
+```
+helm uninstall volumez-csi
+```
+
+### Examples ### 
+> easy_starter
+* 6 media nodes
+* media node type: Standard_L8s_v3 
+
+> power_starter
+* 8 media nodes  
+* 1 application node  
+* media node type: Standard_L8s_v3
+* application node type: Standard_D64_v5 
+
+> mix_and_match
+
+No default values, the following should be set in order to execute the terraform:
+1. region                   - Target region
+2. media_node_count         - Number of media nodes to create
+3. media_node_type          - Media node type
+4. app_node_count           - Number of application nodes
+5. app_node_type            - Application node type
+
 ### Application deployment ###
 **power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
 ```yaml
