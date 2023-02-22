@@ -5,10 +5,11 @@ Terraform creates VPC,subnets,instances and security groups.
 
 # Requirements
 * Terraform > 0.14  
-* AWS credentials as environment variables 
-* kubectl (for EKS examples)
-* Helm v3.8 (for EKS examples) 
+* AWS/Azure credentials as environment variables 
+* kubectl (for EKS/AKS examples)
+* Helm v3.8 (for EKS/AKS examples) 
 * awscli (for EKS examples)
+* Azure CLI (for AKS examples)
 
 # EC2
 ---
@@ -148,6 +149,29 @@ No default values, the following should be set in order to execute the terraform
 4. app_node_count           - number of performance hosts
 5. app_node_type            - EC2 type for application node
 
+### Application deployment ###
+**power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: instance-type
+            operator: In
+            values:
+            - volumez-app-ng            
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+```
+
 
 # AKS
 ---
@@ -184,11 +208,9 @@ terraform output
 ```
 Example output:
 ```
-cluster_endpoint = "https://759E02F3CB0F242849E6FEE7CF93DF86.gr7.us-east-1.eks.amazonaws.com"
-cluster_id = "Volumez-eks-xWG3D5gq"
-cluster_name = "Volumez-eks-xWG3D5gq"
-cluster_security_group_id = "sg-0a2afe43ebc6abd06"
-region = "us-east-1"
+
+cluster_name = "Volumez-aks-xWG3D5gq"
+resource_group_name = "Volumez-aks-xWG3D5gq-rg"
 ```
 
 ### Usage (helm) - Deploy Volumez-CSI configuration ###
@@ -211,22 +233,23 @@ helm uninstall volumez-csi
 ### Examples ### 
 > easy_starter
 * 6 media nodes
-* media node type: Standard_L8s_v3 
+* media node size: Standard_L8s_v3 
 
 > power_starter
+
 * 8 media nodes  
 * 1 application node  
-* media node type: Standard_L8s_v3
-* application node type: Standard_D64_v5 
+* media node size: Standard_L8s_v3
+* application node size: Standard_D64_v5 
 
 > mix_and_match
 
 No default values, the following should be set in order to execute the terraform:
 1. region                   - Target region
 2. media_node_count         - Number of media nodes to create
-3. media_node_type          - Media node type
+3. media_node_size          - Media node size
 4. app_node_count           - Number of application nodes
-5. app_node_type            - Application node type
+5. app_node_size            - Application node size
 
 ### Application deployment ###
 **power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
@@ -241,12 +264,13 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: instance-type
+          - key: nodepool-type
             operator: In
             values:
-            - volumez-app-ng            
+            - app           
   containers:
   - name: nginx
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
+

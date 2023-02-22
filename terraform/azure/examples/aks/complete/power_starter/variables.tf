@@ -38,10 +38,10 @@ variable "dns_prefix" {
 ### Media Nodes ###
 ###################
 
-variable "media_node_type" {
+variable "media_node_size" {
   type        = string
   default     = "Standard_L8s_v3"
-  description = "Please enter EC2 Instance Type for media nodes. For example: 'Standard_L8s_v3'."
+  description = "Please enter node size for media nodes. For example: 'Standard_L8s_v3'."
 }
 
 variable "media_node_count" {
@@ -54,10 +54,10 @@ variable "media_node_count" {
 ### App Nodes ###
 ##################
 
-variable "app_node_type" {
+variable "app_node_size" {
   type        = string
   default     = "Standard_D64_v5"
-  description = "Please enter EC2 Instance Type for media nodes. For example: 'Standard_D64_v5'."
+  description = "Please enter node size for media nodes. For example: 'Standard_D64_v5'."
 }
 
 variable "app_node_count" {

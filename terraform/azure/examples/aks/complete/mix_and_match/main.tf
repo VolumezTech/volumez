@@ -46,7 +46,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name                         = "media"
     zones                        = [1]
     node_count                   = var.media_node_count
-    vm_size                      = var.media_node_type
+    vm_size                      = var.media_node_size
     vnet_subnet_id               = module.resource-group.subnet_id
     enable_node_public_ip        = true
     proximity_placement_group_id = azurerm_proximity_placement_group.this.id
@@ -64,7 +64,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 resource "azurerm_kubernetes_cluster_node_pool" "app" {
   name                         = "app"
   node_count                   = var.app_node_count
-  vm_size                      = var.app_node_type
+  vm_size                      = var.app_node_size
   zones                        = [1]
   enable_auto_scaling          = true
   enable_node_public_ip        = true
