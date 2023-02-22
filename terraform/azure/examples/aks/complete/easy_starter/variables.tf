@@ -14,11 +14,6 @@ variable "resource_prefix" {
   description = "Please enter the cluster name prefix"
 }
 
-variable "address_prefixes" {
-  type    = list(any)
-  default = ["10.1.0.0/24"]
-}
-
 ###########
 ### k8s ###
 ###########
@@ -26,6 +21,7 @@ variable "address_prefixes" {
 variable "k8s_version" {
   type        = string
   default     = "1.24"
+  description = "Please enter the kubernetes version. For example: 1.24"
 }
 
 variable "identity_type" {
@@ -45,9 +41,11 @@ variable "dns_prefix" {
 variable "media_node_type" {
   type        = string
   default     = "Standard_L8s_v3"
+  description = "Please enter EC2 Instance Type for media nodes. For example: 'Standard_L8s_v3'."
 }
 
 variable "media_node_count" {
   type        = number
   default     = 6
+  description = "Please enter the number of media nodes you desire"
 }

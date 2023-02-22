@@ -56,12 +56,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = var.identity_type
   }
 
-  # network_profile {
-  #   network_plugin    = "azure"
-  #   network_policy    = "calico"
-  #   load_balancer_sku = "standard"
-  # }
-
   tags = {
     Environment = "Development"
   }
