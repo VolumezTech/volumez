@@ -172,34 +172,34 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-
+q
 # AKS
 ---
 
 ### Input ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
-2. Region - Target AWS region (example: East US)  
+2. Region - Target Azure resource group region (example: East US)  
 
 ### Usage (Terraform) - Create AKS cluster ###
 > Create with default values
 ```
-export TF_VAR_region=East US
+export TF_VAR_resource_group_location=East US
 terraform init
-terraform apply
+terraform apply -var-file="<varfile>.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_region=East US
+export TF_VAR_resource_group_location=East US
 terraform init
 terraform apply -var="media_node_count=4" -var="media_node_type=Standard_L8s_v3"
 ```
 
 > Destroy
 ```
-export TF_VAR_region=East US
-terraform destroy
+export TF_VAR_resource_group_location=East US
+terraform destroy -var-file="<varfile>.tfvars"
 ```
 
 > Output
@@ -244,12 +244,13 @@ helm uninstall volumez-csi
 
 > mix_and_match
 
-No default values, the following should be set in order to execute the terraform:
-1. region                   - Target region
+No default values, the following should be set in order to execute the terraform (will be prompted on command line):
+1. resource_group_location  - Target region
 2. media_node_count         - Number of media nodes to create
 3. media_node_size          - Media node size
 4. app_node_count           - Number of application nodes
 5. app_node_size            - Application node size
+6. k8s_version              - kubernetes cluster version (i.e: 1.24)
 
 ### Application deployment ###
 **power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
