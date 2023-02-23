@@ -172,7 +172,6 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-q
 # AKS
 ---
 
