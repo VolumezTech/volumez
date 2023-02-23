@@ -36,7 +36,6 @@ variable "dns_prefix" {
 
 variable "media_node_size" {
   type        = string
-  # default     = "Standard_L8s_v3"
   description = "Please enter node size for media nodes. For example: 'Standard_L8s_v3'."
 }
 
