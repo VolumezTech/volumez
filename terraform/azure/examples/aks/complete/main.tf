@@ -13,8 +13,7 @@ resource "random_string" "this" {
 ###############
 
 module "resource-group" {
-  source = "../../../../modules/resource-group"
-
+  source = "../../../modules/resource-group"
   resource_prefix         = var.resource_prefix
   resource_group_location = var.resource_group_location
   address_space           = ["10.1.0.0/16"]
@@ -42,6 +41,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = module.resource-group.rg_name
   kubernetes_version  = var.k8s_version
   dns_prefix          = var.dns_prefix
+
   default_node_pool {
     name                         = "media"
     zones                        = [1]
@@ -62,6 +62,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "app" {
+  count                        = var.app_node_count > 0 ? 1 : 0
   name                         = "app"
   node_count                   = var.app_node_count
   vm_size                      = var.app_node_size
@@ -86,3 +87,4 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
     "environment"   = "dev"
   }
 }
+
