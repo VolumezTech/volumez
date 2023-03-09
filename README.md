@@ -122,8 +122,17 @@ Configure kubectl so that you can connect to an EKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm install volumez-csi volumez-csi/volumez-csi --dependency-update --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
+> Upgrade CSI driver
+
+If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
+You can then run `helm search repo volumez-csi` to see the charts.<br/>
+
+```
+  helm upgrade my-volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```
+
 > Uninstall CSI driver
 ```
 helm uninstall volumez-csi
