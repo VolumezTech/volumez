@@ -36,13 +36,13 @@ variable "signup_domain" {
 variable "key_name" {
   description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource; ; if not set - new one will be generated"
   type        = string
-  default     = ""
+  default     = "automation-kp"
 }
 
 variable "path_to_pem" {
     description = "pem key path to use for ssh into the instance; which can be managed using the `aws_key_pair` resource; if not set - new one will be generated"
     type        = string
-    default     = ""
+    default     = "~/.ssh/automation-kp.pem"
 }
 
 variable "tenant_token" {
@@ -56,12 +56,12 @@ variable "tenant_token" {
 
 variable "media_node_count" {
      type    = number
-     default = 6
+     default = 8
 }
 
 variable "media_node_type" {
     type    = string
-    default = "i3en.3xlarge"
+    default = "is2gen.2xlarge"
 }
 
 variable "media_node_iam_role" {
