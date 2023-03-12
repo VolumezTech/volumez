@@ -56,12 +56,12 @@ variable "tenant_token" {
 
 variable "media_node_count" {
      type    = number
-     default = 6
+     default = 8
 }
 
 variable "media_node_type" {
     type    = string
-    default = "i3en.3xlarge"
+    default = "is2gen.2xlarge"
 }
 
 variable "media_node_iam_role" {
