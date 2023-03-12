@@ -47,16 +47,16 @@ terraform destroy
 > easy_starter
 
 * 8 media nodes accross 2 AZ's  
-* media node type: is2gen.2xlarge  
-* default OS: Red Hat 8.5  
+* media node type: is4gen.2xlarge  
+* default OS: Red Hat 8.7  
 
 > power_starter
 
 * 8 media nodes accross 2 AZ's  
 * 1 application node  
-* media node type: is2gen.2xlarge  
+* media node type: is4gen.2xlarge  
 * application node type: m5n.xlarge  
-* default OS: Red Hat 8.5  
+* default OS: Red Hat 8.7  
 
 > mix_and_match
 
