@@ -36,13 +36,13 @@ variable "signup_domain" {
 variable "key_name" {
   description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource; ; if not set - new one will be generated"
   type        = string
-  default     = "automation-kp"
+  default     = ""
 }
 
 variable "path_to_pem" {
     description = "pem key path to use for ssh into the instance; which can be managed using the `aws_key_pair` resource; if not set - new one will be generated"
     type        = string
-    default     = "~/.ssh/automation-kp.pem"
+    default     = ""
 }
 
 variable "tenant_token" {
