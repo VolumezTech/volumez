@@ -62,7 +62,7 @@ variable "media_node_count" {
 
 variable "media_node_type" {
     type    = string
-    default = "i3en.3xlarge"
+    default = "is2gen.2xlarge"
 }
 
 variable "media_node_iam_role" {

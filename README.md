@@ -46,15 +46,15 @@ terraform destroy
 ### Examples ###  
 > easy_starter
 
-* 6 media nodes accross 2 AZ's  
-* media node type: i3en.3xlarge  
+* 8 media nodes accross 2 AZ's  
+* media node type: is2gen.2xlarge  
 * default OS: Red Hat 8.5  
 
 > power_starter
 
 * 8 media nodes accross 2 AZ's  
 * 1 application node  
-* media node type: i3en.3xlarge  
+* media node type: is2gen.2xlarge  
 * application node type: m5n.xlarge  
 * default OS: Red Hat 8.5  
 
