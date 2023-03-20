@@ -30,6 +30,10 @@ variable "proximity_pg_group_list" {
 }
 
 ### SSH ###
+variable "ifautomation" {
+    description = "boolean for profiling"
+    default     = false
+}
 variable "ssh_username" {
   type    = string
   default = "adminuser"
@@ -37,6 +41,20 @@ variable "ssh_username" {
 
 variable "public_key" {
   type = string
+}
+
+variable "path_to_pem" {
+  type = string
+  default = "~/.ssh/automation-kp.pem"
+}
+
+variable "dev_public_dns" {
+     default = "dns"
+}
+
+variable "api_gw_ws_id" {
+    description = "websocket id"
+    default = "default_id_from_terraform"
 }
 
 #############
@@ -56,4 +74,9 @@ variable "vm_type" {
 variable "vm_size" {
   type    = string
   default = "Standard_L8as_v3" # == i4i.2xlarge
+}
+
+variable "nodes_OS" {
+    description = "nodes OS"
+    default     = "rhel"
 }

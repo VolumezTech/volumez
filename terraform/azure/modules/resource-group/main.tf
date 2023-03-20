@@ -39,6 +39,42 @@ resource "azurerm_network_security_group" "this" {
     destination_address_prefix = "*"
   }
 
+  security_rule {
+    name                       = "allow_ping"
+    priority                   = 200
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Icmp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow_fio_in"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8765"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow_fio_out"
+    priority                   = 300
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8765"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
   depends_on = [
     azurerm_resource_group.this
   ]
