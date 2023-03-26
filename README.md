@@ -180,6 +180,55 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
+# VM
+---
+
+### Input ###
+Mandatory: 
+1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+2. Region - Target Azure region (example: eastus)
+
+### Usage ###
+> Create with default values
+```
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=eastus
+terraform init
+terraform apply
+```
+
+> Custom variables (List of available variables can be found under Examples > mix_and_match)
+```
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=eastus
+terraform init
+terraform apply -var="media_node_type=Standard_L8as_v3"
+```
+
+> Destroy
+```
+export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
+export TF_VAR_region=eastus
+terraform destroy
+```
+
+### Examples ###  
+> easy_starter
+
+* 8 media nodes 
+* media node type: Standard_L8as_v3 
+* default OS: Red Hat 8.7  
+
+> mix_and_match
+
+No default values, the following should be set in order to execute the terraform:
+1. resource_group_location  - target region
+2. zones                    - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
+3. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+5. num_of_media_node        - Number of media nodes to create
+6. media_node_type          - Media VM type
+7. num_of_app_node          - number of performance hosts
+8. app_node_type            - VM type for application node
 
 # AKS
 ---
@@ -261,7 +310,7 @@ No default values, the following should be set in order to execute the terraform
 6. k8s_version              - kubernetes cluster version (i.e: 1.24)
 
 ### Application deployment ###
-**power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
+**power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single AKS. In order to deploy your application use the following node affinity configuration:
 ```yaml
 apiVersion: v1
 kind: Pod
