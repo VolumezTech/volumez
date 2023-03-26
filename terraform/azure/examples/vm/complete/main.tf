@@ -18,7 +18,7 @@ resource "random_string" "this" {
 ###############
 
 module "resource-group" {
-  source = "../../../modules/azure/resource-group"
+  source = "../../../modules/resource-group"
 
   resource_prefix         = var.resource_prefix
   resource_group_location = var.resource_group_location
@@ -52,7 +52,7 @@ resource "azurerm_proximity_placement_group" "this" {
 # VMs #
 #######
 module "media-vm" {
-  source = "../../../modules/azure/vm"
+  source = "../../../modules/vm"
 
   num_of_vm               = var.num_of_media_node
   vm_type                 = "media"
@@ -71,7 +71,7 @@ module "media-vm" {
 }
 
 module "app-vm" {
-  source = "../../../modules/azure/vm"
+  source = "../../../modules/vm"
 
   num_of_vm               = var.num_of_app_node
   vm_type                 = "app"
