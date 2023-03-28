@@ -80,8 +80,8 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/deploy_connector_new.sh"
-    destination = "/tmp/deploy_connector_new.sh"
+    source      = "${path.module}/deploy_connector.sh"
+    destination = "/tmp/deploy_connector.sh"
   }
 
   provisioner "file" {
@@ -117,11 +117,10 @@ resource "azurerm_linux_virtual_machine" "this" {
       ]
   }
 
-  provisioner "remote-exec" {
+ provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/deploy_connector_new.sh",
-      "echo 'sudo /tmp/deploy_connector_new.sh ${var.ifautomation} ${var.dev_public_dns} ${var.api_gw_ws_id} ${var.nodes_OS} ${var.ssh_username}' > /tmp/deploy_connector.log",
-      "sudo /tmp/deploy_connector_new.sh ${var.ifautomation} ${var.dev_public_dns} ${var.api_gw_ws_id} ${var.nodes_OS} ${var.ssh_username}"
+      "chmod +x /tmp/deploy_connector.sh",
+      "sudo /tmp/deploy_connector.sh ${var.tenant_token} ${var.signup_domain}"
     ]
   }
 

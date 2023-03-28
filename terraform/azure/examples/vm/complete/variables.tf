@@ -29,15 +29,10 @@ variable "address_prefixes" {
 }
 
 
-
-
 ###############
 ##### SSH #####
 ###############
-variable "ifautomation" {
-    description = "boolean for profiling"
-    default     = false
-}
+
 variable "ssh_username" {
   type    = string
   default = "adminuser"
@@ -53,14 +48,17 @@ variable "path_to_pem" {
   default = "~/.ssh/automation-kp.pem"
 }
 
-variable "dev_public_dns" {
-     default = "dns"
+variable "tenant_token" {
+    description = "Tenant token to access Cognito and pull the connector"
+    type        = string
 }
 
-variable "api_gw_ws_id" {
-    description = "websocket id"
-    default = "default_id_from_terraform"
+variable "signup_domain" {
+    description = "signup url to take vlzconnector from"  
+    type = string
+    default = "signup.volumez.com"
 }
+
 
 #############
 ### media ###

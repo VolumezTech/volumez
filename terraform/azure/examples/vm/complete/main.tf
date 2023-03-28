@@ -64,10 +64,9 @@ module "media-vm" {
   proximity_pg_group_list = azurerm_proximity_placement_group.this.*.id
   ssh_username            = var.ssh_username
   public_key              = data.azurerm_ssh_public_key.this.public_key
-  dev_public_dns          = var.dev_public_dns
-  api_gw_ws_id            = var.api_gw_ws_id
-  ifautomation            = var.ifautomation
   resource_name_prefix    = var.resource_prefix
+  tenant_token            = var.tenant_token
+  signup_domain           = var.signup_domain
 }
 
 module "app-vm" {
@@ -83,9 +82,8 @@ module "app-vm" {
   proximity_pg_group_list = azurerm_proximity_placement_group.this.*.id
   ssh_username            = var.ssh_username
   public_key              = data.azurerm_ssh_public_key.this.public_key
-  dev_public_dns          = var.dev_public_dns
-  api_gw_ws_id            = var.api_gw_ws_id
-  ifautomation            = var.ifautomation
   resource_name_prefix    = var.resource_prefix
+  tenant_token            = var.tenant_token
+  signup_domain           = var.signup_domain
 }
 
