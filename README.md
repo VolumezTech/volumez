@@ -192,7 +192,7 @@ Mandatory:
 > Create with default values
 ```
 export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=eastus
+export TF_VAR_resource_group_location=eastus
 terraform init
 terraform apply
 ```
@@ -200,7 +200,7 @@ terraform apply
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
 export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=eastus
+export TF_VAR_resource_group_location=eastus
 terraform init
 terraform apply -var="media_node_type=Standard_L8as_v3"
 ```
