@@ -1,7 +1,15 @@
 # Volumez
 
-Terraform code which creates VPC resources, Media & Application nodes with vlzconnector configuration
-Terraform creates VPC,subnets,instances and security groups.
+Volumez is SaaS composable data infrastructure. With Volumez, you can deploy applications in your cloud with precise control of IO characteristics using a fully declarative interface
+
+This is a guide of how you can an AWS/Azure environments (EKS/AKS or EC2/VM) and install the volumez connector.
+
+# Get Started
+[Requirements](# Requirements)
+[AWS EC2 environment](# EC2)
+[AWS EKS environment](# EKS)
+[Azure VM environment](# VM)
+[Azure AKS environment](# AKS)
 
 # Requirements
 * Terraform > 0.14  
@@ -122,7 +130,7 @@ Configure kubectl so that you can connect to an EKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --dependency-update --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
 ```
 > Upgrade CSI driver
 
@@ -130,12 +138,12 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-  helm upgrade my-volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+  helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
 ```
-helm uninstall volumez-csi
+helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
 ### Examples ### 
@@ -287,11 +295,20 @@ Configure kubectl so that you can connect to an AKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
 ```
+> Upgrade CSI driver
+
+If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
+You can then run `helm search repo volumez-csi` to see the charts.<br/>
+
+```
+  helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```
+
 > Uninstall CSI driver
 ```
-helm uninstall volumez-csi
+helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
 ### Examples ### 
