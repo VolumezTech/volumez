@@ -4,7 +4,7 @@
 variable "resource_prefix" {
   description = "Resource group name prefix"
   type    = string
-  default = "default-vm"
+  default = "Volumez"
 }
 
 variable "resource_group_location" {
@@ -15,7 +15,7 @@ variable "resource_group_location" {
 
 variable "zones" {
   type    = list
-  default = ["1"]
+  default = ["1", "2"]
 }
 
 variable "address_space" {
@@ -28,26 +28,6 @@ variable "address_prefixes" {
   default = ["10.0.85.0/24"]
 }
 
-
-###############
-##### SSH #####
-###############
-
-variable "ssh_username" {
-  type    = string
-  default = "adminuser"
-}
-
-variable "ssh_key_name" {
-  type    = string
-  default = "automation-kp"
-}
-
-variable "path_to_pem" {
-  type = string
-  default = "~/.ssh/automation-kp.pem"
-}
-
 variable "tenant_token" {
     description = "Tenant token to access Cognito and pull the connector"
     type        = string
@@ -58,6 +38,27 @@ variable "signup_domain" {
     type = string
     default = "signup.volumez.com"
 }
+
+
+###############
+##### SSH #####
+###############
+
+variable "ssh_username" {
+  type    = string
+  default = "adminuser"
+}
+
+# variable "ssh_key_name" {
+#   type    = string
+#   default = "automation-kp"
+# }
+
+# variable "path_to_pem" {
+#   type = string
+#   default = "~/.ssh/automation-kp.pem"
+# }
+
 
 
 #############

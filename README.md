@@ -212,18 +212,24 @@ export TF_VAR_region=eastus
 terraform destroy
 ```
 
+### SSH To Node ### 
+```
+terraform output -raw tls_private_key > id_rsa
+chmod 400 id_rsa
+ssh -i id_rsa adminuser@<host-public-dns>
+
 ### Examples ###  
 > easy_starter
 
-* 8 media nodes 
-* media node type: Standard_L8as_v3 
+* 16 media nodes (spread across 2 availability zones)
+* media node type: Standard_L8as_v3
 * default OS: Red Hat 8.7  
 
 > mix_and_match
 
 No default values, the following should be set in order to execute the terraform:
 1. resource_group_location  - target region
-2. zones                    - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
+2. zones                    - List of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
 3. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 5. num_of_media_node        - Number of media nodes to create
 6. media_node_type          - Media VM type
