@@ -49,17 +49,6 @@ variable "ssh_username" {
   default = "adminuser"
 }
 
-# variable "ssh_key_name" {
-#   type    = string
-#   default = "automation-kp"
-# }
-
-# variable "path_to_pem" {
-#   type = string
-#   default = "~/.ssh/automation-kp.pem"
-# }
-
-
 
 #############
 ### media ###
