@@ -75,8 +75,3 @@ variable "vm_size" {
   type    = string
   default = "Standard_L8as_v3" # == i4i.2xlarge
 }
-
-variable "nodes_OS" {
-    description = "nodes OS"
-    default     = "rhel"
-}

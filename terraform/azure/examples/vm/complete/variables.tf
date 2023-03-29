@@ -8,12 +8,13 @@ variable "resource_prefix" {
 }
 
 variable "resource_group_location" {
-  description = "Resource group location"
+  description = "Resource group location (example: eastus)"
   type    = string
   default = "East US"
 }
 
 variable "zones" {
+  description = "List of Availability Zones (example: [\"1\"] or [\"1\", \"2\"] or [\"1\", \"2\", \"3\"]"
   type    = list
   default = ["1", "2"]
 }
