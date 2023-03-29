@@ -217,6 +217,7 @@ terraform destroy
 terraform output -raw tls_private_key > id_rsa
 chmod 400 id_rsa
 ssh -i id_rsa adminuser@<host-public-dns>
+```
 
 ### Examples ###  
 > easy_starter
