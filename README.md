@@ -1,7 +1,15 @@
 # Volumez
 
-Terraform code which creates VPC resources, Media & Application nodes with vlzconnector configuration
-Terraform creates VPC,subnets,instances and security groups.
+Volumez is SaaS composable data infrastructure. With Volumez, you can deploy applications in your cloud with precise control of IO characteristics using a fully declarative interface
+
+This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM) and install the volumez connector.
+
+# Get Started
+* [Requirements](#requirements)  
+* [AWS EC2 environment](#ec2)  
+* [AWS EKS environment](#eks)  
+* [Azure VM environment](#vm)  
+* [Azure AKS environment](#aks)  
 
 # Requirements
 * Terraform > 0.14  
@@ -14,7 +22,7 @@ Terraform creates VPC,subnets,instances and security groups.
 # EC2
 ---
 
-### Input ###
+### Inputs ###
 Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)
@@ -73,7 +81,7 @@ No default values, the following should be set in order to execute the terraform
 # EKS
 ---
 
-### Input ### 
+### Inputs ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)  
@@ -122,7 +130,7 @@ Configure kubectl so that you can connect to an EKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --dependency-update --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
 ```
 > Upgrade CSI driver
 
@@ -130,12 +138,12 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-  helm upgrade my-volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
 ```
-helm uninstall volumez-csi
+helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
 ### Examples ### 
@@ -183,7 +191,7 @@ spec:
 # VM
 ---
 
-### Input ###
+### Inputs ###
 Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target Azure region (example: eastus)
@@ -240,7 +248,7 @@ No default values, the following should be set in order to execute the terraform
 # AKS
 ---
 
-### Input ### 
+### Inputs ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target Azure resource group region (example: East US)  
@@ -272,7 +280,6 @@ terraform output
 ```
 Example output:
 ```
-
 cluster_name = "Volumez-aks-xWG3D5gq"
 resource_group_name = "Volumez-aks-xWG3D5gq-rg"
 ```
@@ -287,11 +294,20 @@ Configure kubectl so that you can connect to an AKS cluster:
 > Deploy CSI driver deployment with helm 
 ```
 helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
 ```
+> Upgrade CSI driver
+
+If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
+You can then run `helm search repo volumez-csi` to see the charts.<br/>
+
+```
+helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```
+
 > Uninstall CSI driver
 ```
-helm uninstall volumez-csi
+helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
 ### Examples ### 
