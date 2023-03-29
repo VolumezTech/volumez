@@ -49,13 +49,17 @@ resource "azurerm_linux_virtual_machine" "this" {
     storage_account_type = "Standard_LRS"
   }
 
+  source_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "8_7"
+    version   = "latest"
+  }
+
   admin_ssh_key {
     username   = var.ssh_username
     public_key = var.public_key
   }
-
-
-  source_image_id =  "/subscriptions/453b58fc-f031-4f46-9d1a-b35f725143f4/resourceGroups/packer-images/providers/Microsoft.Compute/images/nk-image-rhel-8.7"
 
 
   depends_on = [
