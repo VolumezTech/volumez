@@ -280,7 +280,6 @@ terraform output
 ```
 Example output:
 ```
-
 cluster_name = "Volumez-aks-xWG3D5gq"
 resource_group_name = "Volumez-aks-xWG3D5gq-rg"
 ```
