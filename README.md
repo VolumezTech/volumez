@@ -22,7 +22,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 # EC2
 ---
 
-### Input ###
+### Inputs ###
 Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)
@@ -81,7 +81,7 @@ No default values, the following should be set in order to execute the terraform
 # EKS
 ---
 
-### Input ### 
+### Inputs ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)  
@@ -138,7 +138,7 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-  helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
@@ -191,7 +191,7 @@ spec:
 # VM
 ---
 
-### Input ###
+### Inputs ###
 Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target Azure region (example: eastus)
@@ -248,7 +248,7 @@ No default values, the following should be set in order to execute the terraform
 # AKS
 ---
 
-### Input ### 
+### Inputs ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target Azure resource group region (example: East US)  
@@ -303,7 +303,7 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-  helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
