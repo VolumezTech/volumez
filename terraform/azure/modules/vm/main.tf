@@ -1,3 +1,4 @@
+
 resource "azurerm_public_ip" "this" {
   count = var.num_of_vm
 
@@ -43,24 +44,23 @@ resource "azurerm_linux_virtual_machine" "this" {
     element(azurerm_network_interface.this.*.id, count.index),
   ]
 
-  admin_ssh_key {
-    username   = var.ssh_username
-    public_key = var.public_key
-  }
-
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_id =  "/subscriptions/453b58fc-f031-4f46-9d1a-b35f725143f4/resourceGroups/packer-images/providers/Microsoft.Compute/images/nk-image-rhel-8.7"
+  source_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "8_7"
+    version   = "latest"
+  }
 
-  # source_image_reference {
-  #   publisher = "RedHat"
-  #   offer     = "RHEL"
-  #   sku       = "8_6"
-  #   version   = "latest"
-  # }
+  admin_ssh_key {
+    username   = var.ssh_username
+    public_key = var.public_key
+  }
+
 
   depends_on = [
     azurerm_public_ip.this,
@@ -74,41 +74,19 @@ resource "azurerm_linux_virtual_machine" "this" {
   connection {
     type        = "ssh"
     user        = var.ssh_username
-    private_key = file(var.path_to_pem)
+    private_key = var.private_key
     host        = azurerm_public_ip.this[count.index].ip_address
     agent       = false
   }
 
   provisioner "file" {
-    source      = "${path.module}/deploy_connector_new.sh"
-    destination = "/tmp/deploy_connector_new.sh"
+    source      = "${path.module}/deploy_connector.sh"
+    destination = "/tmp/deploy_connector.sh"
   }
-
-  provisioner "file" {
-    source      = "~/.ssh/id_rsa.pub"
-    destination = "~/root_id_rsa.pub"
-  }
-
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p -m 0777 /var/log/volumez",
     ]
-  }
-
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "rm -f ~/automation-kp.pem",
-  #     "sudo rm /root/.ssh/authorized_keys",
-  #     "cp ~/.ssh/authorized_keys ~/root_authorized_keys",
-  #     "cat ~/root_id_rsa.pub >> ~/root_authorized_keys",
-  #     "sudo cp root_authorized_keys /root/.ssh/authorized_keys",
-  #     "sudo chmod 600 /root/.ssh/authorized_keys"
-  #   ]
-  # }
-
-  provisioner "file" {
-    source      = var.path_to_pem
-    destination = "/home/${var.ssh_username}/automation-kp.pem"
   }
 
   provisioner "remote-exec" {
@@ -117,11 +95,10 @@ resource "azurerm_linux_virtual_machine" "this" {
       ]
   }
 
-  provisioner "remote-exec" {
+ provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/deploy_connector_new.sh",
-      "echo 'sudo /tmp/deploy_connector_new.sh ${var.ifautomation} ${var.dev_public_dns} ${var.api_gw_ws_id} ${var.nodes_OS} ${var.ssh_username}' > /tmp/deploy_connector.log",
-      "sudo /tmp/deploy_connector_new.sh ${var.ifautomation} ${var.dev_public_dns} ${var.api_gw_ws_id} ${var.nodes_OS} ${var.ssh_username}"
+      "chmod +x /tmp/deploy_connector.sh",
+      "sudo /tmp/deploy_connector.sh ${var.tenant_token} ${var.signup_domain}"
     ]
   }
 

@@ -9,7 +9,7 @@ variable "resource_group_location" {
 
 variable "resource_group_name" {
   type    = string
-  default = "East US"
+  default = "Volumez"
 }
 
 variable "subnet_id" {
@@ -18,22 +18,31 @@ variable "subnet_id" {
 
 variable "resource_name_prefix" {
   type    = string
-  default = "vm"
+  default = "Volumez"
 }
 
 variable "zones" {
-  default = ["1"]
+  default = ["1", "2"]
 }
 
 variable "proximity_pg_group_list" {
   type = list(any)
 }
 
-### SSH ###
-variable "ifautomation" {
-    description = "boolean for profiling"
-    default     = false
+variable "tenant_token" {
+    description = "Tenant token to access Cognito and pull the connector"
+    type        = string
 }
+
+variable "signup_domain" {
+    description = "signup url to take vlzconnector from"  
+    type = string
+    default = "signup.volumez.com"
+}
+
+###############
+###   SSH   ###
+###############
 variable "ssh_username" {
   type    = string
   default = "adminuser"
@@ -43,19 +52,10 @@ variable "public_key" {
   type = string
 }
 
-variable "path_to_pem" {
+variable "private_key" {
   type = string
-  default = "~/.ssh/automation-kp.pem"
 }
 
-variable "dev_public_dns" {
-     default = "dns"
-}
-
-variable "api_gw_ws_id" {
-    description = "websocket id"
-    default = "default_id_from_terraform"
-}
 
 #############
 ### VM ###
@@ -74,9 +74,4 @@ variable "vm_type" {
 variable "vm_size" {
   type    = string
   default = "Standard_L8as_v3" # == i4i.2xlarge
-}
-
-variable "nodes_OS" {
-    description = "nodes OS"
-    default     = "rhel"
 }

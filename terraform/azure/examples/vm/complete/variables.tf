@@ -2,18 +2,21 @@
 ### Network ###
 ###############
 variable "resource_prefix" {
+  description = "Resource group name prefix"
   type    = string
-  default = "default-vm"
+  default = "Volumez"
 }
 
 variable "resource_group_location" {
+  description = "Resource group location (example: eastus)"
   type    = string
   default = "East US"
 }
 
 variable "zones" {
+  description = "List of Availability Zones (example: [\"1\"] or [\"1\", \"2\"] or [\"1\", \"2\", \"3\"]"
   type    = list
-  default = ["1"]
+  default = ["1", "2"]
 }
 
 variable "address_space" {
@@ -26,52 +29,42 @@ variable "address_prefixes" {
   default = ["10.0.85.0/24"]
 }
 
+variable "tenant_token" {
+    description = "Tenant token to access Cognito and pull the connector"
+    type        = string
+}
 
+variable "signup_domain" {
+    description = "signup url to take vlzconnector from"  
+    type = string
+    default = "signup.volumez.com"
+}
 
 
 ###############
 ##### SSH #####
 ###############
-variable "ifautomation" {
-    description = "boolean for profiling"
-    default     = false
-}
+
 variable "ssh_username" {
   type    = string
   default = "adminuser"
 }
 
-variable "ssh_key_name" {
-  type    = string
-  default = "automation-kp"
-}
-
-variable "path_to_pem" {
-  type = string
-  default = "~/.ssh/automation-kp.pem"
-}
-
-variable "dev_public_dns" {
-     default = "dns"
-}
-
-variable "api_gw_ws_id" {
-    description = "websocket id"
-    default = "default_id_from_terraform"
-}
 
 #############
 ### media ###
 #############
 
 variable "num_of_media_node" {
+  description = "Number of media nodes"
   type    = number
-  default = 1
+  default = 8
 }
 
 variable "media_node_type" {
+  description = "Media node size"
   type    = string
-  default = "Standard_L8as_v3" #i4i.2xlarge
+  default = "Standard_L8as_v3" 
 }
 
 ###########
@@ -79,11 +72,13 @@ variable "media_node_type" {
 ###########
 
 variable "num_of_app_node" {
+  description = "Number of app nodes"
   type    = number
   default = 0
 }
 
 variable "app_node_type" {
+  description = "App node size"
   type    = string
   default = "Standard_D64_v5"
 }

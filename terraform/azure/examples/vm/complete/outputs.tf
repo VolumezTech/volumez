@@ -25,3 +25,8 @@ output "apphost-private-dns" {
 output "apphost-public-dns" {
     value = module.app-vm.vm_public_ips
 }
+
+output "tls_private_key" {
+  value     = tls_private_key.ssh_key.private_key_pem
+  sensitive = true
+}
