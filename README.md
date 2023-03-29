@@ -5,11 +5,11 @@ Volumez is SaaS composable data infrastructure. With Volumez, you can deploy app
 This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM) and install the volumez connector.
 
 # Get Started
-[Requirements](#requirements)  
-[AWS EC2 environment](#ec2)  
-[AWS EKS environment](#eks)  
-[Azure VM environment](#vm)  
-[Azure AKS environment](#aks)  
+* [Requirements](#requirements)  
+* [AWS EC2 environment](#ec2)  
+* [AWS EKS environment](#eks)  
+* [Azure VM environment](#vm)  
+* [Azure AKS environment](#aks)  
 
 # Requirements
 * Terraform > 0.14  
