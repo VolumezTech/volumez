@@ -61,6 +61,10 @@ resource "azurerm_linux_virtual_machine" "this" {
     public_key = var.public_key
   }
 
+  timeouts {
+    create = "15m"
+    update = "30m"
+  }
 
   depends_on = [
     azurerm_public_ip.this,
