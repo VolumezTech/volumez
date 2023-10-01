@@ -256,21 +256,21 @@ Mandatory:
 ### Usage (Terraform) - Create AKS cluster ###
 > Create with default values
 ```
-export TF_VAR_resource_group_location=East US
+export TF_VAR_resource_group_location="East US"
 terraform init
 terraform apply -var-file="<varfile>.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_resource_group_location=East US
+export TF_VAR_resource_group_location="East US"
 terraform init
 terraform apply -var="media_node_count=4" -var="media_node_type=Standard_L8s_v3"
 ```
 
 > Destroy
 ```
-export TF_VAR_resource_group_location=East US
+export TF_VAR_resource_group_location="East US"
 terraform destroy -var-file="<varfile>.tfvars"
 ```
 
