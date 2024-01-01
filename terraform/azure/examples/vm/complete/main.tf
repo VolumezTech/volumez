@@ -68,6 +68,10 @@ module "media-vm" {
   vm_size                 = var.media_node_type
   resource_group_location = module.resource-group.rg_location
   resource_group_name     = module.resource-group.rg_name
+  image_publisher         = var.media_image_publisher
+  image_offer             = var.media_image_offer
+  image_sku               = var.media_image_sku
+  image_version           = var.media_image_version
   subnet_id               = module.resource-group.subnet_id
   zones                   = var.zones
   proximity_pg_group_list = azurerm_proximity_placement_group.this.*.id
@@ -92,6 +96,10 @@ module "app-vm" {
   vm_size                 = var.app_node_type
   resource_group_location = module.resource-group.rg_location
   resource_group_name     = module.resource-group.rg_name
+  image_publisher         = var.app_image_publisher
+  image_offer             = var.app_image_offer
+  image_sku               = var.app_image_sku
+  image_version           = var.app_image_version
   subnet_id               = module.resource-group.subnet_id
   zones                   = var.zones
   proximity_pg_group_list = azurerm_proximity_placement_group.this.*.id

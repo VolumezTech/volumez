@@ -21,12 +21,12 @@ variable "zones" {
 
 variable "address_space" {
   type    = list
-  default = ["10.0.0.0/16"]
+  default = ["10.1.0.0/16"]
 }
 
 variable "address_prefixes" {
   type    = list
-  default = ["10.0.85.0/24"]
+  default = ["10.1.85.0/24"]
 }
 
 variable "tenant_token" {
@@ -67,6 +67,22 @@ variable "media_node_type" {
   default = "Standard_L8as_v3" 
 }
 
+variable "media_image_publisher" {
+  default = "RedHat"
+}
+
+variable "media_image_offer" {
+  default = "RHEL"
+}
+
+variable "media_image_sku" {
+  default = "8_7"
+}
+
+variable "media_image_version" {
+  default = "latest"
+}
+
 ###########
 ### app ###
 ###########
@@ -81,4 +97,20 @@ variable "app_node_type" {
   description = "App node size"
   type    = string
   default = "Standard_D64_v5"
+}
+
+variable "app_image_publisher" {
+  default = "RedHat"
+}
+
+variable "app_image_offer" {
+  default = "RHEL"
+}
+
+variable "app_image_sku" {
+  default = "8_7"
+}
+
+variable "app_image_version" {
+  default = "latest"
 }

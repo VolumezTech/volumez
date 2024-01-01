@@ -75,3 +75,19 @@ variable "vm_size" {
   type    = string
   default = "Standard_L8as_v3" # == i4i.2xlarge
 }
+
+variable "image_publisher" {
+  default = "RedHat"
+}
+
+variable "image_offer" {
+  default = "RHEL"
+}
+
+variable "image_sku" {
+  default = "8_7"
+}
+
+variable "image_version" {
+  default = "latest"
+}
