@@ -50,10 +50,10 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   source_image_reference {
-    publisher = "RedHat"
-    offer     = "RHEL"
-    sku       = "8_7"
-    version   = "latest"
+    publisher = var.image_publisher
+    offer     = var.image_offer
+    sku       = var.image_sku
+    version   = var.image_version
   }
 
   admin_ssh_key {
@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/deploy_connector.sh"
+    source      = "../../../../scripts/deploy_connector.sh"
     destination = "/tmp/deploy_connector.sh"
   }
   provisioner "remote-exec" {

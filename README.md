@@ -245,16 +245,17 @@ ssh -i id_rsa adminuser@<host-public-dns>
 * media node type: Standard_L8as_v3
 * default OS: Red Hat 8.7  
 
-> mix_and_match
+> custom configs
 
-No default values, the following should be set in order to execute the terraform:
+edit or copy easy_starter.tfvars to a new file and set values as you wish:
 1. resource_group_location  - target region
+2. resource_prefix          - prefix for resource group name
 2. zones                    - List of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-3. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 5. num_of_media_node        - Number of media nodes to create
 6. media_node_type          - Media VM type
 7. num_of_app_node          - number of performance hosts
 8. app_node_type            - VM type for application node
+9. image_publisher/offer/sku/version - OS image details
 
 # AKS
 ---

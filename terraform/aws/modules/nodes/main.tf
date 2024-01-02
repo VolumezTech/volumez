@@ -65,7 +65,7 @@ resource "null_resource" "node_config" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/deploy_connector.sh"
+    source      = "../../../../../scripts/deploy_connector.sh"
     destination = "/tmp/deploy_connector.sh"
   }
 

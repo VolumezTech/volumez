@@ -36,7 +36,7 @@ fi
 echo "<><><> Running connector deploy on $OS"
 
 if [[ "$OS" = "Ubuntu" ]]; then
-    sudo curl --fail https://$signup_domain/connector/ubun/ubun_vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS
+    sudo curl --fail https://$signup_domain/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n $tenant_token | sudo tee -a /opt/vlzconnector/tenantToken
     sudo apt update
