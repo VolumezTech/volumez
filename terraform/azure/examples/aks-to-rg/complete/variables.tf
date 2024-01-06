@@ -6,9 +6,25 @@ variable "resource_group_location" {
   description = "Please enter the region. For example: East US"
 }
 
+variable "resource_group_name" {
+  type        = string
+  description = "Please enter the resource group name. For example: Volumez-easy-vm-ne89o-rg"
+}
+
+variable "vnet_subnet_id" {
+  type        = string
+  description = "Please enter the target subnet id"
+}
+
 variable "resource_prefix" {
   type        = string
   description = "Please enter the cluster name prefix"
+}
+
+variable "proximity_placement_group_id" {
+  type        = string
+  default     = null
+  description = "Please enter the ppg id:"
 }
 
 ###########
@@ -44,9 +60,10 @@ variable "media_node_count" {
   description = "Please enter the number of media nodes you desire"
 }
 
-variable "media_proximity_placement_group" {
-  type        = bool
-  default     = true
+variable "media_proximity_placement_group_id" {
+  type        = string
+  default     = null
+  description = "Please enter the media ppg id:"
 }
 
 #################
@@ -63,7 +80,8 @@ variable "app_node_count" {
   description = "Please enter the number of application nodes you desire"
 }
 
-variable "app_proximity_placement_group" {
-  type        = bool
-  default     = true
+variable "app_proximity_placement_group_id" { 
+  type        = string
+  default     = null
+  description = "Please enter the app ppg id:"
 }
