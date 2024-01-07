@@ -21,6 +21,11 @@ variable "resource_group_name" {
   description = "Target resource group name"
 }
 
+variable zones {
+  type    = list
+  default = ["1"]
+}
+
 variable "subnet_id" { 
   type = string
   description = "Target subnet id" 

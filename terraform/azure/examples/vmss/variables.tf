@@ -16,6 +16,11 @@ variable "resource_group_location" {
   default = "East US"
 }
 
+variable "zones" {
+  type    = list
+  default = ["1"]
+}
+
 variable "address_space" {
   type    = list
   default = ["10.1.0.0/16"]

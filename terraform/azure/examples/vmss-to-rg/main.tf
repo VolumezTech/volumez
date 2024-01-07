@@ -1,7 +1,9 @@
 provider "azurerm" {
   features {}
 }
-
+locals {
+  use_ppg = length(var.zones) <= 1 ? true : false
+}
 data "azurerm_ssh_public_key" "this" {
   name                = var.ssh_key_name
   resource_group_name = var.ssh_rg_name
@@ -24,8 +26,8 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
   sku_name            = var.media_node_size
   instances           = var.num_of_media_nodes
 
-  zones                        = ["1"]
-  proximity_placement_group_id = var.proximity_placement_group_id
+  zones                        = var.zones
+  proximity_placement_group_id = local.use_ppg ? var.proximity_placement_group_id : null
   platform_fault_domain_count  = var.platform_fault_domain_count
 
   source_image_reference {
