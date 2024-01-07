@@ -46,6 +46,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = module.resource-group.rg_name
   kubernetes_version  = var.k8s_version
   dns_prefix          = var.dns_prefix
+  sku_tier            = "Standard"
 
   network_profile {
     network_plugin = "azure"
