@@ -4,9 +4,9 @@ provider "azurerm" {
 locals {
   use_ppg = length(var.zones) <= 1 ? true : false
 }
-data "azurerm_ssh_public_key" "this" {
-  name                = var.ssh_key_name
-  resource_group_name = var.ssh_rg_name
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 
 resource "random_string" "this" {
@@ -44,7 +44,7 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
 
       admin_ssh_key {
         username   = var.ssh_username
-        public_key = data.azurerm_ssh_public_key.this.public_key
+        public_key = tls_private_key.ssh_key.public_key_openssh
       }
     }
     custom_data = base64encode(
