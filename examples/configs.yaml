@@ -9,11 +9,12 @@ data:
     numjobs=64
     max_latency=20s
     direct=1
+    sync=1
     stonewall=1
     lat_percentiles=1
     filename_format=fiodata.$jobnum
     file_service_type=random
-    iodepth=20
+    iodepth=16
     size=15G
     group_reporting=1
     create_serialize=0
