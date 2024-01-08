@@ -52,7 +52,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "media" {
   name                         = "media"
   node_count                   = var.media_node_count
   vm_size                      = var.media_node_type
-  zones                        = [1]
+  zones                        = var.zones
   enable_auto_scaling          = false
   enable_node_public_ip        = true
   mode                         = "User"

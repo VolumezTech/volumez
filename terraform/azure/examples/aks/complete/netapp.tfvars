@@ -1,4 +1,4 @@
-resource_prefix = "ig-na-aks"
+resource_prefix = "netapp-aks"
 resource_group_location = "eastus"
 zones = ["1"]
 media_node_type = "Standard_L8s_v3"

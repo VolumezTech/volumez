@@ -1,4 +1,4 @@
-resource_prefix = "vlz-vm"
+resource_prefix = "netapp-vm"
 resource_group_location = "eastus"
 zones = ["1"]
 media_node_type = "Standard_L8s_v3"

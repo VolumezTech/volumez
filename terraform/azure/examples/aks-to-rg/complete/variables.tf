@@ -11,6 +11,11 @@ variable "resource_group_name" {
   description = "Please enter the resource group name. For example: Volumez-easy-vm-ne89o-rg"
 }
 
+variable "zones" {
+  type = list(string)
+  default = ["1"]
+}
+
 variable "vnet_subnet_id" {
   type        = string
   description = "Please enter the target subnet id"
