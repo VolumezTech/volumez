@@ -251,9 +251,9 @@ edit or copy easy_starter.tfvars to a new file and set values as you wish:
 1. resource_group_location  - target region
 2. resource_prefix          - prefix for resource group name
 2. zones                    - List of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-5. num_of_media_node        - Number of media nodes to create
+5. media_node_count        - Number of media nodes to create
 6. media_node_type          - Media VM type
-7. num_of_app_node          - number of performance hosts
+7. app_node_count          - number of performance hosts
 8. app_node_type            - VM type for application node
 9. image_publisher/offer/sku/version - OS image details
 
@@ -350,9 +350,9 @@ helm uninstall volumez-csi -n vlz-csi-driver
 No default values, the following should be set in order to execute the terraform (will be prompted on command line):
 1. resource_group_location  - Target region
 2. media_node_count         - Number of media nodes to create
-3. media_node_size          - Media node size
+3. media_node_type          - Media node size
 4. app_node_count           - Number of application nodes
-5. app_node_size            - Application node size
+5. app_node_type            - Application node size
 6. k8s_version              - kubernetes cluster version (i.e: 1.24)
 
 ### Application deployment ###
