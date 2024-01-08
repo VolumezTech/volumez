@@ -11,6 +11,11 @@ variable "resource_prefix" {
   description = "Please enter the cluster name prefix"
 }
 
+variable "zones" {
+  type         = list
+  default      = ["1"]
+}
+
 ###########
 ### k8s ###
 ###########
@@ -34,7 +39,7 @@ variable "dns_prefix" {
 ### Media Nodes ###
 ###################
 
-variable "media_node_size" {
+variable "media_node_type" {
   type        = string
   description = "Please enter node size for media nodes. For example: 'Standard_L8s_v3'."
 }
@@ -53,7 +58,7 @@ variable "media_proximity_placement_group" {
 ### App Nodes ###
 ##################
 
-variable "app_node_size" {
+variable "app_node_type" {
   type        = string
   description = "Please enter node size for media nodes. For example: 'Standard_D64_v5'."
 }

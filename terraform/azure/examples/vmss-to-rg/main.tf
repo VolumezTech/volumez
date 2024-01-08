@@ -3,6 +3,7 @@ provider "azurerm" {
 }
 locals {
   use_ppg = length(var.zones) <= 1 ? true : false
+  single_ppg = var.media_node_type == "Standard_HB120-16rs_v3" ? true : false
 }
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
@@ -23,11 +24,12 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
   name                = "${var.resource_prefix}-vmss"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
-  sku_name            = var.media_node_size
-  instances           = var.num_of_media_nodes
+  sku_name            = var.media_node_type
+  instances           = var.media_node_count
 
   zones                        = var.zones
   proximity_placement_group_id = local.use_ppg ? var.proximity_placement_group_id : null
+  single_placement_group       = local.single_ppg
   platform_fault_domain_count  = var.platform_fault_domain_count
 
   source_image_reference {
@@ -62,7 +64,11 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
 
   os_disk {
     storage_account_type = "Standard_LRS"
-    caching              = "ReadWrite"
+    caching              = "ReadOnly"
+    diff_disk_settings {
+      option = "Local"
+      placement = "ResourceDisk"
+    } 
   }
 
   network_interface {

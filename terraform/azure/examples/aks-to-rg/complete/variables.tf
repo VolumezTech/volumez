@@ -11,6 +11,11 @@ variable "resource_group_name" {
   description = "Please enter the resource group name. For example: Volumez-easy-vm-ne89o-rg"
 }
 
+variable "zones" {
+  type = list(string)
+  default = ["1"]
+}
+
 variable "vnet_subnet_id" {
   type        = string
   description = "Please enter the target subnet id"
@@ -50,7 +55,7 @@ variable "dns_prefix" {
 ### Media Nodes ###
 ###################
 
-variable "media_node_size" {
+variable "media_node_type" {
   type        = string
   description = "Please enter node size for media nodes. For example: 'Standard_L8s_v3'."
 }
@@ -70,7 +75,7 @@ variable "media_proximity_placement_group_id" {
 ### App Nodes ###
 ##################
 
-variable "app_node_size" {
+variable "app_node_type" {
   type        = string
   description = "Please enter node size for media nodes. For example: 'Standard_D64_v5'."
 }

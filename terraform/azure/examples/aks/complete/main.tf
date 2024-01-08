@@ -78,8 +78,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "media" {
 
   name                         = "media"
   node_count                   = var.media_node_count
-  vm_size                      = var.media_node_size
-  zones                        = [1]
+  vm_size                      = var.media_node_type
+  zones                        = var.zones
   enable_auto_scaling          = false
   enable_node_public_ip        = true
   mode                         = "User"
@@ -105,8 +105,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   count                        = var.app_node_count > 0 ? 1 : 0
   name                         = "app"
   node_count                   = var.app_node_count
-  vm_size                      = var.app_node_size
-  zones                        = [1]
+  vm_size                      = var.app_node_type
+  zones                        = var.zones
   enable_auto_scaling          = true
   enable_node_public_ip        = true
   mode                         = "User"

@@ -55,7 +55,7 @@ variable "ssh_username" {
 ### media ###
 #############
 
-variable "num_of_media_node" {
+variable "media_node_count" {
   description = "Number of media nodes"
   type    = number
   default = 8
@@ -87,7 +87,7 @@ variable "media_image_version" {
 ### app ###
 ###########
 
-variable "num_of_app_node" {
+variable "app_node_count" {
   description = "Number of app nodes"
   type    = number
   default = 0

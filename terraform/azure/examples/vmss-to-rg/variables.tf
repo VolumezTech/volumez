@@ -64,21 +64,17 @@ variable "ssh_username" {
   default = "adminuser"
 }
 
-variable "ssh_key_name" {
-  type    = string
-  default = "automation-kp"
-}
 
 #############
 ### media ###
 #############
 
-variable "num_of_media_nodes" {
+variable "media_node_count" {
   type    = number
   default = 12
 }
 
-variable "media_node_size" {
+variable "media_node_type" {
   type    = string
   default = "Standard_L8s_v3"
 }
