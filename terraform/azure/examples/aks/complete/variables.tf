@@ -16,6 +16,16 @@ variable "zones" {
   default      = ["1"]
 }
 
+variable "varaddress_space" {
+  type         = list
+  default      = ["10.1.0.0/16"]
+}
+
+variable "address_prefixes" {
+  type         = list
+  default      = ["10.1.0.0/24"] 
+}
+
 ###########
 ### k8s ###
 ###########
