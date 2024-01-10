@@ -8,7 +8,7 @@ variable "vlz_tenant_token" {
 
 variable "resource_prefix" {
   type    = string
-  default = "netapp"
+  default = "netapp-unf"
 }
 
 variable "resource_group_location" {
@@ -26,14 +26,9 @@ variable zones {
   default = ["1"]
 }
 
-variable "virtual_network_name" { 
+variable "subnet_id" { 
   type = string
-  description = "Target virtual network name" 
-}
-
-variable "nat_gateway_id" {
-  type = string
-  description = "Target nat gateway id (if not entered, will create new one)"
+  description = "Target subnet id" 
 }
 
 variable "proximity_placement_group_id" { 
@@ -48,7 +43,7 @@ variable "address_space" {
 
 variable "address_prefixes" {
   type    = list
-  default = ["10.1.2.0/24"]
+  default = ["10.1.0.0/24"]
 }
 
 variable "platform_fault_domain_count" {

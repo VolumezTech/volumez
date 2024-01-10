@@ -160,3 +160,15 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   }
 }
 
+module "bastion" {
+  source = "../../../modules/bastion"
+
+  location                   = module.resource-group.rg_location
+  rg-name               = module.resource-group.rg_name
+  environment                = "dev"
+  tf_vnet1_name              = "vnet"
+  azbastion-subnet-address   = ["10.1.5.0/24"]
+  firewall_allocation_method = "Static"
+  firewall_sku               = "Standard"
+  azb_scl_units              = 2
+}
