@@ -48,7 +48,7 @@ variable "address_space" {
 
 variable "address_prefixes" {
   type    = list
-  default = ["10.1.3.0/24"]
+  default = ["10.40.10.0/24"]
 }
 
 variable "platform_fault_domain_count" {
