@@ -20,8 +20,65 @@ resource "random_string" "this" {
 ### Network ###
 ###############
 
+resource "azurerm_subnet" "this" {
+  name                 = "${var.resource_prefix}-${random_string.this.result}-sn"
+  resource_group_name  = var.resource_group_name
+  address_prefixes     = var.address_prefixes
+  virtual_network_name = var.virtual_network_name
+}
+
+### SECURITY GROUP ###
+
+data "azurerm_network_security_group" "this" {
+  name                = "security-group"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_subnet_network_security_group_association" "this" {
+  subnet_id                 = azurerm_subnet.this.id
+  network_security_group_id = data.azurerm_network_security_group.this.id
+}
+
+### NAT GATAWY ###
+
+resource "azurerm_nat_gateway" "this" {
+  count               = var.nat_gateway_id == "" ? 1 : 0
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  name                = "${var.resource_prefix}-${random_string.this.result}-natgateway"
+  sku_name            = "Standard"
+}
+ 
+resource "azurerm_public_ip_prefix" "nat_prefix" {
+  count               = var.nat_gateway_id == "" ? 1 : 0
+  name                = "${var.resource_prefix}-${random_string.this.result}-pip-prefix"
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
+  ip_version          = "IPv4"
+  prefix_length       = 28
+  sku                 = "Standard"
+  zones               = ["1"]
+}
+ 
+resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
+  count               = var.nat_gateway_id == "" ? 1 : 0
+  nat_gateway_id      = azurerm_nat_gateway.this[0].id
+  public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix[0].id
+
+  depends_on = [ azurerm_nat_gateway.this, azurerm_public_ip_prefix.nat_prefix ]
+}
+ 
+resource "azurerm_subnet_nat_gateway_association" "this" {
+  subnet_id      = azurerm_subnet.this.id
+  nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : azurerm_nat_gateway.this[0].id
+
+  depends_on = [ azurerm_subnet.this, azurerm_nat_gateway.this ]
+}
+
+### VMSS ###
+
 resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
-  name                = "${var.resource_prefix}-vmss"
+  name                = "${var.resource_prefix}-${random_string.this.result}-vmss"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   sku_name            = var.media_node_type
@@ -79,13 +136,8 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
     ip_configuration {
       name      = "vlz-internal"
       primary   = true
-      subnet_id = var.subnet_id
-
-      public_ip_address {
-        name                    = "vlz-pub"
-        domain_name_label       = "vlz-pub"
-        idle_timeout_in_minutes = 30
-      }
+      subnet_id = azurerm_subnet.this.id
     }
   }
+  depends_on = [ azurerm_nat_gateway_public_ip_prefix_association.nat_ips, azurerm_subnet_nat_gateway_association.this, azurerm_subnet.this ]
 }
