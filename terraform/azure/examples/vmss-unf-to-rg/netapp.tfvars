@@ -1,13 +1,9 @@
-resource_prefix = "netapp-unf"
-resource_group_name = "nk-unf-5uonn-rg"
+resource_prefix = "netapp-unf-new"
 resource_group_location = "eastus"
-subnet_id = "/subscriptions/453b58fc-f031-4f46-9d1a-b35f725143f4/resourceGroups/nk-unf-5uonn-rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/nk-unf-5uonn-sn"
-proximity_placement_group_id = "/subscriptions/453b58fc-f031-4f46-9d1a-b35f725143f4/resourceGroups/nk-unf-5uonn-rg/providers/Microsoft.Compute/proximityPlacementGroups/pg"
 zones = ["1"]
 media_node_type = "Standard_L8s_v3"
-media_node_count = 5
+media_node_count = 12
 media_image_publisher = "Canonical"
 media_image_offer = "0001-com-ubuntu-server-jammy" 
 media_image_sku = "22_04-lts-gen2"
 media_image_version = "latest" 
-vlz_tenant_token = "eyJraWQiOiJhMUxrM1R0TFhtZE81YXVhVmFTbDBwdHprTzF2VW1DbjFvZ3liMWNKT0pzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3Y2VidDc0dTVydjczcGtvc3MxN2Y5MmQ2MSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoidGVuYW50LmNvbm5lY3RvclwvcmVhZCIsImF1dGhfdGltZSI6MTcwNDg5ODk3MCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfeERGRDJRTnYxIiwiZXhwIjoxNzA0OTg1MzcwLCJpYXQiOjE3MDQ4OTg5NzAsInZlcnNpb24iOjIsImp0aSI6IjkyNWJiYzExLWI1M2ItNDE4Ny04NjA4LTU1MTk4M2E4MGE4OSIsImNsaWVudF9pZCI6IjdjZWJ0NzR1NXJ2NzNwa29zczE3ZjkyZDYxIn0.LQWN8OrcBlJgeL8Vca2IIs7QFazuWF4vvbQtiDzMj1HQotaFMyxt8YZeiOGo3CPemWWXX2WhPi6jYxgpZr8DrFKcXc79EhDFEH2Eunfxh_FUyJ3C61ykLqXRx3oJi-cQF1gCmqzEmV1YnAZZF87JW-TydGE4cxkhmZ_fLTdjQMI12NpPvLRxdNT69NeIe9wAJbDvCn3g4lxISClQJKLn2Ob5cA-96jl1irH2A1Nh2h6YfzHiPEicFBuEbtOPelt3kR_PDj7r4bxy5Emv0U2x5MVIL8e1oinJSpKlYj51hrsL2COlkHv5JoNeye1hPLToJ8naJL4UZOUgH-5grx8TBA"

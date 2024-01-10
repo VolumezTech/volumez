@@ -26,9 +26,14 @@ variable zones {
   default = ["1"]
 }
 
-variable "subnet_id" { 
+variable "virtual_network_name" { 
   type = string
-  description = "Target subnet id" 
+  description = "Target virtual network name" 
+}
+
+variable "nat_gateway_id" {
+  type = string
+  description = "Target nat gateway id (if not entered, will create new one)"
 }
 
 variable "proximity_placement_group_id" { 
@@ -43,7 +48,7 @@ variable "address_space" {
 
 variable "address_prefixes" {
   type    = list
-  default = ["10.1.0.0/24"]
+  default = ["10.1.3.0/24"]
 }
 
 variable "platform_fault_domain_count" {
