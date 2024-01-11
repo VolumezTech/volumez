@@ -15,7 +15,7 @@ data:
     filename_format=fiodata.$jobnum
     file_service_type=random
     iodepth=16
-    size=15G
+    size=950G
     group_reporting=1
     create_serialize=0
     ioengine=libaio

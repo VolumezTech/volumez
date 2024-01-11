@@ -6,7 +6,7 @@ metadata:
 data:
   fio.job: |-
     [global]
-    numjobs=64
+    numjobs=1
     max_latency=20s
     direct=1
     stonewall=1
@@ -14,7 +14,7 @@ data:
     filename_format=fiodata.$jobnum
     file_service_type=random
     iodepth=6
-    size=15G
+    size=950G
     group_reporting=1
     create_serialize=0
     ioengine=libaio
