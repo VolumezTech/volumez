@@ -21,6 +21,7 @@ resource "random_string" "this" {
 ###############
 
 resource "azurerm_subnet" "this" {
+  count                = var.subnet_id == "" ? 1 : 0
   name                 = "${var.resource_prefix}-${random_string.this.result}-sn"
   resource_group_name  = var.resource_group_name
   address_prefixes     = var.address_prefixes
@@ -35,7 +36,8 @@ data "azurerm_network_security_group" "this" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "this" {
-  subnet_id                 = azurerm_subnet.this.id
+  count                     = var.subnet_id == "" ? 1 : 0
+  subnet_id                 = azurerm_subnet.this[0].id 
   network_security_group_id = data.azurerm_network_security_group.this.id
 }
 
@@ -69,7 +71,8 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
 }
  
 resource "azurerm_subnet_nat_gateway_association" "this" {
-  subnet_id      = azurerm_subnet.this.id
+  count          = var.subnet_id == "" ? 1 : 0
+  subnet_id      = azurerm_subnet.this[0].id 
   nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : azurerm_nat_gateway.this[0].id
 
   depends_on = [ azurerm_subnet.this, azurerm_nat_gateway.this ]
@@ -128,7 +131,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
     ip_configuration {
       name      = "vlz-internal"
       primary   = true
-      subnet_id = azurerm_subnet.this.id
+      subnet_id = var.subnet_id == "" ? azurerm_subnet.this[0].id : var.subnet_id
     }
   }
 }

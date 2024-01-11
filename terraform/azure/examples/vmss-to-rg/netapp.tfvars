@@ -1,4 +1,4 @@
-resource_prefix = "netapp-nk"
+resource_prefix = "ig-11-01-na"
 resource_group_location = "eastus"
 zones = ["1"]
 media_node_type = "Standard_L8s_v3"

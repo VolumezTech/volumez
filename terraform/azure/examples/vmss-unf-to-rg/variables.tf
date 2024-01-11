@@ -31,6 +31,12 @@ variable "virtual_network_name" {
   description = "Target virtual network name" 
 }
 
+variable "subnet_id" {
+  type = string
+  description = "Target subnet id (if not entered, will create new one)"
+  
+}
+
 variable "nat_gateway_id" {
   type = string
   description = "Target nat gateway id (if not entered, will create new one)"
@@ -41,14 +47,9 @@ variable "proximity_placement_group_id" {
   description = "Target proximity placement group id. null - if no ppg needed" 
 }
 
-variable "address_space" {
-  type    = list
-  default = ["10.1.0.0/16"]
-}
-
 variable "address_prefixes" {
   type    = list
-  default = ["10.40.10.0/24"]
+  default = ["10.40.1.0/26"]
 }
 
 variable "platform_fault_domain_count" {

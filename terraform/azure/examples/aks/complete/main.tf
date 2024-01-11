@@ -21,7 +21,7 @@ module "resource-group" {
   source                  = "../../../modules/resource-group"
   resource_prefix         = var.resource_prefix
   resource_group_location = var.resource_group_location
-  address_space           = var.varaddress_space
+  address_space           = var.address_space
   address_prefixes        = var.address_prefixes
   random_string           = random_string.this.result
 }
@@ -164,7 +164,7 @@ module "bastion" {
   source = "../../../modules/bastion"
 
   location                   = module.resource-group.rg_location
-  rg-name               = module.resource-group.rg_name
+  rg-name                    = module.resource-group.rg_name
   environment                = "dev"
   tf_vnet1_name              = "vnet"
   azbastion-subnet-address   = ["10.1.5.0/24"]

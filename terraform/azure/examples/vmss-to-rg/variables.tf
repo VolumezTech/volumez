@@ -41,6 +41,11 @@ variable "proximity_placement_group_id" {
   description = "Target proximity placement group id. null - if no ppg needed" 
 }
 
+variable "subnet_id" {
+  type = string
+  description = "Target subnet id"
+}
+
 variable "address_space" {
   type    = list
   default = ["10.1.0.0/16"]
