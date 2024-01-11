@@ -8,7 +8,7 @@ zones = ["1"]
 address_prefixes = ["10.40.10.0/24"]
 target_proximity_placement_group_id = ""
 target_virtual_network_name = ""
-taraget_subnet_id = ""
+target_subnet_id = ""
 
 ### Media ###
 media_node_type = "Standard_L8s_v3"
