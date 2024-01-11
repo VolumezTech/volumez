@@ -11,12 +11,12 @@ variable "resource_prefix" {
   default = "netapp-unf"
 }
 
-variable "resource_group_location" {
+variable "target_resource_group_location" {
   type    = string
   default = "East US"
 }
 
-variable "resource_group_name" {
+variable "target_resource_group_name" {
   type    = string
   description = "Target resource group name"
 }
@@ -26,12 +26,12 @@ variable zones {
   default = ["1"]
 }
 
-variable "virtual_network_name" { 
+variable "target_virtual_network_name" { 
   type = string
   description = "Target virtual network name" 
 }
 
-variable "subnet_id" {
+variable "target_subnet_id" {
   type = string
   description = "Target subnet id (if not entered, will create new one)"
   
@@ -40,9 +40,10 @@ variable "subnet_id" {
 variable "nat_gateway_id" {
   type = string
   description = "Target nat gateway id (if not entered, will create new one)"
+  default = ""
 }
 
-variable "proximity_placement_group_id" { 
+variable "target_proximity_placement_group_id" { 
   type = string
   description = "Target proximity placement group id. null - if no ppg needed" 
 }

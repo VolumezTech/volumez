@@ -21,22 +21,22 @@ resource "random_string" "this" {
 ###############
 
 resource "azurerm_subnet" "this" {
-  count                = var.subnet_id == "" ? 1 : 0
+  count                = var.target_subnet_id == "" ? 1 : 0
   name                 = "${var.resource_prefix}-${random_string.this.result}-sn"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = var.target_resource_group_name
   address_prefixes     = var.address_prefixes
-  virtual_network_name = var.virtual_network_name
+  virtual_network_name = var.target_virtual_network_name
 }
 
 ### SECURITY GROUP ###
 
 data "azurerm_network_security_group" "this" {
   name                = "security-group"
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.target_resource_group_name
 }
 
 resource "azurerm_subnet_network_security_group_association" "this" {
-  count                     = var.subnet_id == "" ? 1 : 0
+  count                     = var.target_subnet_id == "" ? 1 : 0
   subnet_id                 = azurerm_subnet.this[0].id 
   network_security_group_id = data.azurerm_network_security_group.this.id
 }
@@ -44,9 +44,9 @@ resource "azurerm_subnet_network_security_group_association" "this" {
 ### NAT GATAWY ###
 
 resource "azurerm_nat_gateway" "this" {
-  count               = var.nat_gateway_id == "" ? 1 : 0
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  count               = (var.target_subnet_id == "" && var.nat_gateway_id == "") ? 1 : 0
+  location            = var.target_resource_group_location
+  resource_group_name = var.target_resource_group_name
   name                = "${var.resource_prefix}-${random_string.this.result}-natgateway"
   sku_name            = "Standard"
 }
@@ -54,8 +54,8 @@ resource "azurerm_nat_gateway" "this" {
 resource "azurerm_public_ip_prefix" "nat_prefix" {
   count               = var.nat_gateway_id == "" ? 1 : 0
   name                = "${var.resource_prefix}-${random_string.this.result}-pip-prefix"
-  resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  resource_group_name = var.target_resource_group_name
+  location            = var.target_resource_group_location
   ip_version          = "IPv4"
   prefix_length       = 28
   sku                 = "Standard"
@@ -71,7 +71,7 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
 }
  
 resource "azurerm_subnet_nat_gateway_association" "this" {
-  count          = var.subnet_id == "" ? 1 : 0
+  count          = var.target_subnet_id == "" ? 1 : 0
   subnet_id      = azurerm_subnet.this[0].id 
   nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : azurerm_nat_gateway.this[0].id
 
@@ -79,14 +79,14 @@ resource "azurerm_subnet_nat_gateway_association" "this" {
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "this" {
-  name                         = "${var.resource_prefix}-vmss"
-  resource_group_name          = var.resource_group_name
-  location                     = var.resource_group_location
+  name                         = "${var.resource_prefix}-${random_string.this.result}-vmss"
+  resource_group_name          = var.target_resource_group_name
+  location                     = var.target_resource_group_location
   sku                          = var.media_node_type
   instances                    = var.media_node_count
   admin_username               = var.ssh_username
   zones                        = var.zones
-  proximity_placement_group_id = local.use_ppg ? var.proximity_placement_group_id : null
+  proximity_placement_group_id = local.use_ppg ? var.target_proximity_placement_group_id : null
   single_placement_group       = local.single_ppg
   platform_fault_domain_count  = var.platform_fault_domain_count
 
@@ -131,7 +131,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
     ip_configuration {
       name      = "vlz-internal"
       primary   = true
-      subnet_id = var.subnet_id == "" ? azurerm_subnet.this[0].id : var.subnet_id
+      subnet_id = var.target_subnet_id == "" ? azurerm_subnet.this[0].id : var.target_subnet_id
     }
   }
 }
