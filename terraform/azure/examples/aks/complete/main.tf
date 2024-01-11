@@ -9,7 +9,6 @@ resource "random_string" "this" {
 }
 
 locals {
-  media_proximity_group_id = var.media_proximity_placement_group ? azurerm_proximity_placement_group.this.id : null
   app_proximity_group_id   = var.app_proximity_placement_group ? azurerm_proximity_placement_group.this.id : null
 }
 
@@ -105,33 +104,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     Owner = "Volumez"
   }
   depends_on = [azurerm_subnet_nat_gateway_association.this, azurerm_nat_gateway_public_ip_prefix_association.nat_ips]
-}
-
-resource "azurerm_kubernetes_cluster_node_pool" "media" {
-  count = var.media_node_count > 0 ? 1 : 0
-
-  name                         = "media"
-  node_count                   = var.media_node_count
-  vm_size                      = var.media_node_type
-  zones                        = var.zones
-  enable_auto_scaling          = false
-  mode                         = "User"
-  kubernetes_cluster_id        = azurerm_kubernetes_cluster.aks.id
-  vnet_subnet_id               = module.resource-group.subnet_id
-  orchestrator_version         = var.k8s_version
-  os_disk_type                 = "Ephemeral"
-  proximity_placement_group_id = local.media_proximity_group_id
-  priority                     = "Regular"
-
-
-  node_labels = {
-    "nodepool-type" = "media"
-    "environment"   = "dev"
-  }
-  tags = {
-    "nodepool-type" = "user"
-    "environment"   = "dev"
-  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "app" {
