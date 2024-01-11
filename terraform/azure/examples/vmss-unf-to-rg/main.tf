@@ -71,7 +71,7 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
 }
  
 resource "azurerm_subnet_nat_gateway_association" "this" {
-  count          = (var.target_subnet_id == "" && var.nat_gateway_id == "") ? 1 : 0
+  count          = var.target_subnet_id == "" ? 1 : 0
   subnet_id      = azurerm_subnet.this[0].id 
   nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : azurerm_nat_gateway.this[0].id
 
