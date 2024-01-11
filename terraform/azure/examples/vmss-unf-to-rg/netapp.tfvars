@@ -5,7 +5,6 @@ target_resource_group_name = ""
 
 ### Network ###
 zones = ["1"]
-address_prefixes = ["10.40.10.0/24"]
 target_proximity_placement_group_id = ""
 target_virtual_network_name = ""
 target_subnet_id = ""
