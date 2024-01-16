@@ -9,7 +9,8 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [AWS EC2 environment](#ec2)  
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
-* [Azure AKS environment](#aks)  
+* [Azure AKS environment](#aks)
+* [Azure VMSS to existing resource-group](#vmss-to-rg)
 
 # Requirements
 * Terraform > 0.14  
@@ -377,4 +378,61 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
+
+# VMSS to RG
+---
+
+terraform dir = terraform/azure/examples/vmss-unf-to-rg/
+
+#### tfvars inputs ####
+```
+### Resource Group ###
+resource_prefix = "" 
+target_resource_group_location = "eastus"
+target_resource_group_name = ""
+
+### Network ###
+zones = ["1"]
+target_proximity_placement_group_id = ""
+target_virtual_network_name = ""
+target_subnet_id = ""
+
+### Media ###
+media_node_type = "Standard_L8s_v3"
+media_node_count = 2
+media_image_publisher = "Canonical"
+media_image_offer = "0001-com-ubuntu-server-jammy" 
+media_image_sku = "22_04-lts-gen2"
+media_image_version = "latest"
+
+### Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info ###
+vlz_refresh_token = ""
+```
+
+1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
+2. target_resource_group_location - location in which the resource group exists
+3. target_resource_group_name - name of the resource group to created our vmss in
+4. zones - list of availability zones
+5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in
+6. target_virtual_network_name - vnet name in which vmss will be scaled in
+7. target_subnet_id - subnet id in which vmss will be scaled in
+8. media_node_type - VM size
+9. media_node_count -  num of VMs in VMSS
+10. media_image_* - marketplace OS configuration block
+11. vlz_refresh_token - Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info
+
+#### Execution Flow ####
+1. if you already have scaled VMSS:
+```
+terraform destroy -var-file="netapp.tfvars" 
+```
+2. if this is your first execution: 
+configure netapp.tfvars with relevant details. IMPORTANT: retrieve CSI Driver Token (Refresh Token) from Volumez portal under Developer info  
+3. 
+```
+terraform init
+terraform apply -var-file="netapp.tfvars" 
+```
+
+
 
