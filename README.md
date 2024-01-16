@@ -387,15 +387,15 @@ terraform dir = terraform/azure/examples/vmss-unf-to-rg/
 #### tfvars inputs ####
 ```
 ### Resource Group ###
-resource_prefix = "" 
+resource_prefix = "example-prefix" 
 target_resource_group_location = "eastus"
-target_resource_group_name = ""
+target_resource_group_name = "example-rg"
 
 ### Network ###
 zones = ["1"]
-target_proximity_placement_group_id = ""
-target_virtual_network_name = ""
-target_subnet_id = ""
+target_proximity_placement_group_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Compute/proximityPlacementGroups/example-pg"
+target_virtual_network_name = "example-vnet"
+target_subnet_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/XXXXX/subnets/example-subnet"
 
 ### Media ###
 media_node_type = "Standard_L8s_v3"
@@ -406,16 +406,16 @@ media_image_sku = "22_04-lts-gen2"
 media_image_version = "latest"
 
 ### Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info ###
-vlz_refresh_token = ""
+vlz_refresh_token = "eyJjdHkiOi..."
 ```
 
 1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
 2. target_resource_group_location - location in which the resource group exists
 3. target_resource_group_name - name of the resource group to created our vmss in
-4. zones - list of availability zones
-5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. in case zones list contains more than one zone, this value will be ignored
+4. zones - list of availability zones. i.e: ["1"] (for single-zone), ["1", "2", ...] (for multi-zone) 
+5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. In case "zones" list contains more than one zone, this value will be ignored
 6. target_virtual_network_name - vnet name in which vmss will be scaled in
-7. target_subnet_id - subnet id in which vmss will be scaled in
+7. target_subnet_id - subnet id in which vmss will be scaled in. 
 8. media_node_type - VM size
 9. media_node_count -  num of VMs in VMSS
 10. media_image_* - marketplace OS configuration block
