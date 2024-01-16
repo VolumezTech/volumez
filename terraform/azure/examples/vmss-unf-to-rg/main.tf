@@ -21,7 +21,7 @@ resource "random_string" "this" {
 ###############
 
 resource "azurerm_subnet" "this" {
-  count                = var.target_subnet_id == "" ? 1 : 0
+  count                = var.target_subnet_id == null ? 1 : 0
   name                 = "${var.resource_prefix}-${random_string.this.result}-sn"
   resource_group_name  = var.target_resource_group_name
   address_prefixes     = var.address_prefixes
@@ -31,20 +31,21 @@ resource "azurerm_subnet" "this" {
 ### SECURITY GROUP ###
 
 data "azurerm_network_security_group" "this" {
-  name                = "security-group"
+  count               = var.target_nsg_name != "" ? 1 : 0
+  name                = var.target_nsg_name
   resource_group_name = var.target_resource_group_name
 }
 
 resource "azurerm_subnet_network_security_group_association" "this" {
-  count                     = var.target_subnet_id == "" ? 1 : 0
+  count                     = (var.target_subnet_id == null && var.target_nsg_name != "") ? 1 : 0
   subnet_id                 = azurerm_subnet.this[0].id 
-  network_security_group_id = data.azurerm_network_security_group.this.id
+  network_security_group_id = data.azurerm_network_security_group.this[0].id
 }
 
 ### NAT GATAWY ###
 
 resource "azurerm_nat_gateway" "this" {
-  count               = (var.target_subnet_id == "" && var.nat_gateway_id == "") ? 1 : 0
+  count               = (var.target_subnet_id == null && var.nat_gateway_id == "") ? 1 : 0
   location            = var.target_resource_group_location
   resource_group_name = var.target_resource_group_name
   name                = "${var.resource_prefix}-${random_string.this.result}-natgateway"
@@ -52,7 +53,7 @@ resource "azurerm_nat_gateway" "this" {
 }
  
 resource "azurerm_public_ip_prefix" "nat_prefix" {
-  count               = (var.target_subnet_id == "" && var.nat_gateway_id == "") ? 1 : 0
+  count               = (var.target_subnet_id == null && var.nat_gateway_id == "") ? 1 : 0
   name                = "${var.resource_prefix}-${random_string.this.result}-pip-prefix"
   resource_group_name = var.target_resource_group_name
   location            = var.target_resource_group_location
@@ -63,7 +64,7 @@ resource "azurerm_public_ip_prefix" "nat_prefix" {
 }
  
 resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
-  count               = (var.target_subnet_id == "" && var.nat_gateway_id == "") ? 1 : 0
+  count               = (var.target_subnet_id == null && var.nat_gateway_id == "") ? 1 : 0
   nat_gateway_id      = azurerm_nat_gateway.this[0].id
   public_ip_prefix_id = azurerm_public_ip_prefix.nat_prefix[0].id
 
@@ -71,7 +72,7 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_ips" {
 }
  
 resource "azurerm_subnet_nat_gateway_association" "this" {
-  count          = var.target_subnet_id == "" ? 1 : 0
+  count          = var.target_subnet_id == null ? 1 : 0
   subnet_id      = azurerm_subnet.this[0].id 
   nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : azurerm_nat_gateway.this[0].id
 
@@ -99,9 +100,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
     <<-EOF
             #!/bin/bash
 
+            sudo apt-get install -y jq
             echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] https://signup.volumez.com/netapp/ubuntu stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
             sudo mkdir -p /opt/vlzconnector
-            echo -n ${var.vlz_tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
+            refreshtoken=${var.vlz_refresh_token} 
+            idtoken=`curl https://netapp.api.volumez.com/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
+            tenanttoken=`curl https://netapp.api.volumez.com/tenant/token -H "authorization:$idtoken" -H 'content-type: application/json'  | jq -r ".AccessToken"`
+            echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
             sudo apt update
             sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector
         EOF
@@ -131,7 +136,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
     ip_configuration {
       name      = "vlz-internal"
       primary   = true
-      subnet_id = var.target_subnet_id == "" ? azurerm_subnet.this[0].id : var.target_subnet_id
+      subnet_id = var.target_subnet_id == null ? azurerm_subnet.this[0].id : var.target_subnet_id
     }
   }
 }

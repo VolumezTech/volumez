@@ -1,8 +1,8 @@
 ###############
 ### Network ###
 ###############
-variable "vlz_tenant_token" {
-    description = "Tenant token to access Cognito and pull the connector"
+variable "vlz_refresh_token" {
+    description = "Refresh token to access Cognito and pull the connector"
     type        = string
 }
 
@@ -35,6 +35,12 @@ variable "target_subnet_id" {
   type = string
   description = "Target subnet id (if not entered, will create new one)"
   
+}
+
+variable "target_nsg_name" {
+  type = string
+  description = "Target nsg name"
+  default = ""
 }
 
 variable "nat_gateway_id" {
