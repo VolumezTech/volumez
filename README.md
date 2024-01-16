@@ -413,7 +413,7 @@ vlz_refresh_token = ""
 2. target_resource_group_location - location in which the resource group exists
 3. target_resource_group_name - name of the resource group to created our vmss in
 4. zones - list of availability zones
-5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in
+5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. in case zones list contains more than one zone, this value will be ignored
 6. target_virtual_network_name - vnet name in which vmss will be scaled in
 7. target_subnet_id - subnet id in which vmss will be scaled in
 8. media_node_type - VM size
