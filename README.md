@@ -51,6 +51,13 @@ export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
+### SSH To Node ### 
+```
+terraform output -raw ssh_key_value > ssh_key
+chmod 400 id_rsa
+ssh -i ssh_key ec2-user@<host-public-dns>
+```
+
 ### Examples ###  
 > easy_starter
 
