@@ -54,7 +54,7 @@ terraform destroy
 ### SSH To Node ### 
 ```
 terraform output -raw ssh_key_value > ssh_key
-chmod 400 id_rsa
+chmod 400 ssh_key
 ssh -i ssh_key ec2-user@<host-public-dns>
 ```
 
