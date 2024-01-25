@@ -26,7 +26,7 @@ module "resource-group" {
 }
 
 resource "azurerm_proximity_placement_group" "this" {
-  name                = "pg"
+  name                = "${var.resource_prefix}-${random_string.this.result}-pg"
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
 
@@ -132,15 +132,16 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   }
 }
 
-# module "bastion" {
-#   source = "../../../modules/bastion"
+module "bastion" {
+  source = "../../../modules/bastion/"
 
-#   location                   = module.resource-group.rg_location
-#   rg-name                    = module.resource-group.rg_name
-#   environment                = "dev"
-#   tf_vnet1_name              = "vnet"
-#   azbastion-subnet-address   = ["10.1.5.0/24"]
-#   firewall_allocation_method = "Static"
-#   firewall_sku               = "Standard"
-#   azb_scl_units              = 2
-# }
+  deploy_bastion             = var.deploy_bastion ? true : false
+  location                   = module.resource-group.rg_location
+  rg-name                    = module.resource-group.rg_name
+  environment                = "dev"
+  tf_vnet1_name              = "vnet"
+  azbastion-subnet-address   = ["10.1.5.0/24"]
+  firewall_allocation_method = "Static"
+  firewall_sku               = "Standard"
+  azb_scl_units              = 2
+}

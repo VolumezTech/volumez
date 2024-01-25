@@ -26,6 +26,12 @@ variable "address_prefixes" {
   default      = ["10.40.0.0/24"] 
 }
 
+variable "deploy_bastion" {
+  type        = bool
+  default     = false
+  
+}
+
 ###########
 ### k8s ###
 ###########
