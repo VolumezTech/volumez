@@ -424,14 +424,14 @@ vlz_refresh_token = "eyJjdHkiOi..."
 #### Execution Flow ####
 1. if you already have scaled VMSS:
 ```
-terraform destroy -var-file="netapp.tfvars" 
+terraform destroy -var-file="custom.tfvars" 
 ```
 2. if this is your first execution: 
-configure netapp.tfvars with relevant details. IMPORTANT: retrieve CSI Driver Token (Refresh Token) from Volumez portal under Developer info  
+configure custom.tfvars with relevant details. IMPORTANT: retrieve CSI Driver Token (Refresh Token) from Volumez portal under Developer info  
 3. 
 ```
 terraform init
-terraform apply -var-file="netapp.tfvars" 
+terraform apply -var-file="custom.tfvars" 
 ```
 
 
