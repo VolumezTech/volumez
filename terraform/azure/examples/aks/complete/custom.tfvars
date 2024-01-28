@@ -14,7 +14,7 @@ app_node_count = 1  // Number of application nodes
 
 ###  Kubernetes ###
 k8s_version = "1.27"  // Version of Kubernetes
-
+deploy_bastion = false  // Deploy a bastion host
 
 
 

@@ -134,14 +134,19 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
 
 module "bastion" {
   source = "../../../modules/bastion/"
+  count = var.deploy_bastion ? 1 : 0
 
   deploy_bastion             = var.deploy_bastion ? true : false
   location                   = module.resource-group.rg_location
   rg-name                    = module.resource-group.rg_name
   environment                = "dev"
-  tf_vnet1_name              = "vnet"
-  azbastion-subnet-address   = ["10.1.5.0/24"]
+  tf_vnet1_name              = "${var.resource_prefix}-${random_string.this.result}-vnet"
+  azbastion-subnet-address   = ["10.40.5.0/24"]
   firewall_allocation_method = "Static"
   firewall_sku               = "Standard"
   azb_scl_units              = 2
+
+  depends_on = [
+    module.resource-group
+  ]
 }
