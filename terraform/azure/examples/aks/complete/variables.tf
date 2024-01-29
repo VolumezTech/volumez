@@ -11,6 +11,27 @@ variable "resource_prefix" {
   description = "Please enter the cluster name prefix"
 }
 
+variable "zones" {
+  type         = list
+  default      = ["1"]
+}
+
+variable "address_space" {
+  type         = list
+  default      = ["10.40.0.0/16"]
+}
+
+variable "address_prefixes" {
+  type         = list
+  default      = ["10.40.0.0/24"] 
+}
+
+variable "deploy_bastion" {
+  type        = bool
+  default     = false
+  
+}
+
 ###########
 ### k8s ###
 ###########
@@ -30,25 +51,11 @@ variable "dns_prefix" {
   default     = "aks"
 }
 
-###################
-### Media Nodes ###
-###################
-
-variable "media_node_size" {
-  type        = string
-  description = "Please enter node size for media nodes. For example: 'Standard_L8s_v3'."
-}
-
-variable "media_node_count" {
-  type        = number
-  description = "Please enter the number of media nodes you desire"
-}
-
 #################
 ### App Nodes ###
 ##################
 
-variable "app_node_size" {
+variable "app_node_type" {
   type        = string
   description = "Please enter node size for media nodes. For example: 'Standard_D64_v5'."
 }
@@ -56,4 +63,9 @@ variable "app_node_size" {
 variable "app_node_count" {
   type        = number
   description = "Please enter the number of application nodes you desire"
+}
+
+variable "app_proximity_placement_group" {
+  type        = bool
+  default     = true
 }

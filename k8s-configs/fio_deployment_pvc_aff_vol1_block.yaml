@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fio
+  labels:
+    app: fio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fio
+  template:
+    metadata:
+      labels:
+        app: fio
+    spec:
+      containers:
+      - name: fio
+        image: joshuarobinson/fio:3.19
+        command: ["sh"]
+        args: ["-c", "echo ${HOSTNAME} && fio /configs/fio.job --eta=never --filename=/dev/volumez/vol1"]
+        volumeMounts:
+        - name: vcfg
+          mountPath: /configs
+        volumeDevices:
+        - devicePath: /dev/volumez/vol1
+          name: vname
+        imagePullPolicy: Always
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - app
+      restartPolicy: Always
+      volumes:
+      - name: vcfg
+        configMap:
+          name: fio-job-config
+      - name: vname
+        persistentVolumeClaim:
+          claimName: vol1

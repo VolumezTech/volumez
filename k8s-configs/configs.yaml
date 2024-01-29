@@ -1,0 +1,33 @@
+---
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: fio-job-config
+data:
+  fio.job: |-
+    [global]
+    numjobs=64
+    max_latency=20s
+    direct=1
+    sync=1
+    stonewall=1
+    lat_percentiles=1
+    filename_format=fiodata.$jobnum
+    file_service_type=random
+    iodepth=16
+    size=950G
+    group_reporting=1
+    create_serialize=0
+    ioengine=libaio
+    cpus_allowed_policy=split
+    cpus_allowed=32-95
+    verify_async_cpus=32-95
+    time_based=1
+    runtime=5m
+    [global]
+    rw=randrw
+    #--------------max
+    [global]
+    bs=4k
+    [random_70_0_4k_max]
+    rwmixread=70

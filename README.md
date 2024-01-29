@@ -9,7 +9,8 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [AWS EC2 environment](#ec2)  
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
-* [Azure AKS environment](#aks)  
+* [Azure AKS environment](#aks)
+* [Azure VMSS to existing resource-group](#vmss-to-rg)
 
 # Requirements
 * Terraform > 0.14  
@@ -258,9 +259,9 @@ edit or copy easy_starter.tfvars to a new file and set values as you wish:
 1. resource_group_location  - target region
 2. resource_prefix          - prefix for resource group name
 2. zones                    - List of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-5. num_of_media_node        - Number of media nodes to create
+5. media_node_count        - Number of media nodes to create
 6. media_node_type          - Media VM type
-7. num_of_app_node          - number of performance hosts
+7. app_node_count          - number of performance hosts
 8. app_node_type            - VM type for application node
 9. image_publisher/offer/sku/version - OS image details
 
@@ -357,9 +358,9 @@ helm uninstall volumez-csi -n vlz-csi-driver
 No default values, the following should be set in order to execute the terraform (will be prompted on command line):
 1. resource_group_location  - Target region
 2. media_node_count         - Number of media nodes to create
-3. media_node_size          - Media node size
+3. media_node_type          - Media node size
 4. app_node_count           - Number of application nodes
-5. app_node_size            - Application node size
+5. app_node_type            - Application node size
 6. k8s_version              - kubernetes cluster version (i.e: 1.24)
 
 ### Application deployment ###
@@ -384,4 +385,61 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
+
+# VMSS to RG
+---
+
+terraform dir = terraform/azure/examples/vmss-unf-to-rg/
+
+#### tfvars inputs ####
+```
+### Resource Group ###
+resource_prefix = "example-prefix" 
+target_resource_group_location = "eastus"
+target_resource_group_name = "example-rg"
+
+### Network ###
+zones = ["1"]
+target_proximity_placement_group_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Compute/proximityPlacementGroups/example-pg"
+target_virtual_network_name = "example-vnet"
+target_subnet_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/XXXXX/subnets/example-subnet"
+
+### Media ###
+media_node_type = "Standard_L8s_v3"
+media_node_count = 2
+media_image_publisher = "Canonical"
+media_image_offer = "0001-com-ubuntu-server-jammy" 
+media_image_sku = "22_04-lts-gen2"
+media_image_version = "latest"
+
+### Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info ###
+vlz_refresh_token = "eyJjdHkiOi..."
+```
+
+1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
+2. target_resource_group_location - location in which the resource group exists
+3. target_resource_group_name - name of the resource group to created our vmss in
+4. zones - list of availability zones. i.e: ["1"] (for single-zone), ["1", "2", ...] (for multi-zone) 
+5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. In case "zones" list contains more than one zone, this value will be ignored
+6. target_virtual_network_name - vnet name in which vmss will be scaled in
+7. target_subnet_id - subnet id in which vmss will be scaled in. 
+8. media_node_type - VM size
+9. media_node_count -  num of VMs in VMSS
+10. media_image_* - marketplace OS configuration block
+11. vlz_refresh_token - Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info
+
+#### Execution Flow ####
+1. if you already have scaled VMSS:
+```
+terraform destroy -var-file="custom.tfvars" 
+```
+2. if this is your first execution: 
+configure custom.tfvars with relevant details. IMPORTANT: retrieve CSI Driver Token (Refresh Token) from Volumez portal under Developer info  
+3. 
+```
+terraform init
+terraform apply -var-file="custom.tfvars" 
+```
+
+
 

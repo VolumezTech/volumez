@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+    name: p1
+provisioner: vlz
+volumeBindingMode: Immediate
+parameters:
+  Policy: p1
+  Zone: eastus-1 
+allowVolumeExpansion: true

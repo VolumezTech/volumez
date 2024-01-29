@@ -63,7 +63,7 @@ resource "azurerm_proximity_placement_group" "this" {
 module "media-vm" {
   source = "../../../modules/vm"
 
-  num_of_vm               = var.num_of_media_node
+  num_of_vm               = var.media_node_count
   vm_type                 = "${var.resource_prefix}-${random_string.this.result}-media"
   vm_size                 = var.media_node_type
   resource_group_location = module.resource-group.rg_location
@@ -91,7 +91,7 @@ module "media-vm" {
 module "app-vm" {
   source = "../../../modules/vm"
 
-  num_of_vm               = var.num_of_app_node
+  num_of_vm               = var.app_node_count
   vm_type                 = "${var.resource_prefix}-${random_string.this.result}-app"
   vm_size                 = var.app_node_type
   resource_group_location = module.resource-group.rg_location

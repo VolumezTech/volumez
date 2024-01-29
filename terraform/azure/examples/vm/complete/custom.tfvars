@@ -1,0 +1,15 @@
+media_node_type = "Standard_L8s_v3"
+media_node_count = 2
+media_image_publisher = "Canonical"
+media_image_offer = "0001-com-ubuntu-server-jammy" 
+media_image_sku = "22_04-lts-gen2"
+media_image_version = "latest" 
+app_node_type = "Standard_D64_v5"
+app_node_count = 0
+app_image_publisher="RedHat"
+app_image_offer = "RHEL" 
+app_image_sku = "8_7"
+app_image_version = "latest"
+resource_prefix = "nk-custom-vm"
+resource_group_location = "eastus"
+zones = ["1"]
