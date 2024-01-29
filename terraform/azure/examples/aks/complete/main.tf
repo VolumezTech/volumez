@@ -9,7 +9,8 @@ resource "random_string" "this" {
 }
 
 locals {
-  app_proximity_group_id   = var.app_proximity_placement_group ? azurerm_proximity_placement_group.this.id : null
+  use_ppg                 = length(var.zones) <= 1 ? true : false
+  app_proximity_group_id   = var.app_proximity_placement_group ? azurerm_proximity_placement_group.this[0].id : null
 }
 
 ###############
@@ -26,6 +27,7 @@ module "resource-group" {
 }
 
 resource "azurerm_proximity_placement_group" "this" {
+  count               = local.use_ppg && var.app_proximity_placement_group ? 1 : 0
   name                = "pg"
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
@@ -120,7 +122,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   min_count                    = var.app_node_count
   orchestrator_version         = var.k8s_version
   os_disk_size_gb              = "128"
-  proximity_placement_group_id = local.app_proximity_group_id
+  proximity_placement_group_id = local.use_ppg && var.app_proximity_placement_group  ? azurerm_proximity_placement_group.this[0].id : null
   priority                     = "Regular"
   node_labels = {
     "nodepool-type" = "app"

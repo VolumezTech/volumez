@@ -87,7 +87,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
   instances                    = var.media_node_count
   admin_username               = var.ssh_username
   zones                        = var.zones
-  proximity_placement_group_id = local.use_ppg ? var.target_proximity_placement_group_id : null
+  proximity_placement_group_id = local.use_ppg && var.target_proximity_placement_group_id!= "" ? var.target_proximity_placement_group_id : null
   single_placement_group       = local.single_ppg
   platform_fault_domain_count  = var.platform_fault_domain_count
 
