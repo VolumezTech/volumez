@@ -10,7 +10,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)
-* [Azure VMSS to existing resource-group](#vmss-to-rg)
+* [Azure VMSS](#vmss)
 
 # Requirements
 * Terraform > 0.14  
@@ -386,7 +386,7 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-# VMSS to RG
+# VMSS
 ---
 
 terraform dir = terraform/azure/examples/vmss-unf-to-rg/

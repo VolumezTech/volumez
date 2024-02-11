@@ -7,6 +7,11 @@ variable "num_of_zones" {
     default     = 1
 }
 
+variable "node_count" {
+    description = "Number of nodes"
+    default     = 1
+}
+
 variable "placement_group_strategy" {
     description = "The placement strategy. Can be 'cluster', 'partition' or 'spread'"
     type        = string

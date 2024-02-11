@@ -19,6 +19,11 @@ variable "num_of_zones" {
     default = 2
 }
 
+variable "create_fault_domain" {
+    type = bool
+    default = false
+}
+
 variable "placement_group_strategy" {
     default = "cluster"
 }
@@ -122,3 +127,4 @@ variable "app_node_name_prefix" {
     type    = string
     default = "app"
 }
+
