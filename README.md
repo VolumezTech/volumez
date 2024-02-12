@@ -68,19 +68,10 @@ to use pre-defined easy starter variables you can use:
 terraform apply -var-file="easy_starter.tfvars"
 ```
 
-* 8 media nodes accross 2 AZ's  
+* 7 media nodes accross 2 AZ's  
 * media node type: is4gen.2xlarge  
 * default OS: Red Hat 8.7  
 
-> power_starter
-
-* 8 media nodes accross 2 AZ's  
-* 1 application node  
-* media node type: is4gen.2xlarge  
-* application node type: m5n.xlarge  
-* default OS: Red Hat 8.7  
-
-> mix_and_match
 
 No default values, the following should be set in order to execute the terraform:
 1. region                   - target region
@@ -173,14 +164,16 @@ helm uninstall volumez-csi -n vlz-csi-driver
 
 ### Examples ### 
 > easy_starter
+
+to use pre-defined easy starter variables you can use:
+
+```
+terraform apply -var-file="easy_starter.tfvars"
+```
+
 * 6 media nodes
 * media node type: i3en.3xlarge  
 
-> power_starter
-* 8 media nodes  
-* 1 application node  
-* media node type: i3en.3xlarge  
-* application node type: m5n.xlarge  
 
 > mix_and_match
 
