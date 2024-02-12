@@ -1,5 +1,6 @@
 ###  Resource Group ###
-resource_prefix = ""  // Prefix for naming the resource group
+resource_prefix = "volumez
+"  // Prefix for naming the resource group
 resource_group_location = "eastus"  // Location of the resource group
 
 ###  Network ###

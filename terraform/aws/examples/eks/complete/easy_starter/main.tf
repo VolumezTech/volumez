@@ -15,7 +15,6 @@ resource "random_string" "suffix" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.0"
 
   name                 = "${var.cluster_owner}-vpc-${random_string.suffix.result}"
   cidr                 = "10.0.0.0/16"
@@ -92,22 +91,6 @@ module "eks" {
     volumez-media-ng = {
       name = "volumez-media-eks"
 
-      # enable_bootstrap_user_data = true
-
-      # pre_bootstrap_user_data = <<-EOT
-      # MIME-Version: 1.0
-      # Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
-      # --==MYBOUNDARY==
-      # Content-Type: text/x-shellscript; charset="us-ascii"
-
-      # #!/bin/bash
-      # uuid=$(uuidgen)
-      # sudo hostnamectl set-hostname $uuid
-
-      # --==MYBOUNDARY==--\\
-      # EOT
-      
       desired_size = var.media_node_count
       min_size     = var.media_node_count
       max_size     = var.media_node_count
@@ -119,6 +102,23 @@ module "eks" {
         Origin        = "Volumez"
         GithubRepo    = "terraform-aws-eks"
         instance-type = "media-ng"
+      }
+    }
+
+     volumez-app-ng = {
+      name = "volumez-app-eks"
+
+      desired_size = var.app_node_count
+      min_size     = var.app_node_count
+      max_size     = var.app_node_count
+      ami_type     = var.app_node_ami_type
+
+      instance_types = ["${var.app_node_type}"]
+      capacity_type  = "ON_DEMAND"
+      labels = {
+        Origin        = "Volumez"
+        GithubRepo    = "terraform-aws-eks"
+        instance-type = "app-ng"
       }
     }
   }

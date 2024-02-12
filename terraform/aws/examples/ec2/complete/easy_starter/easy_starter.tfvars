@@ -1,13 +1,8 @@
 # General Configuration
 region  = "us-east-1"
-resources_name_suffix = ""
-num_of_zones = 1
+resources_name_suffix = "volumez"
+num_of_zones = 2
 create_fault_domain = true
-
-# Keys
-key_name = ""
-path_to_pem = ""
-tenant_token = ""
 
 # Media Nodes
 media_node_count = 7
