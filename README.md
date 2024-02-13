@@ -10,7 +10,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)
-* [Azure VMSS to existing resource-group](#vmss-to-rg)
+* [Azure VMSS](#vmss)
 
 # Requirements
 * Terraform > 0.14  
@@ -31,24 +31,18 @@ Mandatory:
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform init
-terraform apply
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform init
 terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
@@ -62,24 +56,21 @@ ssh -i ssh_key ec2-user@<host-public-dns>
 ### Examples ###  
 > easy_starter
 
-* 8 media nodes accross 2 AZ's  
+to use pre-defined easy starter variables you can use:
+
+```
+terraform apply -var-file="easy_starter.tfvars"
+```
+
+* 7 media nodes accross 2 AZ's  
 * media node type: is4gen.2xlarge  
 * default OS: Red Hat 8.7  
 
-> power_starter
-
-* 8 media nodes accross 2 AZ's  
-* 1 application node  
-* media node type: is4gen.2xlarge  
-* application node type: m5n.xlarge  
-* default OS: Red Hat 8.7  
-
-> mix_and_match
 
 No default values, the following should be set in order to execute the terraform:
 1. region                   - target region
 2. num_of_zones             - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-3. placement_group_strategy - Placement group strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'
+3. create fault domain      - when set to true, placement group starategy will be 'partition's, otherwise 'cluster'
 4. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 5. media_node_count         - Number of media nodes to create
 6. media_node_type          - Media EC2 type
@@ -97,21 +88,18 @@ Mandatory:
 ### Usage (Terraform) - Create EKS cluster ###
 > Create with default values
 ```
-export TF_VAR_region=us-east-1
 terraform init
-terraform apply
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_region=us-east-1
 terraform init
 terraform apply -var="media_node_count=4" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
-export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
@@ -167,14 +155,16 @@ helm uninstall volumez-csi -n vlz-csi-driver
 
 ### Examples ### 
 > easy_starter
+
+to use pre-defined easy starter variables you can use:
+
+```
+terraform apply -var-file="easy_starter.tfvars"
+```
+
 * 6 media nodes
 * media node type: i3en.3xlarge  
 
-> power_starter
-* 8 media nodes  
-* 1 application node  
-* media node type: i3en.3xlarge  
-* application node type: m5n.xlarge  
 
 > mix_and_match
 
@@ -218,24 +208,12 @@ Mandatory:
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_resource_group_location=eastus
 terraform init
-terraform apply
-```
-
-> Custom variables (List of available variables can be found under Examples > mix_and_match)
-```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_resource_group_location=eastus
-terraform init
-terraform apply -var="media_node_type=Standard_L8as_v3"
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Destroy
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=eastus
 terraform destroy
 ```
 
@@ -249,8 +227,14 @@ ssh -i id_rsa adminuser@<host-public-dns>
 ### Examples ###  
 > easy_starter
 
+to use pre-defined easy starter variables you can use:
+
+```
+terraform apply -var-file="easy_starter.tfvars"
+```
+
 * 16 media nodes (spread across 2 availability zones)
-* media node type: Standard_L8as_v3
+* media node type: Standard_L8s_v3
 * default OS: Red Hat 8.7  
 
 > custom configs
@@ -276,22 +260,13 @@ Mandatory:
 ### Usage (Terraform) - Create AKS cluster ###
 > Create with default values
 ```
-export TF_VAR_resource_group_location="East US"
 terraform init
-terraform apply -var-file="<varfile>.tfvars"
-```
-
-> Custom variables (List of available variables can be found under Examples > mix_and_match)
-```
-export TF_VAR_resource_group_location="East US"
-terraform init
-terraform apply -var="media_node_count=4" -var="media_node_type=Standard_L8s_v3"
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Destroy
 ```
-export TF_VAR_resource_group_location="East US"
-terraform destroy -var-file="<varfile>.tfvars"
+terraform destroy -var-file="easy_starter.tfvars"
 ```
 
 > Output
@@ -343,15 +318,14 @@ helm uninstall volumez-csi -n vlz-csi-driver
 
 ### Examples ### 
 > easy_starter
+
+to use pre-defined easy starter variables you can use:
+```
+terraform apply -var-file="easy_starter.tfvars"
+```
+
 * 6 media nodes
 * media node size: Standard_L8s_v3 
-
-> power_starter
-
-* 8 media nodes  
-* 1 application node  
-* media node size: Standard_L8s_v3
-* application node size: Standard_D64_v5 
 
 > mix_and_match
 
@@ -386,35 +360,55 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-# VMSS to RG
+# VMSS
 ---
 
 terraform dir = terraform/azure/examples/vmss-unf-to-rg/
 
 #### tfvars inputs ####
 ```
-### Resource Group ###
-resource_prefix = "example-prefix" 
-target_resource_group_location = "eastus"
-target_resource_group_name = "example-rg"
+#### Resource Group ###
+### IMPORTANT: If you wish to create a VMSS in a new resource group, you must set the resource_group_location and resource_prefix. 
+### If you wish to use an existing resource group, you must set the target_resource_group_location and target_resource_group_name.
+### Do not set both resource_group and target_resource_group. 1 or 2 ####
+
+### 1.Create Resource Group (if set will create a new resource group for this VMSS)###
+resource_group_location = "eastus"
+resource_prefix = "vlz-exampl-rg"
+
+### 2.Target Resource Group (create the VMSS in an existing resource group) ###
+target_resource_group_location = ""
+target_resource_group_name = ""
+
+### VMSS ###
+vmss_type = "flexible" # "uniform" or "flexible"
+create_fault_domain = true 
+## platform_fault_domain_count:
+# 1. if vmss_type = "uniform/flexible" and create_fault_domain = false, platform_fault_domain_count will be 1
+# 2. if vmss_type = "uniform" and create_fault_domain = true, platform_fault_domain_count will be 5
+# 3. if vmss_type = "flexible" and create_fault_domain = true, platform_fault_domain_count can be 2 or 3 (set in variable below)
+# 4. if vmss_type = "flexible" and create_fault_domain = true and Microsoft.Compute/VMOrchestratorZonalMultiFD is enabled, platform_fault_domain_count can be 2-5 (set in variable below)
+platform_fault_domain_count = 5
+
 
 ### Network ###
-zones = ["1"]
-target_proximity_placement_group_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Compute/proximityPlacementGroups/example-pg"
-target_virtual_network_name = "example-vnet"
-target_subnet_id = "/subscriptions/XXXXX/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/XXXXX/subnets/example-subnet"
+# if setting more than 1 zone, no proximity_placement_group will be created/used
+# if setting more than 1 zone and vmss_type="uniform", platform_fault_domain_count will be 5
+zones = ["1", "2"] 
+target_proximity_placement_group_id = null
+target_virtual_network_name = ""
+target_subnet_id = null
 
 ### Media ###
 media_node_type = "Standard_L8s_v3"
-media_node_count = 2
+media_node_count = 20
 media_image_publisher = "Canonical"
 media_image_offer = "0001-com-ubuntu-server-jammy" 
 media_image_sku = "22_04-lts-gen2"
 media_image_version = "latest"
 
-### Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info ###
-vlz_refresh_token = "eyJjdHkiOi..."
-```
+### Tenant Token (JWT Access Token) - Can retrieve from Volumez portal under Developer Info ###
+vlz_refresh_token = ""
 
 1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
 2. target_resource_group_location - location in which the resource group exists
@@ -429,16 +423,12 @@ vlz_refresh_token = "eyJjdHkiOi..."
 11. vlz_refresh_token - Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info
 
 #### Execution Flow ####
-1. if you already have scaled VMSS:
-```
-terraform destroy -var-file="custom.tfvars" 
-```
-2. if this is your first execution: 
+1. if this is your first execution: 
 configure custom.tfvars with relevant details. IMPORTANT: retrieve CSI Driver Token (Refresh Token) from Volumez portal under Developer info  
-3. 
+2. 
 ```
 terraform init
-terraform apply -var-file="custom.tfvars" 
+terraform apply -var-file="easy_starter.tfvars" 
 ```
 
 

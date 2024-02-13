@@ -1,14 +1,30 @@
 ###############
 ### Network ###
 ###############
+
 variable "vlz_refresh_token" {
     description = "Refresh token to access Cognito and pull the connector"
     type        = string
 }
 
+variable "resource_group_location" {
+  type    = string
+  default = "eastus"
+}
+
 variable "resource_prefix" {
   type    = string
   default = "Volumez-example"
+}
+
+variable "address_space" {
+  type    = list
+  default = ["10.1.0.0/16"]
+}
+
+variable "address_prefixes" {
+  type    = list
+  default = ["10.1.85.0/24"]
 }
 
 variable "target_resource_group_location" {
@@ -59,14 +75,27 @@ variable "single_ppg" {
   default = true
 }
 
-variable "address_prefixes" {
-  type    = list
-  default = ["10.40.1.0/26"]
+# variable "address_prefixes" {
+#   type    = list
+#   default = ["10.40.1.0/26"]
+# }
+
+variable "create_fault_domain" {
+  type    = bool
+  default = true
+  
 }
 
 variable "platform_fault_domain_count" {
   type    = number
   default = 5
+}
+
+variable "vmss_type" {
+  description = "Type of virtual machine scale set"
+  type        = string
+  default     = "uniform" 
+  
 }
 
 ###############

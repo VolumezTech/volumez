@@ -44,7 +44,8 @@ module "placement_group" {
 
     num_of_zones             = var.num_of_zones
     vpc_id                   = module.vpc.vpc_id
-    placement_group_strategy = var.placement_group_strategy
+    node_count               = var.media_node_count
+    placement_group_strategy = var.create_fault_domain ? "partition" : "cluster"
 
     depends_on = [
         module.vpc
