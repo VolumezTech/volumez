@@ -1,14 +1,14 @@
 media_node_type = "Standard_L8s_v3"
-media_node_count = 2
+media_node_count = 1
 media_image_publisher = "RedHat"
 media_image_offer = "RHEL" 
 media_image_sku = "8_7"
 media_image_version = "latest" 
 app_node_type = "Standard_D64_v5"
-app_node_count = 0
+app_node_count = 1
 app_image_publisher="RedHat"
 app_image_offer = "RHEL" 
-app_image_sku = "8.6"
+app_image_sku = "8_7"
 app_image_version = "latest"
 resource_prefix = "volumez"
 resource_group_location = "eastus"

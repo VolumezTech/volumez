@@ -1,6 +1,5 @@
 ###  Resource Group ###
-resource_prefix = "volumez
-"  // Prefix for naming the resource group
+resource_prefix = "volumez"  // Prefix for naming the resource group
 resource_group_location = "eastus"  // Location of the resource group
 
 ###  Network ###
@@ -12,6 +11,11 @@ address_prefixes = ["10.40.0.0/24"]  // Subnet address prefixes for the network
 app_proximity_placement_group = true  // Enable proximity placement group for app nodes
 app_node_type = "Standard_D32_v5"  // VM type for application nodes
 app_node_count = 1  // Number of application nodes
+
+###  Media Nodes ###
+media_proximity_placement_group = true  // Enable proximity placement group for media nodes
+media_node_type = "Standard_D32_v5"  // VM type for media nodes
+media_node_count = 1  // Number of media nodes
 
 ###  Kubernetes ###
 k8s_version = "1.27"  // Version of Kubernetes

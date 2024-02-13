@@ -104,23 +104,6 @@ module "eks" {
         instance-type = "media-ng"
       }
     }
-
-     volumez-app-ng = {
-      name = "volumez-app-eks"
-
-      desired_size = var.app_node_count
-      min_size     = var.app_node_count
-      max_size     = var.app_node_count
-      ami_type     = var.app_node_ami_type
-
-      instance_types = ["${var.app_node_type}"]
-      capacity_type  = "ON_DEMAND"
-      labels = {
-        Origin        = "Volumez"
-        GithubRepo    = "terraform-aws-eks"
-        instance-type = "app-ng"
-      }
-    }
   }
 }
 

@@ -69,3 +69,22 @@ variable "app_proximity_placement_group" {
   type        = bool
   default     = true
 }
+
+#################
+### Media Nodes ###
+##################
+
+variable "media_node_type" {
+  type        = string
+  description = "Please enter node size for media nodes. For example: 'Standard_D64_v5'."
+}
+
+variable "media_node_count" {
+  type        = number
+  description = "Please enter the number of media nodes you desire"
+}
+
+variable "media_proximity_placement_group" {
+  type        = bool
+  default     = true
+}
