@@ -14,8 +14,8 @@ app_node_count = 1  // Number of application nodes
 
 ###  Media Nodes ###
 media_proximity_placement_group = true  // Enable proximity placement group for media nodes
-media_node_type = "Standard_D32_v5"  // VM type for media nodes
-media_node_count = 1  // Number of media nodes
+media_node_type = "Standard_L8s_v3"  // VM type for media nodes
+media_node_count = 6  // Number of media nodes
 
 ###  Kubernetes ###
 k8s_version = "1.27"  // Version of Kubernetes

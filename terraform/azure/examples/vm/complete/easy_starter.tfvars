@@ -1,5 +1,5 @@
 media_node_type = "Standard_L8s_v3"
-media_node_count = 1
+media_node_count = 16
 media_image_publisher = "RedHat"
 media_image_offer = "RHEL" 
 media_image_sku = "8_7"
@@ -12,4 +12,4 @@ app_image_sku = "8_7"
 app_image_version = "latest"
 resource_prefix = "volumez"
 resource_group_location = "eastus"
-zones = ["1"]
+zones = ["1", "2"]

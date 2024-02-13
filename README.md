@@ -31,24 +31,18 @@ Mandatory:
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform init
-terraform apply
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform init
 terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
@@ -76,7 +70,7 @@ terraform apply -var-file="easy_starter.tfvars"
 No default values, the following should be set in order to execute the terraform:
 1. region                   - target region
 2. num_of_zones             - number of AZ's to create the media/app nodes in. (evenlly spread between AZ's)
-3. placement_group_strategy - Placement group strategy. The placement strategy. Can be 'cluster', 'partition' or 'spread'
+3. create fault domain      - when set to true, placement group starategy will be 'partition's, otherwise 'cluster'
 4. tenant_token             - Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 5. media_node_count         - Number of media nodes to create
 6. media_node_type          - Media EC2 type
@@ -94,21 +88,18 @@ Mandatory:
 ### Usage (Terraform) - Create EKS cluster ###
 > Create with default values
 ```
-export TF_VAR_region=us-east-1
 terraform init
-terraform apply
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
-export TF_VAR_region=us-east-1
 terraform init
 terraform apply -var="media_node_count=4" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
 ```
-export TF_VAR_region=us-east-1
 terraform destroy
 ```
 
@@ -217,24 +208,12 @@ Mandatory:
 ### Usage ###
 > Create with default values
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_resource_group_location=eastus
 terraform init
-terraform apply
-```
-
-> Custom variables (List of available variables can be found under Examples > mix_and_match)
-```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_resource_group_location=eastus
-terraform init
-terraform apply -var="media_node_type=Standard_L8as_v3"
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Destroy
 ```
-export TF_VAR_tenant_token=eyJraWQiOiJhMUxrM1...
-export TF_VAR_region=eastus
 terraform destroy
 ```
 
@@ -255,7 +234,7 @@ terraform apply -var-file="easy_starter.tfvars"
 ```
 
 * 16 media nodes (spread across 2 availability zones)
-* media node type: Standard_L8as_v3
+* media node type: Standard_L8s_v3
 * default OS: Red Hat 8.7  
 
 > custom configs
@@ -281,22 +260,13 @@ Mandatory:
 ### Usage (Terraform) - Create AKS cluster ###
 > Create with default values
 ```
-export TF_VAR_resource_group_location="East US"
 terraform init
-terraform apply -var-file="<varfile>.tfvars"
-```
-
-> Custom variables (List of available variables can be found under Examples > mix_and_match)
-```
-export TF_VAR_resource_group_location="East US"
-terraform init
-terraform apply -var="media_node_count=4" -var="media_node_type=Standard_L8s_v3"
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Destroy
 ```
-export TF_VAR_resource_group_location="East US"
-terraform destroy -var-file="<varfile>.tfvars"
+terraform destroy -var-file="easy_starter.tfvars"
 ```
 
 > Output
@@ -356,13 +326,6 @@ terraform apply -var-file="easy_starter.tfvars"
 
 * 6 media nodes
 * media node size: Standard_L8s_v3 
-
-> power_starter
-
-* 8 media nodes  
-* 1 application node  
-* media node size: Standard_L8s_v3
-* application node size: Standard_D64_v5 
 
 > mix_and_match
 
