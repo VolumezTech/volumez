@@ -21,14 +21,13 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 ```vi easy_starter.tfvars```   or   ```terraform init && terraform apply -var-file="easy_starter.tfvars"```
 
 # Get Started
-* [Requirements](#requirements)  
 * [AWS EC2 environment](#ec2)  
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)
 * [Azure VMSS](#vmss)
-
-
+  
+  
 
 # EC2
 ---
