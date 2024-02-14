@@ -31,7 +31,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 <br />
   
 
-# EC2
+## EC2
 ---
 
 ### Inputs ###
@@ -117,7 +117,7 @@ No default values, the following should be set in order to execute the terraform
 7. app_node_count           - number of performance hosts
 8. app_node_type            - EC2 type for application node
 
-# EKS
+## EKS
 ---
 
 ### Inputs ### 
@@ -237,7 +237,7 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
-# VM
+## VM
 ---
 
 ### Inputs ###
@@ -289,7 +289,7 @@ edit or copy easy_starter.tfvars to a new file and set values as you wish:
 8. app_node_type            - VM type for application node
 9. image_publisher/offer/sku/version - OS image details
 
-# AKS
+## AKS
 ---
 
 ### Inputs ### 
@@ -400,7 +400,7 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-# VMSS
+## VMSS
 ---
 
 terraform dir = terraform/azure/examples/vmss-unf-to-rg/
