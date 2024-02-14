@@ -26,7 +26,9 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)
 * [Azure VMSS](#vmss)
-  
+<br />
+<br />
+<br />
   
 
 # EC2
