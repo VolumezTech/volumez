@@ -21,10 +21,10 @@ locals {
 ### SSH ###
 ###############
 
-resource "tls_private_key" "ssh_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+# resource "tls_private_key" "ssh_key" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
+# }
 
 #####################
 ### Resorce Group ###
@@ -142,7 +142,22 @@ module "vmss" {
   media_image_sku               = var.media_image_sku
   media_image_version           = var.media_image_version
   subnet_id                     = var.target_subnet_id != null ? var.target_subnet_id : azurerm_subnet.this[0].id
-  public_key                    = tls_private_key.ssh_key.public_key_openssh
 
   depends_on = [ azurerm_nat_gateway_public_ip_prefix_association.nat_ips, azurerm_subnet_nat_gateway_association.this, azurerm_subnet.this, module.resource-group ]
+}
+
+
+##################
+#### Bastion ####
+#################
+
+module "bastion" {
+  source                   = "../../../modules/bastion"
+  count                    = var.deploy_bastion ? 1 : 0
+  location                 = local.create_rg ? module.resource-group[0].rg_location : var.target_resource_group_location
+  rg-name                  = local.create_rg ? module.resource-group[0].rg_name : var.target_resource_group_name
+  vnet_name                = local.create_rg ? module.resource-group[0].vnet_name : var.target_virtual_network_name
+  azbastion-subnet-address = var.azbastion-subnet-address
+
+  depends_on = [ azurerm_subnet.this, module.resource-group ]
 }

@@ -9,8 +9,7 @@ resource "random_string" "this" {
 }
 
 locals {
-  app_proximity_group_id   = var.app_proximity_placement_group ? azurerm_proximity_placement_group.this.id : null
-  media_proximity_group_id   = var.media_proximity_placement_group ? azurerm_proximity_placement_group.this.id : null
+  use_ppg            = length(var.zones) <= 1 ? true : false
 }
 
 ###############
@@ -27,6 +26,7 @@ module "resource-group" {
 }
 
 resource "azurerm_proximity_placement_group" "this" {
+  count               = local.use_ppg ? 1 : 0
   name                = "${var.resource_prefix}-${random_string.this.result}-pg"
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
@@ -121,7 +121,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   min_count                    = var.app_node_count
   orchestrator_version         = var.k8s_version
   os_disk_size_gb              = "128"
-  proximity_placement_group_id = local.app_proximity_group_id
+  proximity_placement_group_id = local.use_ppg ? azurerm_proximity_placement_group.this[0].id : null
   priority                     = "Regular"
   node_labels = {
     "nodepool-type" = "app"
@@ -147,7 +147,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "media" {
   min_count                    = var.media_node_count
   orchestrator_version         = var.k8s_version
   os_disk_size_gb              = "128"
-  proximity_placement_group_id = local.media_proximity_group_id
+  proximity_placement_group_id = local.use_ppg ? azurerm_proximity_placement_group.this[0].id : null
   priority                     = "Regular"
   node_labels = {
     "nodepool-type" = "media"
@@ -157,23 +157,4 @@ resource "azurerm_kubernetes_cluster_node_pool" "media" {
     "nodepool-type" = "user"
     "environment"   = "dev"
   }
-}
-
-module "bastion" {
-  source = "../../../modules/bastion/"
-  count = var.deploy_bastion ? 1 : 0
-
-  deploy_bastion             = var.deploy_bastion ? true : false
-  location                   = module.resource-group.rg_location
-  rg-name                    = module.resource-group.rg_name
-  environment                = "dev"
-  tf_vnet1_name              = "${var.resource_prefix}-${random_string.this.result}-vnet"
-  azbastion-subnet-address   = ["10.40.5.0/24"]
-  firewall_allocation_method = "Static"
-  firewall_sku               = "Standard"
-  azb_scl_units              = 2
-
-  depends_on = [
-    module.resource-group
-  ]
 }
