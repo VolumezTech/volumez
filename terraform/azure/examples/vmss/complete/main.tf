@@ -17,15 +17,6 @@ locals {
   resource_prefix = var.resource_prefix != "" ? "${var.resource_prefix}-${random_string.this.result}" : replace(var.target_resource_group_name, "-rg", "")
 }
 
-###############
-### SSH ###
-###############
-
-# resource "tls_private_key" "ssh_key" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
-
 #####################
 ### Resorce Group ###
 #####################

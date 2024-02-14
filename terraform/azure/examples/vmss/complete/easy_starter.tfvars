@@ -12,7 +12,7 @@ target_resource_group_location = ""
 target_resource_group_name = ""
 
 ### VMSS ###
-vmss_type = "uniform" # "uniform" or "flexible"
+vmss_type = "flexible" # "uniform" or "flexible"
 create_fault_domain = true 
 ## platform_fault_domain_count:
 # 1. if vmss_type = "uniform/flexible" and create_fault_domain = false, platform_fault_domain_count will be 1
@@ -33,7 +33,7 @@ deploy_bastion = false
 
 ### Media ###
 media_node_type = "Standard_L8s_v3"
-media_node_count = 1
+media_node_count = 20   
 media_image_publisher = "Canonical"
 media_image_offer = "0001-com-ubuntu-server-jammy" 
 media_image_sku = "22_04-lts-gen2"
