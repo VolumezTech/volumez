@@ -20,6 +20,15 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * awscli (for EKS examples)
 * Azure CLI (for AKS examples)
 
+# Usage
+1. clone the project: 
+```git clone https://github.com/VolumezTech/volumez.git```
+2. cd into relevant folder, depeneds on what use case want to execute (Example EC2):
+```cd volumez/terraform/aws/examples/ec2/complete/easy_starter```
+3. Before execution, you can edit predifined "easy_starter.tfvars" or execute it as is:
+```vi easy_starter.tfvars``` or ```terraform init && terraform apply -var-file="easy_starter.tfvars"```
+
+
 # EC2
 ---
 
