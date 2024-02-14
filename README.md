@@ -4,14 +4,6 @@ Volumez is SaaS composable data infrastructure. With Volumez, you can deploy app
 
 This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM) and install the volumez connector.
 
-# Get Started
-* [Requirements](#requirements)  
-* [AWS EC2 environment](#ec2)  
-* [AWS EKS environment](#eks)  
-* [Azure VM environment](#vm)  
-* [Azure AKS environment](#aks)
-* [Azure VMSS](#vmss)
-
 # Requirements
 * Terraform > 0.14  
 * AWS/Azure credentials as environment variables 
@@ -20,7 +12,26 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * awscli (for EKS examples)
 * Azure CLI (for AKS examples)
 
-# EC2
+# Usage
+1. Clone the project:  
+```git clone https://github.com/VolumezTech/volumez.git```
+2. CD into relevant directory, Depeneds on what use-case you wish to execute (Example EC2):  
+```cd volumez/terraform/aws/examples/ec2/complete/easy_starter```
+3. Before execution, you can edit predifined "easy_starter.tfvars" or execute it as is:  
+```vi easy_starter.tfvars```   or   ```terraform init && terraform apply -var-file="easy_starter.tfvars"```
+
+# Get Started
+* [AWS EC2 environment](#ec2)  
+* [AWS EKS environment](#eks)  
+* [Azure VM environment](#vm)  
+* [Azure AKS environment](#aks)
+* [Azure VMSS](#vmss)
+<br />
+<br />
+<br />
+  
+
+## EC2
 ---
 
 ### Inputs ###
@@ -41,10 +52,39 @@ terraform init
 terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_type=i3en.3xlarge"
 ```
 
+> Custom variables (edit easy_starter.tfvars if needed)  
+```
+# General Configuration
+region  = "us-east-1"
+resources_name_suffix = "volumez"
+num_of_zones = 2
+create_fault_domain = true
+
+# Media Nodes
+media_node_count = 7
+media_node_type = "is4gen.2xlarge"
+media_node_iam_role = null
+media_node_ami = "default"
+media_node_ami_username = "default"
+media_node_name_prefix = "media"
+
+# App Nodes
+app_node_count = 0
+app_node_type = "m5n.xlarge"
+app_node_iam_role = null
+app_node_ami = "default"
+app_node_ami_username = "default"
+app_node_name_prefix = "app"
+```
+
 > Destroy
 ```
 terraform destroy
+```  
+or  
 ```
+terraform destroy -var-file="easy_starter.tfvars"
+```  
 
 ### SSH To Node ### 
 ```
@@ -77,7 +117,7 @@ No default values, the following should be set in order to execute the terraform
 7. app_node_count           - number of performance hosts
 8. app_node_type            - EC2 type for application node
 
-# EKS
+## EKS
 ---
 
 ### Inputs ### 
@@ -197,7 +237,7 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
 ```
-# VM
+## VM
 ---
 
 ### Inputs ###
@@ -249,7 +289,7 @@ edit or copy easy_starter.tfvars to a new file and set values as you wish:
 8. app_node_type            - VM type for application node
 9. image_publisher/offer/sku/version - OS image details
 
-# AKS
+## AKS
 ---
 
 ### Inputs ### 
@@ -360,7 +400,7 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-# VMSS
+## VMSS
 ---
 
 terraform dir = terraform/azure/examples/vmss-unf-to-rg/
