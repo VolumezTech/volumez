@@ -146,3 +146,18 @@ variable "media_image_version" {
     description = "media source image version"
     default = "latest"
 }
+
+##################
+#### Bastion ####
+#################
+
+variable "azbastion-subnet-address" {
+  type = list
+  default = ["10.1.86.0/26"]
+}
+
+variable "deploy_bastion" {
+  type = bool
+  default = false
+}
+

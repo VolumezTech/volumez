@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
 
   admin_ssh_key {
     username   = var.ssh_username
-    public_key = var.public_key
+    public_key = tls_private_key.ssh_key.public_key_openssh
   }
 
   custom_data = base64encode(

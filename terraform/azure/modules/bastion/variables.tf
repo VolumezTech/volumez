@@ -1,9 +1,4 @@
 variable "location" {}
 variable "rg-name" {}
-variable "environment" {}
-variable "tf_vnet1_name" {}
-variable "firewall_allocation_method" {}
-variable "firewall_sku" {}
+variable "vnet_name" {}
 variable "azbastion-subnet-address" {}
-variable "azb_scl_units" {}
-variable "deploy_bastion" {}

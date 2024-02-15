@@ -65,11 +65,6 @@ variable "app_node_count" {
   description = "Please enter the number of application nodes you desire"
 }
 
-variable "app_proximity_placement_group" {
-  type        = bool
-  default     = true
-}
-
 #################
 ### Media Nodes ###
 ##################
@@ -82,9 +77,4 @@ variable "media_node_type" {
 variable "media_node_count" {
   type        = number
   description = "Please enter the number of media nodes you desire"
-}
-
-variable "media_proximity_placement_group" {
-  type        = bool
-  default     = true
 }

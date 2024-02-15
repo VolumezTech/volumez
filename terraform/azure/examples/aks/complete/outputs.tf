@@ -20,6 +20,6 @@ output "subnet_id" {
 }
 
 output "proximity_placement_group_id" {
-  value = azurerm_proximity_placement_group.this.id
+  value = azurerm_proximity_placement_group.this[*].id
 }
 

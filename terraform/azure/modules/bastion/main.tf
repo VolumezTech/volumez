@@ -7,7 +7,7 @@ resource "azurerm_subnet" "AzureBastionSubnet" {
   
   name                 = "AzureBastionSubnet"
   resource_group_name  = var.rg-name
-  virtual_network_name = var.tf_vnet1_name
+  virtual_network_name = var.vnet_name
   address_prefixes     = var.azbastion-subnet-address
 }
 
@@ -18,8 +18,8 @@ resource "azurerm_public_ip" "azb-publicIP" {
   name                = "azb-publicIP"
   location            = var.location
   resource_group_name = var.rg-name
-  allocation_method   = var.firewall_allocation_method
-  sku                 = var.firewall_sku
+  allocation_method   = "Static"
+  sku                 = "Standard"
 }
 
 # Create Azure Bastion Host
@@ -28,7 +28,6 @@ resource "azurerm_bastion_host" "azb-host" {
   name                = "azb-host"
   location            = var.location
   resource_group_name = var.rg-name
-  scale_units         = var.azb_scl_units
 
   ip_configuration {
     name                 = "azb-Ip-configuration"
@@ -37,6 +36,5 @@ resource "azurerm_bastion_host" "azb-host" {
   }
   tags = {
     "solution"  = "Azure Bastion Service"
-    environment = var.environment
   }
 }
