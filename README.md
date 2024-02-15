@@ -454,12 +454,12 @@ vlz_refresh_token = ""
 terraform destroy -var-file="easy_starter.tfvars"
 ```
 
-#Create Resource Group (if set will create a new resource group for this VMSS)
-1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
-2. resource_group_location - location to create resource group
-#Target Resource Group (create the VMSS in an existing resource group)
-3. target_resource_group_location - location in which the resource group exists
-4. target_resource_group_name - name of the resource group to created our vmss in
+> Explaining the variables
+
+1. resource_prefix - Prefix for naming the resources that will be created by this Terraform (if creating a new resource-group)
+2. resource_group_location - location to create resource group (if creating a new resource-group)
+3. target_resource_group_location - location in which the resource group exists (if using existing resource-group)
+4. target_resource_group_name - name of the resource group to created our vmss in (if using existing resource-group)
 5. zones - list of availability zones. i.e: ["1"] (for single-zone), ["1", "2", ...] (for multi-zone) 
 6. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. In case "zones" list contains more than one zone, this value will be ignored
 7. target_virtual_network_name - vnet name in which vmss will be scaled in
