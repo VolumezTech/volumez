@@ -415,27 +415,64 @@ terraform init
 terraform apply -var-file="easy_starter.tfvars"
 ```
 
+> Custom variables (edit easy_starter.tfvars if needed)  
+```
+resource_group_location = "eastus"
+resource_prefix = "volumez"
+
+### 2.Target Resource Group (create the VMSS in an existing resource group) ###
+target_resource_group_location = ""
+target_resource_group_name = ""
+
+### VMSS ###
+vmss_type = "flexible" 
+create_fault_domain = true 
+platform_fault_domain_count can be 2-5 (set in variable below)
+platform_fault_domain_count = 5
+
+
+### Network ###
+zones = ["1", "2"] 
+target_proximity_placement_group_id = null
+target_virtual_network_name = ""
+target_subnet_id = null
+deploy_bastion = false
+
+### Media ###
+media_node_type = "Standard_L8s_v3"
+media_node_count = 20   
+media_image_publisher = "Canonical"
+media_image_offer = "0001-com-ubuntu-server-jammy" 
+media_image_sku = "22_04-lts-gen2"
+media_image_version = "latest"
+
+vlz_refresh_token = ""
+```
+
 > Destroy
 ```
 terraform destroy -var-file="easy_starter.tfvars"
 ```
 
+#Create Resource Group (if set will create a new resource group for this VMSS)
 1. resource_prefix - Prefix for naming the resources that will be created by this Terraform
-2. target_resource_group_location - location in which the resource group exists
-3. target_resource_group_name - name of the resource group to created our vmss in
-4. zones - list of availability zones. i.e: ["1"] (for single-zone), ["1", "2", ...] (for multi-zone) 
-5. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. In case "zones" list contains more than one zone, this value will be ignored
-6. target_virtual_network_name - vnet name in which vmss will be scaled in
-7. target_subnet_id - subnet id in which vmss will be scaled in. 
-8. media_node_type - VM size
-9. media_node_count -  num of VMs in VMSS
-10. media_image_* - marketplace OS configuration block
-11. vlz_refresh_token - Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info
-12. vmss_type - uniform or flexible orchestration
-13. create_fault_domain - use more than 1 fault domain
+2. resource_group_location - location to create resource group
+#Target Resource Group (create the VMSS in an existing resource group)
+3. target_resource_group_location - location in which the resource group exists
+4. target_resource_group_name - name of the resource group to created our vmss in
+5. zones - list of availability zones. i.e: ["1"] (for single-zone), ["1", "2", ...] (for multi-zone) 
+6. target_proximity_placement_group_id - proximity group id in which vmss will be scaled in. In case "zones" list contains more than one zone, this value will be ignored
+7. target_virtual_network_name - vnet name in which vmss will be scaled in
+8. target_subnet_id - subnet id in which vmss will be scaled in. 
+9. media_node_type - VM size
+10. media_node_count -  num of VMs in VMSS
+11. media_image_* - marketplace OS configuration block
+12. vlz_refresh_token - Refresh Token (CSI Token) - Can retrieve from Volumez portal under Developer Info
+13. vmss_type - uniform or flexible orchestration
+14. create_fault_domain - use more than 1 fault domain
 platform_fault_domain_count - number of fault daomins to use (see limitations below)
 
-### Fault Domain Count Limitations ###
+> Fault Domain Count Limitations 
 1. if vmss_type = "uniform/flexible" and create_fault_domain = false, platform_fault_domain_count will be 1
 2. if vmss_type = "uniform" and create_fault_domain = true, platform_fault_domain_count will be 5
 3. if vmss_type = "flexible" and create_fault_domain = true, platform_fault_domain_count can be 2 or 3 (set in variable below)
@@ -452,7 +489,7 @@ verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
 5. Username: adminuser
 6. Local File: upload ssh_key from stage 1
 
-```
+
 
 
 
