@@ -40,6 +40,17 @@ variable "signup_domain" {
     default = "signup.volumez.com"
 }
 
+variable "deploy_bastion" {
+  description = "Deploy a bastion host"
+  type    = bool
+  default = false
+}
+
+variable "bastion_address_prefixes" {
+  type    = list
+  default = ["10.1.86.0/26"]
+}
+
 
 ###############
 ##### SSH #####

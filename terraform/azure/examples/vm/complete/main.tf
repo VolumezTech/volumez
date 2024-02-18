@@ -117,3 +117,19 @@ module "app-vm" {
   ]
 }
 
+##################
+#### Bastion ####
+#################
+
+module "bastion" {
+  source                   = "../../../modules/bastion"
+  count                    = var.deploy_bastion ? 1 : 0
+  location                 = module.resource-group.rg_location
+  rg-name                  = module.resource-group.rg_name
+  vnet_name                = module.resource-group.vnet_name
+  azbastion-subnet-address = var.bastion_address_prefixes
+
+  depends_on = [ module.resource-group ]
+}
+
+

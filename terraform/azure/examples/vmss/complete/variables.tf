@@ -75,11 +75,6 @@ variable "single_ppg" {
   default = true
 }
 
-# variable "address_prefixes" {
-#   type    = list
-#   default = ["10.40.1.0/26"]
-# }
-
 variable "create_fault_domain" {
   type    = bool
   default = true
