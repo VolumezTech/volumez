@@ -35,9 +35,18 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 ---
 
 ### Inputs ###
-Mandatory: 
+> Mandatory: 
 1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
 2. Region - Target AWS region (example: us-east-1)
+
+> Existing Network Configuration (Optional, edit easy_starter.tfvars):  
+
+Important Note, when using existing resources, for optimal performance make sure that the existing instances are part of a placement group ([link](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html#placement-groups-cluster)) and provide it's id in the parameter below.
+
+1. target_vpc_id - Existing VPC ID to add the relevant resources to. If provided, the resources will be created in this VPC instead of creating a new one.
+2. target_subnet_id - Existing Subnet ID where the resources will be placed. If provided, the resources will be created in this subnet instead of creating a new one.
+3. target_security_group_id - Existing Security Group ID to be associated with the resources. If provided, this security group will be used instead of creating a new one. Port 22 should be open.
+4. target_placement_group_id - Existing Placement Group ID. If provided, this placement group will be used instead of creating a new one.
 
 ### Usage ###
 > Create with default values
@@ -55,13 +64,20 @@ terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_typ
 > Custom variables (edit easy_starter.tfvars if needed)  
 ```
 # General Configuration
-region  = "us-east-1"
+region  = "us-west-2"
 resources_name_suffix = "volumez"
-num_of_zones = 2
+num_of_zones = 1
 create_fault_domain = true
+avoid_pg = true
+
+# Existing Network Configuration (Optional)
+target_vpc_id = "vpc-0206e352378bc22b3"
+target_subnet_id = "subnet-0669d33500b48cfd8"
+target_security_group_id = "sg-0899dcd5079369204"
+target_placement_group_id = ""
 
 # Media Nodes
-media_node_count = 7
+media_node_count = 4
 media_node_type = "is4gen.2xlarge"
 media_node_iam_role = null
 media_node_ami = "default"

@@ -34,6 +34,39 @@ variable "signup_domain" {
     default = "signup.volumez.com"
 }
 
+### Optional VPC and Subnet IDs ###
+variable "target_vpc_id" {
+    description = "VPC ID to launch the instance in"
+    type        = string
+    default     = ""
+}
+
+variable "target_subnet_id" {
+    description = "Subnet ID to launch the instance in"
+    type        = string
+    default     = ""
+}
+
+variable "target_security_group_id" {
+    description = "Security Group ID to launch the instance in"
+    type        = string
+    default     = ""
+}
+
+variable "target_placement_group_id" {
+    description = "Placement Group ID to launch the instance in"
+    type        = string
+    default     = ""
+}
+
+variable "avoid_pg" {  
+    description = "Avoid using Proximity Placement Group"
+    type        = bool
+    default     = false
+}
+
+
+
 ############
 ### Keys ###
 ############
