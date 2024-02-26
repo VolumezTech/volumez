@@ -1,5 +1,5 @@
 output "vpc_id" {
-    value = module.vpc.vpc_id
+    value = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
 }
 
 output "app_nodes_id_list" {

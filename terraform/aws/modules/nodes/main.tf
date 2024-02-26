@@ -39,8 +39,8 @@ resource "aws_instance" "this" {
   ami                  = var.ami_id == "default" ? data.aws_ami.rhel.id : var.ami_id
   key_name             = var.key_name
   iam_instance_profile = var.iam_role
-  placement_group      = var.num_of_zones == 1 ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
-
+  placement_group       = var.num_of_zones == 1 || count.index >= length(var.placement_group_ids) ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
+  #placement_group      = var.num_of_zones == 1 ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
   network_interface {
     network_interface_id = var.pub_eni_list[count.index]
     device_index         = 0
