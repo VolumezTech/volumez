@@ -257,12 +257,15 @@ terraform apply -var-file="easy_starter.tfvars"
 terraform destroy
 ```
 
-### SSH To Node ### 
-```
-terraform output -raw tls_private_key > id_rsa
-chmod 400 id_rsa
-ssh -i id_rsa adminuser@<host-public-dns>
-```
+### SSH To Node ###
+verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
+
+1. ```terraform output tls_private_key > ssh_key```
+2. Go to Azure console and select the VM you want to ssh into
+3. Click on Connect->Bastion
+4. Select Authentication Type: SSH Private Key from Local File
+5. Username: adminuser
+6. Local File: upload ssh_key from stage 1
 
 ### Examples ###  
 > easy_starter
@@ -483,7 +486,7 @@ platform_fault_domain_count - number of fault daomins to use (see limitations be
 verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
 
 1. ```terraform output tls_private_key > ssh_key```
-2. Go to Azure console and select the VMSS instance you want to ssh to
+2. Go to Azure console and select the VMSS instance you want to ssh into
 3. Click on Connect->Bastion
 4. Select Authentication Type: SSH Private Key from Local File
 5. Username: adminuser
