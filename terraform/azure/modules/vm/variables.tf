@@ -37,7 +37,7 @@ variable "tenant_token" {
 variable "signup_domain" {
     description = "signup url to take vlzconnector from"  
     type = string
-    default = "signup.volumez.com/netapp"
+    default = "signup.volumez.com/ai"
 }
 
 ###############

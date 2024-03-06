@@ -8,7 +8,7 @@ variable "vlz_refresh_token" {
 
 variable "resource_prefix" {
   type    = string
-  default = "netapp-unf"
+  default = "ai-unf"
 }
 
 variable "target_resource_group_location" {

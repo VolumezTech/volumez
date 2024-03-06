@@ -1,4 +1,4 @@
-resource_prefix = "netapp-custom"
+resource_prefix = "ai-custom"
 resource_group_location = "eastus"
 zones = ["1"]
 media_node_type = "Standard_L8s_v3"

@@ -76,7 +76,7 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "this" {
       <<-EOF
             #!/bin/bash
 
-            echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] https://signup.volumez.com/netapp/ubuntu stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
+            echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] https://signup.volumez.com/ai/ubuntu stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
             sudo mkdir -p /opt/vlzconnector
             echo -n ${var.vlz_tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
             sudo apt update

@@ -8,7 +8,7 @@ variable "vlz_tenant_token" {
 
 variable "resource_prefix" {
   type    = string
-  default = "netapp"
+  default = "ai"
 }
 
 variable "resource_group_location" {
