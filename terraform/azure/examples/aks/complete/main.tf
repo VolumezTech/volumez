@@ -32,7 +32,7 @@ resource "azurerm_proximity_placement_group" "this" {
   resource_group_name = module.resource-group.rg_name
 
   tags = {
-    environment = "Volumez"
+    environment = "AI-Volumez"
   }
 
   depends_on = [
@@ -102,7 +102,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   tags = {
-    Owner = "Volumez"
+    Owner = "AI-Volumez"
   }
   depends_on = [azurerm_subnet_nat_gateway_association.this, azurerm_nat_gateway_public_ip_prefix_association.nat_ips]
 }

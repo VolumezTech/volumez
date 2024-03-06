@@ -42,7 +42,7 @@ resource "azurerm_proximity_placement_group" "this" {
   location            = local.create_rg ? module.resource-group[0].rg_location : var.target_resource_group_location
 
   tags = {
-    environment = "Volumez"
+    environment = "AI-Volumez"
   }
 
   depends_on = [

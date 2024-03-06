@@ -5,7 +5,7 @@
 
 ### 1.Create Resource Group (if set will create a new resource group for this VMSS)###
 resource_group_location = "eastus"
-resource_prefix = "volumez"
+resource_prefix = "ai-volumez"
 
 ### 2.Target Resource Group (create the VMSS in an existing resource group) ###
 target_resource_group_location = ""
@@ -25,7 +25,7 @@ platform_fault_domain_count = 5
 ### Network ###
 # if setting more than 1 zone, no proximity_placement_group will be created/used
 # if setting more than 1 zone and vmss_type="uniform", platform_fault_domain_count will be 5
-zones = ["1", "2"] 
+zones = ["1"] 
 target_proximity_placement_group_id = null
 target_virtual_network_name = ""
 target_subnet_id = null
@@ -33,11 +33,11 @@ deploy_bastion = false
 
 ### Media ###
 media_node_type = "Standard_L8s_v3"
-media_node_count = 20   
+media_node_count = 2
 media_image_publisher = "Canonical"
 media_image_offer = "0001-com-ubuntu-server-jammy" 
 media_image_sku = "22_04-lts-gen2"
 media_image_version = "latest"
 
-### Tenant Token (JWT Access Token) - Can retreive from Volumez portal under Developer Info ###
+### CSI Driver Token (Refresh Token) - Can retreive from Volumez portal under Developer Info ###
 vlz_refresh_token = ""

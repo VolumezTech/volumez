@@ -1,6 +1,6 @@
 # General Configuration
 region  = "us-east-1"
-resources_name_suffix = "volumez"
+resources_name_suffix = "ai-volumez"
 num_of_zones = 2
 create_fault_domain = true
 avoid_pg = true
