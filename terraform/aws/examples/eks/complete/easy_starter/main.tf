@@ -14,7 +14,7 @@ resource "random_string" "suffix" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source = "terraform-aws-modules/vpc/aws"
 
   name                 = "${var.cluster_owner}-vpc-${random_string.suffix.result}"
   cidr                 = "10.0.0.0/16"

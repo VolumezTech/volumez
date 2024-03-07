@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">=0.14"
+  required_version = ">=0.14"
 }
 
 resource "tls_private_key" "key" {
@@ -12,24 +12,10 @@ resource "aws_key_pair" "keypair" {
   public_key      = tls_private_key.key.public_key_openssh
 }
 
-resource "aws_secretsmanager_secret" "secret_key" {
-  name_prefix = var.name_prefix
-  description = var.description
-  tags = merge(
-    var.tags,
-    { "Name" : "${var.name_prefix}-key" }
-  )
-}
-
-resource "aws_secretsmanager_secret_version" "secret_key_value" {
-  secret_id     = aws_secretsmanager_secret.secret_key.id
-  secret_string = tls_private_key.key.private_key_pem
-
-  depends_on = [
-    aws_secretsmanager_secret.secret_key
-  ]
-}
-
-locals {
-  db_creds = aws_secretsmanager_secret_version.secret_key_value.secret_string
-}
+# ## Create the sensitive file for Private Key
+# resource "local_sensitive_file" "ec2-bastion-host-private-key" {
+#   depends_on      = [tls_private_key.key]
+#   content         = tls_private_key.key.private_key_pem
+#   filename        = "private_key.pem"
+#   file_permission = "0400"
+# }

@@ -1,12 +1,12 @@
 terraform {
-    required_version = ">=0.14"
+  required_version = ">=0.14"
 }
 
 resource "aws_internet_gateway" "this" {
   vpc_id = var.vpc_id
 
   tags = {
-    Name = "Volumez-igw"
+    Name      = "Volumez-igw"
     Terraform = "true"
   }
 }
