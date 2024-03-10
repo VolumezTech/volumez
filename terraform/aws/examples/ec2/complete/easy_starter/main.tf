@@ -14,8 +14,8 @@ module "ssh_key" {
 }
 
 module "vpc" {
-  source = "../../../../modules/vpc"
-  count  = local.create_vpc ? 1 : 0
+  source                = "../../../../modules/vpc"
+  count                 = local.create_vpc ? 1 : 0
   resources_name_suffix = var.resources_name_suffix
 }
 
@@ -34,8 +34,8 @@ module "route_table" {
 module "security_group" {
   source = "../../../../modules/security_group"
 
-  count  = local.create_vpc ? 1 : 0
-  vpc_id = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
+  count                 = local.create_vpc ? 1 : 0
+  vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   resources_name_suffix = var.resources_name_suffix
 
   depends_on = [
@@ -46,10 +46,9 @@ module "security_group" {
 module "subnets" {
   source = "../../../../modules/subnets"
 
-  count         = local.create_sn ? 1 : 0
-  create_pub_sn = local.deploy_bastion ? true : false
-  vpc_id        = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
-  num_of_zones  = var.num_of_zones
+  count                 = local.create_sn ? 1 : 0
+  vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
+  num_of_zones          = var.num_of_zones
   resources_name_suffix = var.resources_name_suffix
 
   depends_on = [
@@ -60,10 +59,10 @@ module "subnets" {
 module "nat" {
   source = "../../../../modules/nat"
 
-  count          = local.deploy_bastion ? 1 : 0
-  vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
-  pub_sn_id      = module.subnets[0].public_sn_id
-  private_sn_ids = module.subnets[0].private_sn_ids
+  count                 = local.create_sn ? 1 : 0
+  vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
+  pub_sn_id             = module.subnets[0].public_sn_id
+  private_sn_ids        = module.subnets[0].private_sn_ids
   resources_name_suffix = var.resources_name_suffix
 
 
@@ -180,7 +179,7 @@ module "bastion" {
   source = "../../../../modules/bastion"
 
   count                 = local.deploy_bastion ? 1 : 0
-  vpc_id                = module.vpc[0].vpc_id 
+  vpc_id                = module.vpc[0].vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   sg_list               = [module.security_group[0].sg_id]
   key_pair              = var.key_name == "" ? module.ssh_key.key_name : var.key_name

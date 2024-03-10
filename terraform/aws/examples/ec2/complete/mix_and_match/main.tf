@@ -13,8 +13,8 @@ module "ssh_key" {
 }
 
 module "vpc" {
-  source = "../../../../modules/vpc"
-  count  = local.create_vpc ? 1 : 0
+  source                = "../../../../modules/vpc"
+  count                 = local.create_vpc ? 1 : 0
   resources_name_suffix = var.resources_name_suffix
 }
 

@@ -37,15 +37,15 @@ variable "target_placement_group_id" {
 }
 
 variable "avoid_pg" {
-  type    = bool
+  type = bool
 }
 
-  variable "create_fault_domain" {
-    type    = bool
+variable "create_fault_domain" {
+  type = bool
 }
 
-  variable "deploy_bastion" {
-    type    = bool
+variable "deploy_bastion" {
+  type = bool
 }
 
 variable "subnet_cidr_list" {

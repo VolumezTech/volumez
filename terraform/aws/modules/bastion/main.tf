@@ -91,7 +91,7 @@ resource "aws_instance" "bastion" {
     network_interface_id = aws_network_interface.pub-bastion.id
     device_index         = 0
   }
-  
+
 
   tags = {
     Name      = "bastion-${var.resources_name_suffix}"

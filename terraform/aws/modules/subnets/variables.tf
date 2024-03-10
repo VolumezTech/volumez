@@ -11,10 +11,10 @@ variable "vpc_id" {
   description = "vpc id"
 }
 
-  variable "create_pub_sn" {
-    type    = bool
-    default = false
-  }
+variable "create_pub_sn" {
+  type    = bool
+  default = false
+}
 
 variable "num_of_zones" {
   description = "Number of Availability Zones"

@@ -12,10 +12,3 @@ resource "aws_key_pair" "keypair" {
   public_key      = tls_private_key.key.public_key_openssh
 }
 
-# ## Create the sensitive file for Private Key
-# resource "local_sensitive_file" "ec2-bastion-host-private-key" {
-#   depends_on      = [tls_private_key.key]
-#   content         = tls_private_key.key.private_key_pem
-#   filename        = "private_key.pem"
-#   file_permission = "0400"
-# }
