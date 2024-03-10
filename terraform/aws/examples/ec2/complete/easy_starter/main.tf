@@ -6,6 +6,7 @@ locals {
   create_vpc = var.target_vpc_id == "" ? true : false
   create_sn  = var.target_subnet_id == "" ? true : false
   create_pg  = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
+  deploy_bastion = var.target_subnet_id == "" ? var.deploy_bastion : false
 }
 
 module "ssh_key" {
@@ -46,7 +47,7 @@ module "subnets" {
   source = "../../../../modules/subnets"
 
   count         = local.create_sn ? 1 : 0
-  create_pub_sn = var.deploy_bastion ? true : false
+  create_pub_sn = local.deploy_bastion ? true : false
   vpc_id        = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones  = var.num_of_zones
   resources_name_suffix = var.resources_name_suffix
@@ -178,7 +179,7 @@ module "media_nodes" {
 module "bastion" {
   source = "../../../../modules/bastion"
 
-  count                 = var.deploy_bastion ? 1 : 0
+  count                 = local.deploy_bastion ? 1 : 0
   vpc_id                = module.vpc[0].vpc_id 
   pub_sn_id             = module.subnets[0].public_sn_id
   sg_list               = [module.security_group[0].sg_id]
