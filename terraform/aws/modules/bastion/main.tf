@@ -69,19 +69,10 @@ resource "aws_security_group_rule" "example" {
 }
 
 resource "aws_network_interface" "pub-bastion" {
-  subnet_id       = var.pub_sn_id
+  subnet_id       = var.pub_sn_id[0]
   security_groups = [aws_security_group.bastion_sg.id]
 }
 
-# resource "aws_network_interface_sg_attachment" "sg_attachment" {
-#   security_group_id    = aws_security_group.bastion_sg.id
-#   network_interface_id = aws_network_interface.pub-bastion.id
-
-#   depends_on = [
-#     aws_security_group.bastion_sg,
-#     aws_network_interface.pub-bastion
-#   ]
-# }
 
 resource "aws_instance" "bastion" {
   instance_type        = var.bastion_ec2_type

@@ -4,6 +4,6 @@ output "private_sn_ids" {
 }
 
 output "public_sn_id" {
-  value       = aws_subnet.public_sn.id
+  value       = aws_subnet.public_sn.*.id
   description = "id of public subnet"
 }

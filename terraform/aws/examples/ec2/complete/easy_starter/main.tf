@@ -60,7 +60,7 @@ module "subnets" {
 module "nat" {
   source = "../../../../modules/nat"
 
-  count          = local.create_sn ? 1 : 0
+  count          = local.deploy_bastion ? 1 : 0
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   pub_sn_id      = module.subnets[0].public_sn_id
   private_sn_ids = module.subnets[0].private_sn_ids
