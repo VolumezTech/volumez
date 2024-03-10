@@ -20,6 +20,7 @@ resource "aws_subnet" "private_sn" {
 }
 
 resource "aws_subnet" "public_sn" {
+  count                   = var.create_pub_sn ? 1 : 0
   vpc_id                  = var.vpc_id
   cidr_block              = var.public_subnet_cidr
   availability_zone       = local.availability_zone_list[0]

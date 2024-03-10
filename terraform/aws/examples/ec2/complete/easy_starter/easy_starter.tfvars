@@ -7,8 +7,7 @@ avoid_pg = true
 
 # Existing Network Configuration (Optional)
 target_vpc_id             = ""
-target_private_subnet_id  = ""
-target_public_subnet_id   = ""
+target_subnet_id          = ""
 target_security_group_id  = ""
 target_placement_group_id = ""
 

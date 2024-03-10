@@ -18,13 +18,7 @@ variable "target_vpc_id" {
   default     = ""
 }
 
-variable "target_private_subnet_id" {
-  description = "Subnet ID to launch the instance in"
-  type        = string
-  default     = ""
-}
-
-variable "target_public_subnet_id" {
+variable "target_subnet_id" {
   description = "Subnet ID to launch the instance in"
   type        = string
   default     = ""

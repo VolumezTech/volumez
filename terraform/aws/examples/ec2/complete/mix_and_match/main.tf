@@ -4,7 +4,7 @@ provider "aws" {
 
 locals {
   create_vpc = var.target_vpc_id == "" ? true : false
-  create_sn  = var.target_private_subnet_id == "" ? true : false
+  create_sn  = var.target_subnet_id == "" ? true : false
   create_pg  = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
 }
 
@@ -86,7 +86,7 @@ module "network_interfaces_app_nodes" {
   num_of_nodes   = var.app_node_count
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones   = var.num_of_zones
-  private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_private_subnet_id]
+  private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_subnet_id]
   env_sg_id      = local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id
 
 
@@ -104,7 +104,7 @@ module "network_interfaces_media_nodes" {
   num_of_nodes   = var.media_node_count
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones   = var.num_of_zones
-  private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_private_subnet_id]
+  private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_subnet_id]
   env_sg_id      = local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id
   start_ip       = (10 + var.app_node_count)
 
