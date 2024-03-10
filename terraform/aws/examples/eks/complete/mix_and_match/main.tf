@@ -106,7 +106,7 @@ module "eks" {
 
       # --==MYBOUNDARY==--\\
       # EOT
-      
+
       desired_size = var.media_node_count
       min_size     = var.media_node_count
       max_size     = var.media_node_count
@@ -137,7 +137,7 @@ module "eks" {
 
       # --==MYBOUNDARY==--\\
       # EOT
-      
+
       desired_size = var.app_node_count
       min_size     = var.app_node_count
       max_size     = var.app_node_count

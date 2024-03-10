@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">=0.14"
+  required_version = ">=0.14"
 }
 
 
@@ -14,8 +14,8 @@ locals {
 }
 
 resource "aws_placement_group" "env_pg" {
-    count           = var.num_of_zones
-    name            = "Volumez-pg-${count.index}-${random_string.suffix.result}"
-    strategy        = var.placement_group_strategy
-    partition_count = var.placement_group_strategy == "partition" ? local.partition_count : null
+  count           = var.num_of_zones
+  name            = "Volumez-pg-${count.index}-${random_string.suffix.result}"
+  strategy        = var.placement_group_strategy
+  partition_count = var.placement_group_strategy == "partition" ? local.partition_count : null
 }

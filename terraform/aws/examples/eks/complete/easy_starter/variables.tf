@@ -34,5 +34,5 @@ variable "media_node_ami_type" {
   validation {
     condition     = contains(["AL2_x86_64", "AL2_ARM_64"], var.media_node_ami_type)
     error_message = "Valid values for var: media_node_ami_type are (AL2_x86_64, AL2_ARM_64)."
-  } 
+  }
 }

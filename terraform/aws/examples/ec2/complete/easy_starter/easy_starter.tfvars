@@ -4,11 +4,12 @@ resources_name_suffix = "volumez"
 num_of_zones = 2
 create_fault_domain = true
 avoid_pg = true
+deploy_bastion = true
 
 # Existing Network Configuration (Optional)
-target_vpc_id = ""
-target_subnet_id = ""
-target_security_group_id = ""
+target_vpc_id             = ""
+target_subnet_id          = ""
+target_security_group_id  = ""
 target_placement_group_id = ""
 
 # Media Nodes

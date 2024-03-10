@@ -103,10 +103,13 @@ terraform destroy -var-file="easy_starter.tfvars"
 ```  
 
 ### SSH To Node ### 
+Create a key file from terraform output and name it
 ```
-terraform output -raw ssh_key_value > ssh_key
-chmod 400 ssh_key
-ssh -i ssh_key ec2-user@<host-public-dns>
+terraform output ssh_key_value > <ssh-key-name>
+```
+SSH to media/app node in private subnet via Bastion server
+```
+ssh -i <ssh-key-name> -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o "ProxyCommand=ssh -W %h:%p ec2-user@<bastion_public_dns> -i <ssh-key-name> -o StrictHostKeyChecking=no" ec2-user@<media/app_nodes_private_ips>
 ```
 
 ### Examples ###  

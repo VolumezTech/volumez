@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">=0.14"
+  required_version = ">=0.14"
 }
 
 resource "aws_vpc" "env_vpc" {
@@ -8,7 +8,7 @@ resource "aws_vpc" "env_vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
 
   tags = {
-    Name      = "Volumez-vpc"
+    Name      = "vpc-${var.resources_name_suffix}"
     Terraform = "true"
   }
 }
