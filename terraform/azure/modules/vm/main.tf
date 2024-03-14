@@ -30,6 +30,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   network_interface_ids = [
     element(azurerm_network_interface.this.*.id, count.index),
   ]
+  availability_set_id = var.availability_set_id
 
   os_disk {
     caching              = "ReadWrite"
@@ -52,5 +53,5 @@ resource "azurerm_linux_virtual_machine" "this" {
     azurerm_network_interface.this
   ]
 
-  custom_data = base64encode(templatefile("../../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, signup_domain = var.signup_domain }))
+  custom_data = base64encode(templatefile("../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, signup_domain = var.signup_domain }))
 }

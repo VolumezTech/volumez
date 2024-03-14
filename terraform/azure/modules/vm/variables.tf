@@ -29,6 +29,11 @@ variable "proximity_pg_group_list" {
   type = list(any)
 }
 
+variable "availability_set_id" {
+  type = string
+  
+}
+
 variable "tenant_token" {
     description = "Tenant token to access Cognito and pull the connector"
     type        = string

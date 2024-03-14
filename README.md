@@ -26,6 +26,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)
 * [Azure VMSS](#vmss)
+* [Azure VMSS-AI](#vmss-ai)
 <br />
 <br />
 <br />
@@ -511,6 +512,94 @@ verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
 5. Username: adminuser
 6. Local File: upload ssh_key from stage 1
 
+
+
+## VMSS-AI
+---
+
+### Inputs ### 
+Mandatory:  
+1. Tenant Token (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+
+### Usage ###
+> Create with default values (you can also edit these values)
+```
+terraform init
+terraform apply -var-file="easy_starter.tfvars"
+```
+
+> Custom variables (edit easy_starter.tfvars if needed)  
+```
+# resource group
+resource_group_prefix   = "example-resource"
+resource_group_location = "East US"
+# bastion
+deploy_bastion                = true
+bastion_subnet_address_prefix = ["10.0.8.0/26"]
+# ssh
+ssh_username = "adminuser"
+# virtual network
+vnet_address_space = ["10.0.0.0/16"]
+subnet_count       = 8
+# Avilability set 
+availability_set_fault_domain_count  = 1
+availability_set_update_domain_count = 1
+# App VMSS
+app_vmss_instances          = 1
+app_vmss_instance_size      = "Standard_D64_v5"
+app_vmss_fault_domain_count = 1
+app_image_publisher         = "Canonical"
+app_image_offer             = "0001-com-ubuntu-server-focal"
+app_image_sku               = "20_04-lts"
+app_image_version           = "latest"
+# Media VM
+media_vm_count        = 8
+media_vm_size         = "Standard_L8s_v3"
+media_image_publisher = "Canonical"
+media_image_offer     = "0001-com-ubuntu-server-focal"
+media_image_sku       = "20_04-lts"
+media_image_version   = "latest"
+# Volumez
+tenant_token  = ""
+signup_domain = "signup.volumez.com"
+```
+
+> Destroy
+```
+terraform destroy -var-file="easy_starter.tfvars"
+```
+
+> Explaining the variables
+
+1. resource_group_prefix - Prefix for naming the resources that will be created by this Terraform
+2. resource_group_location - location to create resource group 
+3. deploy_bastion - Whether to deploy a bastion host for ssh access to the VM
+4. bastion_subnet_address_prefix - The address prefix for the subnet in which to deploy the bastion host
+5. ssh_username - The username for ssh access to the VM
+6. vnet_address_space - The address space that is used the virtual network
+7. subnet_count - The number of subnets to create in the virtual network
+8. availability_set_fault_domain_count - The number of fault domains for the availability set
+9. availability_set_update_domain_count - The number of update domains for the availability set
+10. app_vmss_instances - The number of instances to create in the application VMSS
+11. app_vmss_instance_size - The SKU of the application VMSS
+12. app_vmss_fault_domain_count - The number of fault domains for the application VMSS
+13. app_image_* - marketplace OS configuration block for app VMSS
+14. media_vm_count - The number of media VMs to create
+13. media_vm_size - The size of the media VM
+14. media_image_* - marketplace OS configuration block for media VM
+15. tenant_token - Tenant token to access Cognito and pull the connector (JWT Access Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info
+16. signup_domain - signup url to take vlzconnector from (defaults to signup.volumez.com)
+
+
+### SSH To Node ###
+verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
+
+1. ```terraform output ssh_key > ssh_key```
+2. Go to Azure console and select the VMSS instance you want to ssh into
+3. Click on Connect->Bastion
+4. Select Authentication Type: SSH Private Key from Local File
+5. Username: adminuser
+6. Local File: upload ssh_key from stage 1
 
 
 
