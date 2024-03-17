@@ -53,6 +53,18 @@ variable "media_shape" {
   default     = "VM.DenseIO.E4.Flex"
 }
 
+variable "media_memory_in_gbs" {
+  type        = number
+  description = "Memory in GBs"
+  default     = 128
+}
+
+variable "media_num_of_ocpus" {
+  type        = number
+  description = "Memory in GBs"
+  default     = 8
+}
+
 variable "media_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
@@ -72,6 +84,18 @@ variable "app_shape" {
   type        = string
   description = "Media Shape"
   default     = "VM.DenseIO.E4.Flex"
+}
+
+variable "app_memory_in_gbs" {
+  type        = number
+  description = "Memory in GBs"
+  default     = 128
+}
+
+variable "app_num_of_ocpus" {
+  type        = number
+  description = "Memory in GBs"
+  default     = 8
 }
 
 variable "app_num_of_instances" {

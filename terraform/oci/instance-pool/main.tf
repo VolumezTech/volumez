@@ -79,8 +79,8 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
       shape = var.media_shape
 
       shape_config {
-        memory_in_gbs = 128
-        ocpus = 8
+        memory_in_gbs = var.media_memory_in_gbs
+        ocpus = var.media_num_of_ocpus
       }
       
       source_details {
@@ -122,8 +122,8 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
       shape = var.app_shape
 
       shape_config {
-        memory_in_gbs = 128
-        ocpus = 8
+        memory_in_gbs = var.app_memory_in_gbs
+        ocpus = var.app_num_of_ocpus
       }
       
       source_details {
