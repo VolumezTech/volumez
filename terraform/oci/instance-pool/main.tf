@@ -65,18 +65,18 @@ resource "oci_core_subnet" "test_subnet" {
 }
 
 ### Compute
+# Media
 
-
-resource "oci_core_instance_configuration" "example_instance_configuration" {
+resource "oci_core_instance_configuration" "media_instance_configuration" {
   compartment_id = var.tenancy_ocid
-  display_name = "example_instance"
+  display_name = "media_instance"
 
   instance_details {
     instance_type = "compute"
     
     launch_details {
       compartment_id = var.tenancy_ocid
-      shape = "VM.DenseIO.E4.Flex"
+      shape = var.media_shape
 
       shape_config {
         memory_in_gbs = 128
@@ -86,7 +86,7 @@ resource "oci_core_instance_configuration" "example_instance_configuration" {
       source_details {
         source_type = "image"
         boot_volume_size_in_gbs = 60
-        image_id = var.image_id
+        image_id = var.media_image_id
       }
 
       metadata = {
@@ -97,12 +97,56 @@ resource "oci_core_instance_configuration" "example_instance_configuration" {
   }
 }
 
-resource "oci_core_instance_pool" "example_instance_pool" {
+resource "oci_core_instance_pool" "media_instance_pool" {
   compartment_id = var.tenancy_ocid
-  instance_configuration_id = oci_core_instance_configuration.example_instance_configuration.id
+  instance_configuration_id = oci_core_instance_configuration.media_instance_configuration.id
+  display_name = "media-instance-pool"
   placement_configurations {
     availability_domain = data.oci_identity_availability_domain.ad.name
     primary_subnet_id = oci_core_subnet.test_subnet.id
   }
-  size = var.num_of_instances
+  size = var.media_num_of_instances
+}
+
+# Application
+
+resource "oci_core_instance_configuration" "app_instance_configuration" {
+  compartment_id = var.tenancy_ocid
+  display_name = "app_instance"
+
+  instance_details {
+    instance_type = "compute"
+    
+    launch_details {
+      compartment_id = var.tenancy_ocid
+      shape = var.app_shape
+
+      shape_config {
+        memory_in_gbs = 128
+        ocpus = 8
+      }
+      
+      source_details {
+        source_type = "image"
+        boot_volume_size_in_gbs = 60
+        image_id = var.app_image_id
+      }
+
+      metadata = {
+        ssh_authorized_keys = tls_private_key.ssh_key.public_key_openssh
+        user_data = data.cloudinit_config.operator.rendered
+      }
+    }
+  }
+}
+
+resource "oci_core_instance_pool" "app_instance_pool" {
+  compartment_id = var.tenancy_ocid
+  instance_configuration_id = oci_core_instance_configuration.app_instance_configuration.id
+  display_name = "app-instance-pool"
+  placement_configurations {
+    availability_domain = data.oci_identity_availability_domain.ad.name
+    primary_subnet_id = oci_core_subnet.test_subnet.id
+  }
+  size = var.app_num_of_instances
 }

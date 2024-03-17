@@ -12,8 +12,9 @@ runcmd:
   - echo $idtoken > /opt/vlzconnector/dbg_idtoken
   - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"`
   - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
-  - sudo apt update | sudo tee /opt/update.log
-  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector| sudo tee /opt/install.log
+  - sudo apt update
+  - sudo apt update | sudo tee /opt/vlzconnector/update.log
+  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector| sudo tee /opt/vlzconnector/install.log
 
 # final_message: |
 #   cloud-init has finished
