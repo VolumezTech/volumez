@@ -40,14 +40,41 @@ variable "vlz_rest_apigw" {
 
 ### Media ###
 
-variable "image_id" {
+variable "media_image_id" {
   type        = string
   description = "Image OCID"
   #default = "ocid1.image.oc1.iad.aaaaaaaah4rpzimrmnqfaxcm2xe3hdtegn4ukqje66rgouxakhvkaxer24oa"
   default = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
 }
 
-variable "num_of_instances" {
+variable "media_shape" {
+  type        = string
+  description = "Media Shape"
+  default     = "VM.DenseIO.E4.Flex"
+}
+
+variable "media_num_of_instances" {
+  type        = number
+  description = "Number of instances to be created"
+  default     = 1
+}
+
+### App ###
+
+variable "app_image_id" {
+  type        = string
+  description = "Image OCID"
+  #default = "ocid1.image.oc1.iad.aaaaaaaah4rpzimrmnqfaxcm2xe3hdtegn4ukqje66rgouxakhvkaxer24oa"
+  default = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
+}
+
+variable "app_shape" {
+  type        = string
+  description = "Media Shape"
+  default     = "VM.DenseIO.E4.Flex"
+}
+
+variable "app_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
   default     = 1

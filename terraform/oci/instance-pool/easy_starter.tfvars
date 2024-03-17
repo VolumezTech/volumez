@@ -12,5 +12,11 @@ vlz_s3_path_to_conn = ""
 vlz_rest_apigw      = ""
 
 ### Media ###
-image_id         = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
-num_of_instances = 1
+media_image_id         = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
+media_num_of_instances = 1
+media_shape            = "VM.DenseIO.E4.Flex"
+
+### App ###
+app_image_id         = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
+app_num_of_instances = 1
+app_shape            = "VM.DenseIO.E4.Flex"
