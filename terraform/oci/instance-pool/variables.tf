@@ -3,6 +3,11 @@ variable "region" {
   default = "us-chicago-1"
 }
 
+variable "ad_number" {
+  type        = number
+  description = "Availability Domain Number"
+}
+
 variable "tenancy_ocid" {
   type        = string
   description = "value of the tenancy OCID"
@@ -68,7 +73,6 @@ variable "media_num_of_ocpus" {
 variable "media_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
-  default     = 1
 }
 
 ### App ###
@@ -101,5 +105,4 @@ variable "app_num_of_ocpus" {
 variable "app_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
-  default     = 1
 }

@@ -15,7 +15,7 @@ data "oci_identity_availability_domains" "ads" {
 
 data "oci_identity_availability_domain" "ad" {
   compartment_id = var.tenancy_ocid
-  ad_number      = 2
+  ad_number      = 3
 }
 
 ### SSH
