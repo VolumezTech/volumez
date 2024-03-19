@@ -1,5 +1,6 @@
 ### Networking ###
-region = "us-chicago-1"
+region    = "us-chicago-1"
+ad_number = 3
 
 ### Credentials ###
 tenancy_ocid        = ""
@@ -13,7 +14,7 @@ vlz_rest_apigw      = ""
 
 ### Media ###
 media_image_id         = "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla"
-media_num_of_instances = 1
+media_num_of_instances = 3
 media_shape            = "VM.DenseIO.E4.Flex"
 media_num_of_ocpus     = 8
 media_memory_in_gbs    = 128
