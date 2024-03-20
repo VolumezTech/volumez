@@ -597,7 +597,10 @@ verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
 
 ## Instance Pool
 ---
-
+### Path to Project ###
+```
+volumez/terraform/oci/instance-pool
+```
 ### Inputs (easy_starter.tfvars) ### 
 1. Networking  
   a. region    = Target Region (example: "us-chicago-1")  
