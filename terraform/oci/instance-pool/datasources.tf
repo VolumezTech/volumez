@@ -2,6 +2,15 @@ locals {
   operator_template = "${path.module}/cloudinit/deploy_connector.template.yaml"
 }
 
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = var.tenancy_ocid
+}
+
+data "oci_identity_availability_domain" "ad" {
+  compartment_id = var.tenancy_ocid
+  ad_number      = var.ad_number
+}
+
 data "cloudinit_config" "operator" {
   gzip          = true
   base64_encode = true

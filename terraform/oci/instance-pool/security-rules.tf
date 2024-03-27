@@ -1,0 +1,11 @@
+resource "oci_core_security_list" "volumez-sl" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_vcn.test_vcn.id
+  display_name   = "volumez-sl"
+
+  ingress_security_rules {
+    protocol  = "all"
+    source    = "10.0.0.0/24"
+    stateless = true
+  }
+}
