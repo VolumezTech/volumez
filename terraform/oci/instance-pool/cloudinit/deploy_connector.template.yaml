@@ -15,6 +15,9 @@ runcmd:
   - sudo apt update
   - sudo apt update | sudo tee /opt/vlzconnector/update.log
   - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector| sudo tee /opt/vlzconnector/install.log
+  - sudo iptables -P OUTPUT ACCEPT
+  - sudo iptables -P FORWARD ACCEPT
+  - sudo iptables -P INPUT ACCEPT
 
 # final_message: |
 #   cloud-init has finished
