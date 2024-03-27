@@ -18,6 +18,7 @@ runcmd:
   - sudo iptables -P OUTPUT ACCEPT
   - sudo iptables -P FORWARD ACCEPT
   - sudo iptables -P INPUT ACCEPT
+  - sudo iptables -F
 
 # final_message: |
 #   cloud-init has finished
