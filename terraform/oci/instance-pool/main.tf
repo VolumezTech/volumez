@@ -26,7 +26,7 @@ resource "oci_core_vcn" "test_vcn" {
   cidr_block     = "10.1.0.0/16"
   compartment_id = var.tenancy_ocid
   display_name   = "VolumezVcn-${random_string.deploy_id.result}"
-  dns_label      = "volumezvcn-${random_string.deploy_id.result}"
+  dns_label      = "volumezvcn"
 }
 
 resource "oci_core_internet_gateway" "test_internet_gateway" {
@@ -51,7 +51,7 @@ resource "oci_core_subnet" "test_subnet" {
   availability_domain = data.oci_identity_availability_domain.ad.name
   cidr_block          = "10.1.20.0/24"
   display_name        = "VolumezSubnet-${random_string.deploy_id.result}"
-  dns_label           = "volumezsubnet-${random_string.deploy_id.result}"
+  dns_label           = "volumezsubnet"
   security_list_ids   = [oci_core_vcn.test_vcn.default_security_list_id, oci_core_security_list.volumez-sl.id]
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_vcn.test_vcn.id
