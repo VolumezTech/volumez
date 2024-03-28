@@ -83,6 +83,9 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
         boot_volume_size_in_gbs = 60
         image_id                = var.media_image_id
       }
+    launch_options {
+      network_type = "VFIO"
+    }
 
       metadata = {
         ssh_authorized_keys = tls_private_key.ssh_key.public_key_openssh

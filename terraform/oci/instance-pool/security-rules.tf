@@ -5,7 +5,7 @@ resource "oci_core_security_list" "volumez-sl" {
 
   ingress_security_rules {
     protocol  = "all"
-    source    = "10.0.0.0/24"
+    source    = "10.0.0.0/8"
     stateless = true
   }
 }
