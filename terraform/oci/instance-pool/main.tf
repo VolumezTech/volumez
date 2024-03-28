@@ -134,6 +134,10 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
         image_id                = var.app_image_id
       }
 
+    launch_options {
+      network_type = "VFIO"
+    }
+
       metadata = {
         ssh_authorized_keys = tls_private_key.ssh_key.public_key_openssh
         user_data           = data.cloudinit_config.operator.rendered
