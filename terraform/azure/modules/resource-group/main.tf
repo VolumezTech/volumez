@@ -102,5 +102,30 @@ resource "azurerm_subnet_network_security_group_association" "this" {
   ]
 }
 
+resource "azurerm_public_ip_prefix" "this" {
+  name                = "pip-prefix-${var.resource_prefix}-${var.random_string}"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  prefix_length       = 30
+  zones               = ["1"]
+}
 
+resource "azurerm_nat_gateway" "this" {
+  name                = "nat-gateway-${var.resource_prefix}-${var.random_string}"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  sku_name            = "Standard"
+}
+
+resource "azurerm_nat_gateway_public_ip_prefix_association" "this" {
+  nat_gateway_id      = azurerm_nat_gateway.this.id
+  public_ip_prefix_id = azurerm_public_ip_prefix.this.id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "this" {
+  subnet_id      = azurerm_subnet.this.id
+  nat_gateway_id = azurerm_nat_gateway.this.id
+
+  depends_on = [ azurerm_subnet.this, azurerm_nat_gateway.this ]
+}
 
