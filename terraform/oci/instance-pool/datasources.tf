@@ -28,3 +28,25 @@ data "cloudinit_config" "operator" {
     )
   }
 }
+
+data "oci_core_instance_pool_instances" "app" {
+  compartment_id   = var.tenancy_ocid
+  instance_pool_id = oci_core_instance_pool.app_instance_pool.id
+}
+
+data "oci_core_instance" "app" {
+  instance_id = data.oci_core_instance_pool_instances.app.instances[0].id
+}
+
+data "oci_core_instance_pool_instances" "media" {
+  for_each = oci_core_instance_pool.media_instance_pool
+
+  compartment_id   = var.tenancy_ocid
+  instance_pool_id = each.value.id
+}
+
+data "oci_core_instance" "media" {
+  for_each = { for k, v in data.oci_core_instance_pool_instances.media : k => v.instances[0].id }
+
+  instance_id = each.value
+}

@@ -1,6 +1,6 @@
 resource "oci_core_security_list" "volumez-sl" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.test_vcn.id
+  vcn_id         = oci_core_vcn.vlz_vcn.id
   display_name   = "volumez-sl-${random_string.deploy_id.result}"
 
   ingress_security_rules {
