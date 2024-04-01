@@ -8,6 +8,11 @@ variable "ad_number" {
   description = "Availability Domain Number"
 }
 
+variable "subnet_cidr_block_list" {
+  type = list(string)
+  default = [ "10.1.20.0/24", "10.1.21.0/24" ]
+}
+
 variable "tenancy_ocid" {
   type        = string
   description = "value of the tenancy OCID"
