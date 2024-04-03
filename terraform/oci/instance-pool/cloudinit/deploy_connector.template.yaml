@@ -5,6 +5,7 @@ timezone: ${operator_timezone}
 
 runcmd:
   - set -e
+  - sudo systemctl stop unattended-upgrades
   - sudo apt-get install -y jq
   - sudo mkdir -p /opt/vlzconnector
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
@@ -13,14 +14,14 @@ runcmd:
   - echo $idtoken > /opt/vlzconnector/dbg_idtoken
   - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"`
   - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
-  - sudo apt update || sudo apt update
   - sudo apt update | sudo tee /opt/vlzconnector/update.log
   - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector | sudo tee /opt/vlzconnector/install.log
   - sudo iptables -P OUTPUT ACCEPT
   - sudo iptables -P FORWARD ACCEPT
   - sudo iptables -P INPUT ACCEPT
   - sudo iptables -F
-  - sudo ufw disable 
+  - sudo ufw disable
+  - sudo systemctl start unattended-upgrades
 
 # final_message: |
 #   cloud-init has finished
