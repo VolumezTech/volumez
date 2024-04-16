@@ -150,6 +150,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 
       launch_options {
         network_type = "VFIO"
+        
       }
 
       metadata = {
@@ -191,5 +192,40 @@ resource "oci_core_instance_pool" "app_instance_pool" {
 
   timeouts {
     create = "7m"
+  }
+}
+
+resource "null_resource" "app_secondary_vnic_coppy_script" {
+  count = local.secondary_vnic_config
+
+  depends_on = [ oci_core_instance_pool.app_instance_pool ]
+  provisioner "file" {
+    source = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
+    destination = "/tmp/secondary_vnic_config.sh"
+  }
+  connection {
+    type        = "ssh"
+    host        = data.oci_core_instance.app.public_ip
+    user        = "ubuntu"
+    private_key = tls_private_key.ssh_key.private_key_pem
+  }
+}
+
+resource "null_resource" "app_secondary_vnic_exec" {
+  count = local.secondary_vnic_config
+
+  depends_on = [ null_resource.app_secondary_vnic_coppy_script ]
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/secondary_vnic_config.sh",
+      "sudo /tmp/secondary_vnic_config.sh -c /tmp/secondary_vnic_config.sh > /tmp/debug.log 2>&1",
+    ]
+    connection {
+      type        = "ssh"
+      host        = data.oci_core_instance.app.public_ip
+      user        = "ubuntu"
+      private_key = tls_private_key.ssh_key.private_key_pem
+    }
   }
 }
