@@ -205,7 +205,7 @@ resource "null_resource" "app_secondary_vnic_coppy_script" {
   }
   connection {
     type        = "ssh"
-    host        = data.oci_core_instance.app.public_ip
+    host        = data.oci_core_instance.app_instance.public_ip
     user        = "ubuntu"
     private_key = tls_private_key.ssh_key.private_key_pem
   }
@@ -216,14 +216,18 @@ resource "null_resource" "app_secondary_vnic_exec" {
 
   depends_on = [ null_resource.app_secondary_vnic_coppy_script ]
 
+
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/secondary_vnic_config.sh",
-      "sudo /tmp/secondary_vnic_config.sh -c /tmp/secondary_vnic_config.sh > /tmp/debug.log 2>&1",
+      #"chmod +x /tmp/secondary_vnic_config.sh",
+      #"sudo /tmp/secondary_vnic_config.sh -c /tmp/secondary_vnic_config.sh > /tmp/debug.log 2>&1",
+      #"sudo /tmp/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /tmp/debug.log 2>&1",
+      "sudo ip addr add ${data.oci_core_private_ips.app_vnic2_ip[count.index].private_ips[0].ip_address}/24 brd 10.1.21.255 dev ens340np0 metric 100",
+      "sudo ip link set dev ens340np0 mtu 9000",
     ]
     connection {
       type        = "ssh"
-      host        = data.oci_core_instance.app.public_ip
+      host        = data.oci_core_instance.app_instance.public_ip
       user        = "ubuntu"
       private_key = tls_private_key.ssh_key.private_key_pem
     }
