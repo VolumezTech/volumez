@@ -13,16 +13,17 @@ func replaceMultiple(input string, replacements { *: string }) string => reduce(
 @secure()
 param adminPassword string
 param tenant_token string
-
-
-var nrAppVms = 1
-var nrMediaVms = 3
+param nrAppVms int
+param nrMediaVms int
+param deployBastion string
+param location string = resourceGroup().location
+var deployBastionBool = bool(deployBastion) 
 var sizeAppVm = 'Standard_D64_v5'
 var sizeMediaVm = 'Standard_L8as_v3'
 var projectName = 'volumezdemo'
 var snetName = 'snet-${projectName}-vms'
 var vnetName = 'vnet-${projectName}-services'
-var location = 'westeurope'
+
 
 var signup_domain = 'signup.volumez.com'
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -49,6 +50,7 @@ module demonetwork './demo-network.bicep' = {
     vnetName : vnetName
     location : location
     projectName : projectName
+    deployBastion : deployBastionBool
   }
 }
 
@@ -71,7 +73,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 /*
 #######################################################################################
 #
-#  Virtual Machines: app-vms 
+#  Virtual Machines: app-vms  + media-vms
 #
 #######################################################################################
 */
@@ -118,9 +120,10 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
     vmSize: sizeAppVm 
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: false
-    location: location
+    location : location
     encryptionAtHost: false
   }
+  dependsOn : [ demonetwork ]
 }]
 
 
@@ -169,9 +172,10 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: false
-    location: location
+    location : location
     encryptionAtHost: false
   }
+  dependsOn : [ demonetwork ]
 }]
 
 
