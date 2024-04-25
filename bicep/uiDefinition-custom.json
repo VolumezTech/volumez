@@ -141,10 +141,11 @@
 								"virtualNetwork": "Virtual network",
 								"subnets": "Subnets"
 							},
+
 							"newOrExisting": "existing",
 							"toolTip": {
-								"virtualNetwork": "Select your virtualNetwork",
-								"subnets": "Select your subnet"
+								"virtualNetwork": "Select your Existing VirtualNetwork",
+								"subnets": "Select your Existing subnet"
 							},
 							"constraints": {
 								"minAddressPrefixSize": "/16"
@@ -155,6 +156,7 @@
 							"subnets": {
 								"subnet1": {
 									"label": "Subnet for VM",
+							                "newOrExisting": "existing",
 									"constraints": {
 										"minAddressPrefixSize": "/24",
 										"minAddressCount": 12
