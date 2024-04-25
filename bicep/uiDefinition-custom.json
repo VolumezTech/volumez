@@ -1,0 +1,189 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+	"view": {
+		"kind": "Form",
+		"properties": {
+			"title": "Volumez demo on Azure",
+			"steps": [
+				{
+					"name": "basics",
+					"label": "Basics",
+					"elements": [
+						{
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": [
+                                    "microsoft.resources/resourcegroups"
+                                ]
+                            }
+                        },
+						{
+							"name": "adminPassword",
+							"type": "Microsoft.Common.PasswordBox",
+							"label": "Password for your volumezdemoUser"
+						},
+						{
+							"name": "tenant_token",
+							"type": "Microsoft.Common.TextBox",
+							"label": "You can find your tenant_token in the Volumez developer info"
+						},
+						{
+							"name": "rgName",
+							"type": "Microsoft.Common.TextBox",
+							"label": "ResourceGroup for your deployment"
+						},
+						{
+							"name": "nrAppVms",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Nr of Application VMS",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "1",
+									"value": "1"
+								  },
+								  {
+									"label": "2",
+									"value": "2"
+								  },
+								  {
+									"label": "3",
+									"value": "3"
+								  }
+								],
+								"required": true
+							  }
+						},
+						{
+							"name": "sizeAppVm",
+							"type": "Microsoft.Common.DropDown",
+							"label": "VM size App VM",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "Standard_D64_v5",
+									"value": "Standard_D64_v5"
+								  }
+								],
+								"required": true
+							  }
+						},
+						{
+							"name": "nrMediaVms",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Nr of Media VMS",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "3",
+									"value": "3"
+								  },
+								  {
+									"label": "5",
+									"value": "5"
+								  },
+								  {
+									"label": "7",
+									"value": "7"
+								  },
+								  {
+									"label": "9",
+									"value": "9"
+								  },
+								  {
+									"label": "11",
+									"value": "11"
+								  },
+								  {
+									"label": "13",
+									"value": "13"
+								  },
+								  {
+									"label": "15",
+									"value": "15"
+								  },
+								  {
+									"label": "17",
+									"value": "17"
+								  }
+								],
+								"required": true
+							  }
+
+						},
+						{
+							"name": "sizeMediaVm",
+							"type": "Microsoft.Common.DropDown",
+							"label": "VM size Media VM",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "Standard_L8as_v3",
+									"value": "Standard_L8as_v3"
+								  }
+								],
+								"required": true
+							  }
+						},
+						{
+							"name": "vnetCombo1",
+							"type": "Microsoft.Network.VirtualNetworkCombo",
+							"label": {
+								"virtualNetwork": "Virtual network",
+								"subnets": "Subnets"
+							},
+							"newOrExisting": "existing",
+							"toolTip": {
+								"virtualNetwork": "Select your virtualNetwork",
+								"subnets": "Select your subnet"
+							},
+							"constraints": {
+								"minAddressPrefixSize": "/16"
+							},
+							"options": {
+								"hideExisting": false
+							},
+							"subnets": {
+								"subnet1": {
+									"label": "Subnet for VM",
+									"constraints": {
+										"minAddressPrefixSize": "/24",
+										"minAddressCount": 12
+									}
+								}
+							},
+							"visible": true
+						}
+					]
+				}
+			]
+		},
+		"outputs": {
+			"parameters": {
+				"adminPassword": "[steps('basics').adminPassword]",
+				"tenant_token": "[steps('basics').tenant_token]",
+				"nrAppVms": "[steps('basics').nrAppVms]",
+				"sizeAppVm" : "[steps('basics').sizeAppVm]",
+				"nrMediaVms": "[steps('basics').nrMediaVms]",
+				"sizeMediaVm" : "[steps('basics').sizeMediaVm]",
+				"vnetName": "[steps('basics').vnetCombo1.name]",
+				"subnetName": "[steps('basics').vnetCombo1.subnets.subnet1.name]",
+				"location": "[steps('basics').resourceScope.location.name]",
+				"rgName": "[steps('basics').rgName]",
+				"rgNameNetwork": "[steps('basics').vnetCombo1.resourceGroup]"
+			},
+                        "kind": "ResourceGroup",
+                        "location": "[steps('basics').resourceScope.location.name]",
+                        "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+		}
+	}
+}
