@@ -1,22 +1,52 @@
 # Deploy Volumez demo to Azure
 
-The following demo uses the Bicep modules from the Microsoft Verified Modules github repo:
-https://github.com/Azure/bicep-registry-modules
+This repo demonstrates 2 deployment scenarios for your volumez environment on Azure:
+- Simple resourcegroup deployment with pre configured network and vms
+- Customized resourcegroup deployment where you can choose your vm size and choose an existing vnet and subnet.
+
+This demo uses Bicep modules from the [Azure Verified Modules](https://github.com/Azure/bicep-registry-modules) github repo.
+
+**Pre requisites**
+- an Account with volumez; you need this to get your Tenant token
+- a valid Azure subscription
+- a valid user account/ service principal for your Azure subscription  with contributor permissions on the existing resourcegroups
+
+## Simple resourcegroup deployment
+
+This is ideal if you simply like to get started with default parameters. Just select an existing resourcegroup, define a password and the amount of application VMS and media vms. The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
+
+![alt text](./documentation/standard.png)
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2FuiDefinition.json)
 
 
-## Bicep
+## Customized resourcegroup deployment
 
-Create an Azure ARM template with this command:
+If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an existing environment. Where you like to have the VMS in a seperate resource group, customize the size of your VMS and use and existing Virtual network.  The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
+
+![alt text](./documentation/customized.png)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2FuiDefinition-custom.json)
+
+## Customization instructions
+
+After customizing your bicep modules to your needs, you can do the following:
+
+### Create an Azure ARM template
+
+with this command:
 ```
 az bicep build --file demo.bicep --outfile azuredeploy.json
 ```
-Deploy direct via Bicep:
+
+### Deploy direct
+
 ```
 az deployment group create -g bicep --template-file demo.bicep  -n deploymentName1
 ```
 
+The uiDefinition files in this repository are customization files that help you with filling in the right parameters in the azure portal. Use [this](https://portal.azure.com/#view/Microsoft_Azure_CreateUIDef/FormSandboxBlade) tool to edit them or develop them yourself.
 
-The Bicep modules are converted to ARM templates and made available with the buttons below to give the Azure portal experience when deploying the resources:
+## Links
 
 | Description | Template |
 |---|---|
