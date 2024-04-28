@@ -18,7 +18,7 @@ media_node_type = "Standard_L8s_v3"  // VM type for media nodes
 media_node_count = 6  // Number of media nodes
 
 ###  Kubernetes ###
-k8s_version = "1.27"  // Version of Kubernetes
+k8s_version = "1.29"  // Version of Kubernetes
 deploy_bastion = false  // Deploy a bastion host
 
 

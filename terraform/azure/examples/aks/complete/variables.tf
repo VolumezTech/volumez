@@ -39,6 +39,7 @@ variable "deploy_bastion" {
 variable "k8s_version" {
   type        = string
   description = "Please enter the kubernetes version. For example: 1.24"
+  default     = "1.29"
 }
 
 variable "identity_type" {

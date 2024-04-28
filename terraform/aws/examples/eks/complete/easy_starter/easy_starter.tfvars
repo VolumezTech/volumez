@@ -1,5 +1,5 @@
 region              = "us-east-1"
-k8s_version         = "1.27"
+k8s_version         = "1.29"
 cluster_owner       = "volumez"
 media_node_count    = 6
 media_node_type     = "i3en.3xlarge"

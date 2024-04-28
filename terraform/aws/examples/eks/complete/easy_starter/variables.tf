@@ -6,7 +6,7 @@ variable "region" {
 variable "k8s_version" {
   type        = string
   description = "Kubernetes version"
-  default     = "1.26"
+  default     = "1.29"
 }
 
 variable "cluster_owner" {
