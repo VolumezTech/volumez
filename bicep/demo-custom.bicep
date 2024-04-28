@@ -35,26 +35,6 @@ var cloudInitScript = replaceMultiple(script, {
 /*
 #######################################################################################
 #
-#  Resource Group
-#
-#######################################################################################
-*/
-
-/*
-module rg 'br/public:avm/res/resources/resource-group:0.2.3' = {
-  scope: subscription()
-
-  name: 'resourceGroupDeployment'
-  params: {
-    name: rgName
-    location: location
-  }
-}
-*/
-
-/*
-#######################################################################################
-#
 #  Proximity Placement Group 
 #
 #######################################################################################

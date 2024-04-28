@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "18432164691110573199"
+      "templateHash": "14273940214866612587"
     }
   },
   "functions": [
@@ -5307,6 +5307,9 @@
           },
           "availabilityZone": {
             "value": 0
+          },
+          "customData": {
+            "value": "[variables('cloudInitScript')]"
           },
           "proximityPlacementGroupResourceId": {
             "value": "[reference('proximityPlacementGroup').outputs.resourceId.value]"

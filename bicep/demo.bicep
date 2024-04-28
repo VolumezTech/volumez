@@ -85,6 +85,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
     adminUsername: '${projectName}User'
     adminPassword: adminPassword
     availabilityZone: 0
+    customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
 
     imageReference: {
