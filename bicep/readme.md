@@ -22,23 +22,26 @@ This is ideal if you simply like to get started with default parameters. Just se
 
 ## Customized resourcegroup deployment
 
-If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an existing environment; where you like to have the VMS in a seperate resource group, customize the size of your VMS and use an  existing Virtual network.  The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
+If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an **existing** environment; where you like to have the VMS in a seperate resource group, customize the size of your VMS and use an **existing** Virtual network.  The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info. Please note that the creation of a new Resource Group or New Virtual Network is **NOT** supported in this scenario.
 
 ![alt text](./documentation/customized.png)
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2FuiDefinition-custom.json)
 
 ## Customization instructions
 
-After customizing your bicep modules to your needs, you can do the following:
+### With Azure ARM template
 
-### Create an Azure ARM template
+You can convert the bicep code here into arm code with this command:
 
-with this command:
 ```
 az bicep build --file demo.bicep --outfile azuredeploy.json
 ```
 
-### Deploy direct
+You can edit and change the ARM temlate according to your desire and deploy the code using the portal or cli.
+
+### With bicep code
+
+You can also change the bicep code directly and then deploy the bicep code directly: 
 
 ```
 az deployment group create -g bicep --template-file demo.bicep  -n deploymentName1
