@@ -22,6 +22,15 @@ param sizeMediaVm string = 'Standard_L8as_v3'
 param rgName string
 param rgNameNetwork string
 
+var vmAppOffer = 'RHEL'
+var vmMediaOffer = 'RHEL'
+var vmAppPublisher = 'RedHat'
+var vmMediaPublisher = 'RedHat'
+var vmAppSku = '8_7'
+var vmMediaSku = '8_7'
+var vmAppVersion = 'latest'
+var vmMediaVersion = 'latest'
+
 var projectName = 'volumezdemo'
 var signup_domain = 'signup.volumez.com'
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -67,12 +76,11 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
-
     imageReference: {
-      offer: 'RHEL'
-      publisher: 'RedHat'
-      sku: '8_7'
-      version: 'latest'
+      offer: vmAppOffer
+      publisher: vmAppPublisher
+      sku: vmAppSku
+      version: vmAppVersion
     }
     name: 'vm-${projectName}-app${deployment().name}${i}'
     nicConfigurations: [
@@ -117,12 +125,11 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
-
     imageReference: {
-      offer: 'RHEL'
-      publisher: 'RedHat'
-      sku: '8_7'
-      version: 'latest'
+      offer: vmMediaOffer
+      publisher: vmMediaPublisher
+      sku: vmMediaSku
+      version: vmMediaVersion
     }
     name: 'vm-${projectName}-media${deployment().name}${i}'
     nicConfigurations: [

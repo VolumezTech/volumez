@@ -59,19 +59,27 @@
 						},
 						{
 							"name": "sizeAppVm",
-							"type": "Microsoft.Common.DropDown",
-							"label": "VM size App VM",
-							"multiselect": false,
-							"multiLine": false,
+							"type": "Microsoft.Compute.SizeSelector",
+							"label": "Size App VM",
+							"toolTip": "Pick the size of your application VM's",
+							"recommendedSizes": [
+							  "Standard_D64_v5"
+							],
 							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "Standard_D64_v5",
-									"value": "Standard_D64_v5"
-								  }
-								],
-								"required": true
-							  }
+							  "allowedSizes": [],
+							  "excludedSizes": []
+							},
+							"options": {
+							  "hideDiskTypeFilter": false
+							},
+							"osPlatform": "Linux",
+							"imageReference": {
+							  "publisher": "RedHat",
+							  "offer": "RHEL",
+							  "sku": "8.7"
+							},
+							"visible": true,
+							"required": true
 						},
 						{
 							"name": "nrMediaVms",
@@ -120,19 +128,40 @@
 						},
 						{
 							"name": "sizeMediaVm",
-							"type": "Microsoft.Common.DropDown",
-							"label": "VM size Media VM",
-							"multiselect": false,
-							"multiLine": false,
+							"type": "Microsoft.Compute.SizeSelector",
+							"label": "Size Media VM",
+							"toolTip": "Pick the size of your media VM's",
+							"recommendedSizes": [
+							  "Standard_L8as_v3"
+							],
 							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "Standard_L8as_v3",
-									"value": "Standard_L8as_v3"
-								  }
-								],
-								"required": true
-							  }
+							  "allowedSizes": [
+								"Standard_L8as_v3",
+								"Standard_L8s_v3",
+								"Standard_L16as_v3",
+								"Standard_L16s_v3",
+								"Standard_L32as_v3",
+								"Standard_L32s_v3",
+								"Standard_L48as_v3",
+								"Standard_L48s_v3",
+								"Standard_L64as_v3",
+								"Standard_L64s_v3",
+								"Standard_L80as_v3",
+								"Standard_L80s_v3"
+							],
+							  "excludedSizes": []
+							},
+							"options": {
+							  "hideDiskTypeFilter": false
+							},
+							"osPlatform": "Linux",
+							"imageReference": {
+							  "publisher": "RedHat",
+							  "offer": "RHEL",
+							  "sku": "8.7"
+							},
+							"visible": true,
+							"required": true
 						},
 						{
 							"name": "vnetCombo1",
@@ -141,26 +170,26 @@
 								"virtualNetwork": "Virtual network",
 								"subnets": "Subnets"
 							},
-
 							"newOrExisting": "existing",
 							"toolTip": {
-								"virtualNetwork": "Select your Existing VirtualNetwork",
+								"virtualNetwork": "Select your Existing virtualNetwork",
 								"subnets": "Select your Existing subnet"
 							},
 							"constraints": {
 								"minAddressPrefixSize": "/16"
 							},
 							"options": {
+								"newOrExisting" : "existing",
 								"hideExisting": false
 							},
 							"subnets": {
 								"subnet1": {
 									"label": "Subnet for VM",
-							                "newOrExisting": "existing",
 									"constraints": {
 										"minAddressPrefixSize": "/24",
 										"minAddressCount": 12
-									}
+									},
+									"newOrExisting" : "existing"
 								}
 							},
 							"visible": true
@@ -189,3 +218,4 @@
 		}
 	}
 }
+

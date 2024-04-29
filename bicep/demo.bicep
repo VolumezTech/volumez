@@ -24,6 +24,15 @@ var projectName = 'volumezdemo'
 var snetName = 'snet-${projectName}-vms'
 var vnetName = 'vnet-${projectName}-services'
 
+var vmAppOffer = 'RHEL'
+var vmMediaOffer = 'RHEL'
+var vmAppPublisher = 'RedHat'
+var vmMediaPublisher = 'RedHat'
+var vmAppSku = '8_7'
+var vmMediaSku = '8_7'
+var vmAppVersion = 'latest'
+var vmMediaVersion = 'latest'
+
 
 var signup_domain = 'signup.volumez.com'
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -89,10 +98,10 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
 
     imageReference: {
-      offer: 'RHEL'
-      publisher: 'RedHat'
-      sku: '8_7'
-      version: 'latest'
+      offer: vmAppOffer
+      publisher: vmAppPublisher
+      sku: vmAppSku
+      version: vmAppVersion
     }
     name: 'vm-${projectName}-app${i}'
     nicConfigurations: [
@@ -140,10 +149,10 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
 
     imageReference: {
-      offer: 'RHEL'
-      publisher: 'RedHat'
-      sku: '8_7'
-      version: 'latest'
+      offer: vmMediaOffer
+      publisher: vmMediaPublisher
+      sku: vmMediaSku
+      version: vmMediaVersion
     }
     name: 'vm-${projectName}-media${i}'
     nicConfigurations: [
