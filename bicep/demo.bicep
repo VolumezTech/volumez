@@ -74,7 +74,7 @@ module demonetwork './demo-network.bicep' = {
 module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-group:0.1.2' = {
   name: 'proximityPlacementGroupDeployment'
   params: {
-    name: 'ppg-${projectName}'
+    name: 'ppg-${projectName}-${deployment().name}'
     location: location
   }
 }
@@ -89,7 +89,8 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrAppVms): {
 
-  name: 'vmDeployment-app${i}'
+
+  name: 'vmDeployment-app${deployment().name}${i}'
   params: {
     adminUsername: '${projectName}User'
     adminPassword: adminPassword
@@ -103,7 +104,8 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       sku: vmAppSku
       version: vmAppVersion
     }
-    name: 'vm-${projectName}-app${i}'
+
+    name: 'vm-${projectName}-app${deployment().name}${i}'
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -140,7 +142,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrMediaVms): {
 
-  name: 'vmDeployment-media${i}'
+  name: 'vmDeployment-media${deployment().name}${i}'
   params: {
     adminUsername: '${projectName}User'
     adminPassword: adminPassword
@@ -154,7 +156,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       sku: vmMediaSku
       version: vmMediaVersion
     }
-    name: 'vm-${projectName}-media${i}'
+    name: 'vm-${projectName}-media${deployment().name}${i}'
     nicConfigurations: [
       {
         ipConfigurations: [
