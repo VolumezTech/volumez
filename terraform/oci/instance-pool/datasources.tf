@@ -53,6 +53,7 @@ data "oci_core_vnic_attachments" "app_vnic2_attachments" {
   }
 }
 
+#VNIC object by OCID
 data "oci_core_vnic" "app_vnic2_id" {
   count = local.secondary_vnic_config
 
