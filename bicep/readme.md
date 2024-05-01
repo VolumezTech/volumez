@@ -14,6 +14,7 @@ This demo uses Bicep modules from the [Azure Verified Modules](https://github.co
 ## Simple resourcegroup deployment
 
 This is ideal if you simply like to get started with default parameters. Just select an existing resourcegroup, define a password and the amount of application VMS and media vms. The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
+If you like to login to your VM, use the Bastion to connect; the default username is: volumezdemoUser.
 
 ![alt text](./documentation/standard.png)
 
@@ -22,7 +23,11 @@ This is ideal if you simply like to get started with default parameters. Just se
 
 ## Customized resourcegroup deployment
 
-If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an **existing** environment; where you like to have the VMS in a seperate resource group, customize the size of your VMS and use an **existing** Virtual network.  The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info. Please note that the creation of a new Resource Group or New Virtual Network is **NOT** supported in this scenario.
+If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an **existing** environment; where you like to have the VMS in a seperate resource group, customize the size of your VMS and use an **existing** Virtual network.  The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
+
+If you like to login to your VM, use the Bastion to connect; the default username is: volumezdemoUser
+
+Please note that the creation of a new Resource Group or New Virtual Network is **NOT** supported in this scenario.
 
 ![alt text](./documentation/customized.png)
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2FuiDefinition-custom.json)
