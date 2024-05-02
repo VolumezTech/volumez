@@ -1,5 +1,4 @@
-func replaceMultiple(input string, replacements { *: string }) string => reduce(
-  items(replacements), input, (cur, next) => replace(string(cur), next.key, next.value))
+import { replaceMultiple } from './lib/util.bicep'
 
 /*
 #######################################################################################
@@ -9,7 +8,7 @@ func replaceMultiple(input string, replacements { *: string }) string => reduce(
 #######################################################################################
 */
 
-uses './variables/param-demo-normal.bicep'
+using './variables/param-demo-normal.bicep'
 
 param rgName string
 param rgNameNetwork string
