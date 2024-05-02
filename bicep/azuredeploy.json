@@ -6,13 +6,72 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "6925559855166630629"
+      "templateHash": "7712500839963702343"
     }
   },
   "functions": [
     {
+      "namespace": "_2",
+      "members": {
+        "allSizes": {
+          "parameters": [],
+          "output": {
+            "type": "object",
+            "value": {
+              "small": {
+                "nrAppVms": 1,
+                "nrMediaVms": 2,
+                "sizeAppVm": "Standard_D16_v5",
+                "sizeMediaVm": "Standard_L8as_v3"
+              },
+              "medium": {
+                "nrAppVms": 1,
+                "nrMediaVms": 6,
+                "sizeAppVm": "Standard_D64_v5",
+                "sizeMediaVm": "Standard_L8as_v3"
+              },
+              "large": {
+                "nrAppVms": 1,
+                "nrMediaVms": 12,
+                "sizeAppVm": "Standard_D64_v5",
+                "sizeMediaVm": "Standard_L64s_v3"
+              },
+              "xlarge": {
+                "nrAppVms": 1,
+                "nrMediaVms": 24,
+                "sizeAppVm": "Standard_D64_v5",
+                "sizeMediaVm": "Standard_L64as_v3"
+              }
+            }
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "configs/t-shirts.bicep"
+            }
+          }
+        }
+      }
+    },
+    {
       "namespace": "__bicep",
       "members": {
+        "getSize": {
+          "parameters": [
+            {
+              "type": "string",
+              "name": "sizeInput"
+            }
+          ],
+          "output": {
+            "type": "object",
+            "value": "[_2.allSizes().sizeInput]"
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "configs/t-shirts.bicep"
+            }
+          }
+        },
         "replaceMultiple": {
           "parameters": [
             {
@@ -48,13 +107,10 @@
     "tenant_token": {
       "type": "string"
     },
-    "nrAppVms": {
-      "type": "int"
-    },
-    "nrMediaVms": {
-      "type": "int"
-    },
     "deployBastion": {
+      "type": "string"
+    },
+    "deploySize": {
       "type": "string"
     },
     "location": {
@@ -66,6 +122,7 @@
     "script": "#!/bin/bash\n\ntenant_token={0}\nsignup_domain={1} \n\n\npackage_not_found () {\n    echo \"<><><> Package not Found for $1 - Exiting\" \n    exit 1\n}\n\nfailed_vlzconnector_install () {\n    echo \"<><><> Failed to install vlzconnector on $1 - Exiting\"\n    exit 1\n}\n\nif [ -f /etc/os-release ]; then\n    # freedesktop.org and systemd\n    . /etc/os-release\n    OS=$NAME\n    VER=$VERSION_ID\nelif type lsb_release >/dev/null 2>&1; then\n    # linuxbase.org\n    OS=$(lsb_release -si)\n    VER=$(lsb_release -sr)\nelif [ -f /etc/lsb-release ]; then\n    # For some versions of Debian/Ubuntu without lsb_release command\n    . /etc/lsb-release\n    OS=$DISTRIB_ID\n    VER=$DISTRIB_RELEASE\nelif [ -f /etc/debian_version ]; then\n    # Older Debian/Ubuntu/etc.\n    OS=Debian\n    VER=$(cat /etc/debian_version)\nfi\n\necho \"<><><> Running connector deploy on $OS\"\n\nif [[ \"$OS\" = \"Ubuntu\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo apt update\n    sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Amazon Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"SLES\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Red Hat Enterprise Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS\nelse\n    echo \"$OS - is not supported - exiting\"\n    exit 1\nfi\n\necho \"<><><> Finished Connector install on $OS!\"\n",
     "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('_1.signup_domain')))]",
     "deployBastionBool": "[bool(parameters('deployBastion'))]",
+    "deploy_size": "[__bicep.getSize(parameters('deploySize'))]",
     "_1.projectName": "volumezdemo",
     "_1.signup_domain": "signup.volumez.com",
     "_1.sizeAppVm": "Standard_D64_v5",
@@ -5301,11 +5358,11 @@
     "appVirtualMachine": {
       "copy": {
         "name": "appVirtualMachine",
-        "count": "[length(range(1, parameters('nrAppVms')))]"
+        "count": "[length(range(1, variables('deploy_size').nrAppVms))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-app{0}{1}', deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]",
+      "name": "[format('vmDeployment-app{0}{1}', deployment().name, range(1, variables('deploy_size').nrAppVms)[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5336,7 +5393,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]"
+            "value": "[format('vm-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
           },
           "nicConfigurations": {
             "value": [
@@ -5344,14 +5401,14 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-app{1}', variables('_1.projectName'), range(1, parameters('nrAppVms'))[copyIndex()])]",
+                    "name": "[format('ipc-{0}-app{1}', variables('_1.projectName'), range(1, variables('deploy_size').nrAppVms)[copyIndex()])]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "1"
                     ]
                   }
                 ],
-                "nicSuffix": "[format('-nic{0}', range(1, parameters('nrAppVms'))[copyIndex()])]"
+                "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
               }
             ]
           },
@@ -5368,7 +5425,7 @@
             "value": "Linux"
           },
           "vmSize": {
-            "value": "[variables('_1.sizeAppVm')]"
+            "value": "[variables('deploy_size').sizeAppVm]"
           },
           "configurationProfile": {
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
@@ -10395,11 +10452,11 @@
     "mediaVirtualMachine": {
       "copy": {
         "name": "mediaVirtualMachine",
-        "count": "[length(range(1, parameters('nrMediaVms')))]"
+        "count": "[length(range(1, variables('deploy_size').nrMediaVms))]"
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-media{0}{1}', deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]",
+      "name": "[format('vmDeployment-media{0}{1}', deployment().name, range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -10430,7 +10487,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-media{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]"
+            "value": "[format('vm-{0}-media{1}{2}', variables('_1.projectName'), deployment().name, range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
           },
           "nicConfigurations": {
             "value": [
@@ -10438,14 +10495,14 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-media{1}', variables('_1.projectName'), range(1, parameters('nrMediaVms'))[copyIndex()])]",
+                    "name": "[format('ipc-{0}-media{1}', variables('_1.projectName'), range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "1"
                     ]
                   }
                 ],
-                "nicSuffix": "[format('-nic{0}', range(1, parameters('nrMediaVms'))[copyIndex()])]"
+                "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
               }
             ]
           },
@@ -10462,7 +10519,7 @@
             "value": "Linux"
           },
           "vmSize": {
-            "value": "[variables('_1.sizeMediaVm')]"
+            "value": "[variables('deploy_size').sizeMediaVm]"
           },
           "configurationProfile": {
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"

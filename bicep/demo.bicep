@@ -1,11 +1,10 @@
 import { replaceMultiple } from './lib/util.bicep'
 import * as var from './configs/param-demo-normal.bicep'
+import { getSize } from './configs/t-shirts.bicep'
 
 @secure()
 param adminPassword string
 param tenant_token string
-param nrAppVms int
-param nrMediaVms int
 param deployBastion string
 param deploySize string
 param location string = resourceGroup().location
@@ -16,6 +15,8 @@ var cloudInitScript = replaceMultiple(script, {
   '{1}': var.signup_domain
 })
 var deployBastionBool = bool(deployBastion)
+var deploy_size = getSize(deploySize)
+
 
 
 /*
@@ -62,7 +63,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 #######################################################################################
 */
 
-module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrAppVms): {
+module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
 
 
   name: 'vmDeployment-app${deployment().name}${i}'
@@ -104,7 +105,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       caching: 'ReadWrite' 
     }
     osType: 'Linux'
-    vmSize: var.sizeAppVm 
+    vmSize: deploy_size.sizeAppVm 
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: false
     location : location
@@ -115,7 +116,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 
 
-module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrMediaVms): {
+module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
 
   name: 'vmDeployment-media${deployment().name}${i}'
   params: {
@@ -155,8 +156,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       caching: 'ReadWrite' 
     }
     osType: 'Linux'
-    vmSize: var.sizeMediaVm
-    // Non-required parameters
+    vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: false
     location : location

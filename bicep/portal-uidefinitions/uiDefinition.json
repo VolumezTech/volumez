@@ -48,104 +48,34 @@
 								"required": true
 							  }		
 						},
-                                                {
-                                                        "name": "deploySize",
-                                                        "type": "Microsoft.Common.DropDown",
-                                                        "label": "Size of your demo",
-                                                        "multiselect": false,
-                                                        "multiLine": false,
-                                                        "constraints": {
-                                                                "allowedValues": [
-                                                                  {
-                                                                        "label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8as_v3",
-                                                                        "value": "Small"
-                                                                  },
-                                                                  {
-                                                                        "label": "Medium: App = 1 x Standard_D64_v5, Media = 6 X Standard_L8as_v3",
-                                                                        "value": "Medium"
-                                                                  },
-                                                                  {
-                                                                        "label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L64s_v3",
-                                                                        "value": "Large"
-                                                                  },
-                                                                  {
-                                                                        "label": "Extra Large: App = 1 x Standard_D64_v5, Media = 24 X Standard_L64as_v3",
-                                                                        "value": "XLarge"
-                                                                  }
-                                                                ],
-                                                                "required": true
-                                                          }
-                                                },
 						{
-							"name": "nrAppVms",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Nr of Application VMS",
-							"multiselect": false,
-							"multiLine": false,
-							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "1",
-									"value": "1"
-								  },
-								  {
-									"label": "2",
-									"value": "2"
-								  },
-								  {
-									"label": "3",
-									"value": "3"
-								  }
-								],
-								"required": true
-							  }
-						},
-						{
-							"name": "nrMediaVms",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Nr of Media VMS",
-							"multiselect": false,
-							"multiLine": false,
-							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "3",
-									"value": "3"
-								  },
-								  {
-									"label": "5",
-									"value": "5"
-								  },
-								  {
-									"label": "7",
-									"value": "7"
-								  },
-								  {
-									"label": "9",
-									"value": "9"
-								  },
-								  {
-									"label": "11",
-									"value": "11"
-								  },
-								  {
-									"label": "13",
-									"value": "13"
-								  },
-								  {
-									"label": "15",
-									"value": "15"
-								  },
-								  {
-									"label": "17",
-									"value": "17"
-								  }
-								],
-								"required": true
-							  }
-
+								"name": "deploySize",
+								"type": "Microsoft.Common.DropDown",
+								"label": "Size of your demo",
+								"multiselect": false,
+								"multiLine": false,
+								"constraints": {
+										"allowedValues": [
+											{
+												"label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8as_v3",
+												"value": "small"
+											},
+											{
+												"label": "Medium: App = 1 x Standard_D64_v5, Media = 6 X Standard_L8as_v3",
+												"value": "medium"
+											},
+											{
+												"label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L64s_v3",
+												"value": "large"
+											},
+											{
+												"label": "Extra Large: App = 1 x Standard_D64_v5, Media = 24 X Standard_L64as_v3",
+												"value": "xlarge"
+											}
+										],
+										"required": true
+									}
 						}
-
 					]
 				}
 			]
@@ -154,8 +84,6 @@
 			"parameters": {
 				"adminPassword": "[steps('basics').adminPassword]",
 				"tenant_token": "[steps('basics').tenant_token]",
-				"nrAppVms": "[steps('basics').nrAppVms]",
-				"nrMediaVms": "[steps('basics').nrMediaVms]",
 				"deployBastion": "[steps('basics').deployBastion]",
 				"deploySize": "[steps('basics').deploySize]",
 				"location": "[steps('basics').resourceScope.location.name]"
