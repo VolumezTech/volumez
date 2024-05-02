@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "11961990106949939086"
+      "templateHash": "17057864756098020015"
     }
   },
   "functions": [
@@ -31,6 +31,11 @@
           "output": {
             "type": "string",
             "value": "[reduce(items(parameters('replacements')), parameters('input'), lambda('cur', 'next', replace(string(lambdaVariables('cur')), lambdaVariables('next').key, lambdaVariables('next').value)))]"
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "lib/util.bicep"
+            }
           }
         }
       }
@@ -74,18 +79,22 @@
     }
   },
   "variables": {
-    "vmAppOffer": "RHEL",
-    "vmMediaOffer": "RHEL",
-    "vmAppPublisher": "RedHat",
-    "vmMediaPublisher": "RedHat",
-    "vmAppSku": "8_7",
-    "vmMediaSku": "8_7",
-    "vmAppVersion": "latest",
-    "vmMediaVersion": "latest",
-    "projectName": "volumezdemo",
-    "signup_domain": "signup.volumez.com",
     "script": "#!/bin/bash\n\ntenant_token={0}\nsignup_domain={1} \n\n\npackage_not_found () {\n    echo \"<><><> Package not Found for $1 - Exiting\" \n    exit 1\n}\n\nfailed_vlzconnector_install () {\n    echo \"<><><> Failed to install vlzconnector on $1 - Exiting\"\n    exit 1\n}\n\nif [ -f /etc/os-release ]; then\n    # freedesktop.org and systemd\n    . /etc/os-release\n    OS=$NAME\n    VER=$VERSION_ID\nelif type lsb_release >/dev/null 2>&1; then\n    # linuxbase.org\n    OS=$(lsb_release -si)\n    VER=$(lsb_release -sr)\nelif [ -f /etc/lsb-release ]; then\n    # For some versions of Debian/Ubuntu without lsb_release command\n    . /etc/lsb-release\n    OS=$DISTRIB_ID\n    VER=$DISTRIB_RELEASE\nelif [ -f /etc/debian_version ]; then\n    # Older Debian/Ubuntu/etc.\n    OS=Debian\n    VER=$(cat /etc/debian_version)\nfi\n\necho \"<><><> Running connector deploy on $OS\"\n\nif [[ \"$OS\" = \"Ubuntu\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo apt update\n    sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Amazon Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"SLES\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Red Hat Enterprise Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS\nelse\n    echo \"$OS - is not supported - exiting\"\n    exit 1\nfi\n\necho \"<><><> Finished Connector install on $OS!\"\n",
-    "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('signup_domain')))]"
+    "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('_1.signup_domain')))]",
+    "_1.projectName": "volumezdemo",
+    "_1.signup_domain": "signup.volumez.com",
+    "_1.sizeAppVm": "Standard_D64_v5",
+    "_1.sizeMediaVm": "Standard_L8as_v3",
+    "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
+    "_1.vmAppOffer": "RHEL",
+    "_1.vmAppPublisher": "RedHat",
+    "_1.vmAppSku": "8_7",
+    "_1.vmAppVersion": "latest",
+    "_1.vmMediaOffer": "RHEL",
+    "_1.vmMediaPublisher": "RedHat",
+    "_1.vmMediaSku": "8_7",
+    "_1.vmMediaVersion": "latest",
+    "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]"
   },
   "resources": {
     "proximityPlacementGroup": {
@@ -100,7 +109,7 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[format('ppg-{0}-{1}', variables('projectName'), deployment().name)]"
+            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), deployment().name)]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -415,7 +424,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "[format('{0}User', variables('projectName'))]"
+            "value": "[format('{0}User', variables('_1.projectName'))]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
@@ -431,14 +440,14 @@
           },
           "imageReference": {
             "value": {
-              "offer": "[variables('vmAppOffer')]",
-              "publisher": "[variables('vmAppPublisher')]",
-              "sku": "[variables('vmAppSku')]",
-              "version": "[variables('vmAppVersion')]"
+              "offer": "[variables('_1.vmAppOffer')]",
+              "publisher": "[variables('_1.vmAppPublisher')]",
+              "sku": "[variables('_1.vmAppSku')]",
+              "version": "[variables('_1.vmAppVersion')]"
             }
           },
           "name": {
-            "value": "[format('vm-{0}-app{1}{2}', variables('projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]"
+            "value": "[format('vm-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]"
           },
           "nicConfigurations": {
             "value": [
@@ -446,7 +455,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-app{1}{2}', variables('projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]",
+                    "name": "[format('ipc-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]",
                     "subnetResourceId": "[resourceId(parameters('rgNameNetwork'), 'Microsoft.Network/VirtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                     "zones": [
                       "1"
@@ -5509,7 +5518,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "[format('{0}User', variables('projectName'))]"
+            "value": "[format('{0}User', variables('_1.projectName'))]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
@@ -5525,14 +5534,14 @@
           },
           "imageReference": {
             "value": {
-              "offer": "[variables('vmMediaOffer')]",
-              "publisher": "[variables('vmMediaPublisher')]",
-              "sku": "[variables('vmMediaSku')]",
-              "version": "[variables('vmMediaVersion')]"
+              "offer": "[variables('_1.vmMediaOffer')]",
+              "publisher": "[variables('_1.vmMediaPublisher')]",
+              "sku": "[variables('_1.vmMediaSku')]",
+              "version": "[variables('_1.vmMediaVersion')]"
             }
           },
           "name": {
-            "value": "[format('vm-{0}-media{1}{2}', variables('projectName'), deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]"
+            "value": "[format('vm-{0}-media{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]"
           },
           "nicConfigurations": {
             "value": [
@@ -5540,7 +5549,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-media{1}', variables('projectName'), range(1, parameters('nrMediaVms'))[copyIndex()])]",
+                    "name": "[format('ipc-{0}-media{1}', variables('_1.projectName'), range(1, parameters('nrMediaVms'))[copyIndex()])]",
                     "subnetResourceId": "[resourceId(parameters('rgNameNetwork'), 'Microsoft.Network/VirtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                     "zones": [
                       "1"
