@@ -48,6 +48,34 @@
 								"required": true
 							  }		
 						},
+                                                {
+                                                        "name": "deploySize",
+                                                        "type": "Microsoft.Common.DropDown",
+                                                        "label": "Size of your demo",
+                                                        "multiselect": false,
+                                                        "multiLine": false,
+                                                        "constraints": {
+                                                                "allowedValues": [
+                                                                  {
+                                                                        "label": "Small: 2 X Standard_L8as_v3",
+                                                                        "value": "Small"
+                                                                  },
+                                                                  {
+                                                                        "label": "Medium: 6 X Standard_L8as_v3",
+                                                                        "value": "Medium"
+                                                                  },
+                                                                  {
+                                                                        "label": "Medium: 12 X Standard_L64s_v3",
+                                                                        "value": "Medium"
+                                                                  },
+                                                                  {
+                                                                        "label": "Medium: 24 X Standard_L64as_v3",
+                                                                        "value": "Medium"
+                                                                  }
+                                                                ],
+                                                                "required": true
+                                                          }
+                                                },
 						{
 							"name": "nrAppVms",
 							"type": "Microsoft.Common.DropDown",
@@ -129,6 +157,7 @@
 				"nrAppVms": "[steps('basics').nrAppVms]",
 				"nrMediaVms": "[steps('basics').nrMediaVms]",
 				"deployBastion": "[steps('basics').deployBastion]",
+				"deploySize": "[steps('basics').deploySize]",
 				"location": "[steps('basics').resourceScope.location.name]"
 			},
 			"kind": "ResourceGroup",

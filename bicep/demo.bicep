@@ -7,6 +7,7 @@ param tenant_token string
 param nrAppVms int
 param nrMediaVms int
 param deployBastion string
+param deploySize string
 param location string = resourceGroup().location
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
