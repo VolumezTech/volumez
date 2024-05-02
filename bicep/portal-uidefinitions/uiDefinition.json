@@ -57,20 +57,20 @@
                                                         "constraints": {
                                                                 "allowedValues": [
                                                                   {
-                                                                        "label": "Small: 2 X Standard_L8as_v3",
+                                                                        "label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8as_v3",
                                                                         "value": "Small"
                                                                   },
                                                                   {
-                                                                        "label": "Medium: 6 X Standard_L8as_v3",
+                                                                        "label": "Medium: App = 1 x Standard_D64_v5, Media = 6 X Standard_L8as_v3",
                                                                         "value": "Medium"
                                                                   },
                                                                   {
-                                                                        "label": "Medium: 12 X Standard_L64s_v3",
-                                                                        "value": "Medium"
+                                                                        "label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L64s_v3",
+                                                                        "value": "Large"
                                                                   },
                                                                   {
-                                                                        "label": "Medium: 24 X Standard_L64as_v3",
-                                                                        "value": "Medium"
+                                                                        "label": "Extra Large: App = 1 x Standard_D64_v5, Media = 24 X Standard_L64as_v3",
+                                                                        "value": "XLarge"
                                                                   }
                                                                 ],
                                                                 "required": true
