@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "7712500839963702343"
+      "templateHash": "7054644815296440409"
     }
   },
   "functions": [
@@ -16,33 +16,37 @@
         "allSizes": {
           "parameters": [],
           "output": {
-            "type": "object",
-            "value": {
-              "small": {
+            "type": "array",
+            "value": [
+              {
+                "name": "small",
                 "nrAppVms": 1,
                 "nrMediaVms": 2,
                 "sizeAppVm": "Standard_D16_v5",
                 "sizeMediaVm": "Standard_L8as_v3"
               },
-              "medium": {
+              {
+                "name": "medium",
                 "nrAppVms": 1,
                 "nrMediaVms": 6,
                 "sizeAppVm": "Standard_D64_v5",
                 "sizeMediaVm": "Standard_L8as_v3"
               },
-              "large": {
+              {
+                "name": "large",
                 "nrAppVms": 1,
                 "nrMediaVms": 12,
                 "sizeAppVm": "Standard_D64_v5",
                 "sizeMediaVm": "Standard_L64s_v3"
               },
-              "xlarge": {
+              {
+                "name": "xlarge",
                 "nrAppVms": 1,
                 "nrMediaVms": 24,
                 "sizeAppVm": "Standard_D64_v5",
                 "sizeMediaVm": "Standard_L64as_v3"
               }
-            }
+            ]
           },
           "metadata": {
             "__bicep_imported_from!": {
@@ -64,7 +68,7 @@
           ],
           "output": {
             "type": "object",
-            "value": "[_2.allSizes().sizeInput]"
+            "value": "[last(filter(_2.allSizes(), lambda('size', equals(lambdaVariables('size').name, parameters('sizeInput')))))]"
           },
           "metadata": {
             "__bicep_imported_from!": {
