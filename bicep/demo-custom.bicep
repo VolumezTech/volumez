@@ -9,36 +9,10 @@ func replaceMultiple(input string, replacements { *: string }) string => reduce(
 #######################################################################################
 */
 
-@secure()
-param adminPassword string
-param tenant_token string
-param nrAppVms int
-param nrMediaVms int
-param location string 
-param vnetName string
-param subnetName string
-param sizeAppVm string = 'Standard_D64_v5'
-param sizeMediaVm string = 'Standard_L8as_v3'
+uses './variables/param-demo-normal.bicep'
+
 param rgName string
 param rgNameNetwork string
-
-var vmAppOffer = 'RHEL'
-var vmMediaOffer = 'RHEL'
-var vmAppPublisher = 'RedHat'
-var vmMediaPublisher = 'RedHat'
-var vmAppSku = '8_7'
-var vmMediaSku = '8_7'
-var vmAppVersion = 'latest'
-var vmMediaVersion = 'latest'
-
-var projectName = 'volumezdemo'
-var signup_domain = 'signup.volumez.com'
-var script = loadTextContent('./scripts/deploy_connector.sh')
-var cloudInitScript = replaceMultiple(script, {
-  '{0}': tenant_token
-  '{1}': signup_domain
-})
-
 
 
 /*

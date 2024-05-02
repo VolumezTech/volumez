@@ -18,7 +18,7 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 
 ![alt text](./documentation/standard.png)
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2Fportal-uidefinitions%2FuiDefinition.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Ffeature%2Fbicep-azure/bicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeatures%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
 
 
 ## Customized resourcegroup deployment
@@ -30,7 +30,7 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 Please note that the creation of a new Resource Group or New Virtual Network is **NOT** supported in this scenario.
 
 ![alt text](./documentation/customized.png)
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2Fportal-uidefinitions%2FuiDefinition-custom.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)
 
 ## Customization instructions
 
@@ -58,5 +58,6 @@ The uiDefinition files in this repository are customization files that help you 
 
 | Description | Template |
 |---|---|
-| Deploy Simple Volumez demo |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2Fportal-uidefinitions%2FuiDefinition.json)|
-| Deploy Customizable Volumez demo |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2F%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fchrisvugrinec%2Fvolumezdemo%2Fmaster%2Fportal-uidefinitions%2FuiDefinition-custom.json)|
+| Complete Demo default |
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Ffeature%2Fbicep-azure/bicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeatures%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json) |
+| Customized Demo starter | ![alt text](./documentation/customized.png)[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)|
