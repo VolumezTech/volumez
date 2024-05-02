@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "17057864756098020015"
+      "templateHash": "200340119305936585"
     }
   },
   "functions": [
@@ -415,7 +415,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-app{0}{1}', deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]",
+      "name": "[format('vmDeploy{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
       "resourceGroup": "[parameters('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -447,7 +447,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]"
+            "value": "[format('vm{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [
@@ -5509,7 +5509,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-media{0}{1}', deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]",
+      "name": "[format('vmDeploy{0}-{1}-media{2}', range(1, parameters('nrMediaVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
       "resourceGroup": "[parameters('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -5541,7 +5541,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-media{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrMediaVms'))[copyIndex()])]"
+            "value": "[format('vm{0}-{1}-media{2}', range(1, parameters('nrMediaVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "7054644815296440409"
+      "templateHash": "3705194588537914526"
     }
   },
   "functions": [
@@ -5366,7 +5366,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-app{0}{1}', deployment().name, range(1, variables('deploy_size').nrAppVms)[copyIndex()])]",
+      "name": "[format('vmDeploy{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5397,7 +5397,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
+            "value": "[format('vm{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [
@@ -10460,7 +10460,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeployment-media{0}{1}', deployment().name, range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]",
+      "name": "[format('vmDeploy{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -10491,7 +10491,7 @@
             }
           },
           "name": {
-            "value": "[format('vm-{0}-media{1}{2}', variables('_1.projectName'), deployment().name, range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
+            "value": "[format('vm{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [

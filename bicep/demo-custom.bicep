@@ -41,7 +41,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrAppVms): {
   scope : resourceGroup(rgName)
-  name: 'vmDeployment-app${deployment().name}${i}'
+  name: 'vmDeploy${i}-${var.projectName}-app${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
     adminPassword: adminPassword
@@ -54,7 +54,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       sku: var.vmAppSku
       version: var.vmAppVersion
     }
-    name: 'vm-${var.projectName}-app${deployment().name}${i}'
+    name: 'vm${i}-${var.projectName}-app${uniqueString(deployment().name)}'
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -90,7 +90,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrMediaVms): {
   scope : resourceGroup(rgName)
-  name: 'vmDeployment-media${deployment().name}${i}'
+  name: 'vmDeploy${i}-${var.projectName}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
     adminPassword: adminPassword
@@ -103,7 +103,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       sku: var.vmMediaSku
       version: var.vmMediaVersion
     }
-    name: 'vm-${var.projectName}-media${deployment().name}${i}'
+    name: 'vm${i}-${var.projectName}-media${uniqueString(deployment().name)}'
     nicConfigurations: [
       {
         ipConfigurations: [
