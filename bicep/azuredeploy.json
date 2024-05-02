@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "3705194588537914526"
+      "templateHash": "14953794923257502546"
     }
   },
   "functions": [
@@ -146,7 +146,7 @@
     "demonetwork": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "demoNetworkDeploy",
+      "name": "[format('deploy-networkmodule-{0}', uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -176,7 +176,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "6038393515763047453"
+              "templateHash": "17295766991291680925"
             }
           },
           "parameters": {
@@ -200,7 +200,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "virtualNetworkDeployment",
+              "name": "[format('deploy-vnet-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -227,8 +227,8 @@
                       {
                         "addressPrefix": "10.0.1.0/24",
                         "name": "[parameters('snetName')]",
-                        "networkSecurityGroupResourceId": "[reference(resourceId('Microsoft.Resources/deployments', 'networkSecurityGroupDeployment'), '2022-09-01').outputs.resourceId.value]",
-                        "natGatewayResourceId": "[reference(resourceId('Microsoft.Resources/deployments', 'natGatewayDeployment'), '2022-09-01').outputs.resourceId.value]"
+                        "networkSecurityGroupResourceId": "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-nsg-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]",
+                        "natGatewayResourceId": "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-ngw-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]"
                       }
                     ]
                   }
@@ -1392,15 +1392,15 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'natGatewayDeployment')]",
-                "[resourceId('Microsoft.Resources/deployments', 'networkSecurityGroupDeployment')]"
+                "[resourceId('Microsoft.Resources/deployments', format('deploy-ngw-{0}', uniqueString(deployment().name)))]",
+                "[resourceId('Microsoft.Resources/deployments', format('deploy-nsg-{0}', uniqueString(deployment().name)))]"
               ]
             },
             {
               "condition": "[parameters('deployBastion')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "bastionHostDeployment",
+              "name": "[format('deploy-bastion-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1408,7 +1408,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('bas-{0}-{1}', parameters('projectName'), deployment().name)]"
+                    "value": "[format('bas-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
                   },
                   "virtualNetworkResourceId": {
                     "value": "[resourceId('Microsoft.Network/VirtualNetworks', parameters('vnetName'))]"
@@ -2562,13 +2562,13 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'virtualNetworkDeployment')]"
+                "[resourceId('Microsoft.Resources/deployments', format('deploy-vnet-{0}', uniqueString(deployment().name)))]"
               ]
             },
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "networkSecurityGroupDeployment",
+              "name": "[format('deploy-nsg-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -2576,7 +2576,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('nsg-{0}-{1}', parameters('projectName'), deployment().name)]"
+                    "value": "[format('nsg-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
                   },
                   "location": {
                     "value": "[parameters('location')]"
@@ -3329,7 +3329,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "publicIpPrefixDeployment",
+              "name": "[format('deploy-ppipfx-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -3337,7 +3337,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('pipfx-{0}-{1}', parameters('projectName'), deployment().name)]"
+                    "value": "[format('pipfx-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
                   },
                   "prefixLength": {
                     "value": 30
@@ -3649,7 +3649,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "natGatewayDeployment",
+              "name": "[format('deploy-ngw-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -3657,7 +3657,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('ngw-{0}-{1}', parameters('projectName'), deployment().name)]"
+                    "value": "[format('ngw-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
                   },
                   "zones": {
                     "value": [
@@ -3669,7 +3669,7 @@
                   },
                   "publicIPPrefixResourceIds": {
                     "value": [
-                      "[reference(resourceId('Microsoft.Resources/deployments', 'publicIpPrefixDeployment'), '2022-09-01').outputs.resourceId.value]"
+                      "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-ppipfx-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]"
                     ]
                   }
                 },
@@ -5042,7 +5042,7 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'publicIpPrefixDeployment')]"
+                "[resourceId('Microsoft.Resources/deployments', format('deploy-ppipfx-{0}', uniqueString(deployment().name)))]"
               ]
             }
           ]
@@ -5052,7 +5052,7 @@
     "proximityPlacementGroup": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "proximityPlacementGroupDeployment",
+      "name": "[format('deploy-ppg-{0}', uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5060,7 +5060,7 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), deployment().name)]"
+            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -5366,7 +5366,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeploy{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+      "name": "[format('deploy-vm{0}-app{1}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5405,7 +5405,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-app{1}', variables('_1.projectName'), range(1, variables('deploy_size').nrAppVms)[copyIndex()])]",
+                    "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "1"
@@ -10460,7 +10460,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeploy{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+      "name": "[format('deploy-vm{0}-media{1}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -10499,7 +10499,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-media{1}', variables('_1.projectName'), range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]",
+                    "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "1"

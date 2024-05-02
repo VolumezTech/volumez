@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "200340119305936585"
+      "templateHash": "13260372632634152042"
     }
   },
   "functions": [
@@ -100,7 +100,7 @@
     "proximityPlacementGroup": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "proximityPlacementGroupDeployment",
+      "name": "[format('deploy-ppg-{0}', uniqueString(deployment().name))]",
       "resourceGroup": "[parameters('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -109,7 +109,7 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), deployment().name)]"
+            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -415,7 +415,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeploy{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+      "name": "[format('deploy-vm{0}-app{1}', range(1, parameters('nrAppVms'))[copyIndex()], uniqueString(deployment().name))]",
       "resourceGroup": "[parameters('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -455,7 +455,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc-{0}-app{1}{2}', variables('_1.projectName'), deployment().name, range(1, parameters('nrAppVms'))[copyIndex()])]",
+                    "name": "[format('ipc{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId(parameters('rgNameNetwork'), 'Microsoft.Network/VirtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                     "zones": [
                       "1"
@@ -5509,7 +5509,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('vmDeploy{0}-{1}-media{2}', range(1, parameters('nrMediaVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+      "name": "[format('deploy-vm{0}-media{1}', range(1, parameters('nrMediaVms'))[copyIndex()], uniqueString(deployment().name))]",
       "resourceGroup": "[parameters('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {

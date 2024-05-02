@@ -23,9 +23,9 @@ var cloudInitScript = replaceMultiple(script, {
 
 module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-group:0.1.2' = {
   scope : resourceGroup(rgName)
-  name: 'proximityPlacementGroupDeployment'
+  name: 'deploy-ppg-${uniqueString(deployment().name)}'
   params: {
-    name: 'ppg-${var.projectName}-${deployment().name}'
+    name: 'ppg-${var.projectName}-${uniqueString(deployment().name)}'
     location: location
   }
 }
@@ -41,7 +41,8 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrAppVms): {
   scope : resourceGroup(rgName)
-  name: 'vmDeploy${i}-${var.projectName}-app${uniqueString(deployment().name)}'
+  name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
+
   params: {
     adminUsername: '${var.projectName}User'
     adminPassword: adminPassword
@@ -60,7 +61,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
         ipConfigurations: [
           {
             enablePublicIP: false
-            name: 'ipc-${var.projectName}-app${deployment().name}${i}'
+            name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
             subnetResourceId:  resourceId(rgNameNetwork,'Microsoft.Network/VirtualNetworks/subnets', vnetName, subnetName)
             zones: [
               '1'
@@ -90,7 +91,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, nrMediaVms): {
   scope : resourceGroup(rgName)
-  name: 'vmDeploy${i}-${var.projectName}-media${uniqueString(deployment().name)}'
+  name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
     adminPassword: adminPassword

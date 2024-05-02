@@ -5,7 +5,7 @@ param projectName string
 param deployBastion bool
 
 module virtualNetwork 'br/public:avm/res/network/virtual-network:0.1.5' = {
-  name: 'virtualNetworkDeployment'
+  name: 'deploy-vnet-${uniqueString(deployment().name)}'
   params: {
     addressPrefixes: [
       '10.0.0.0/16'
@@ -30,9 +30,9 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.1.5' = {
 
 
 module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBastion) {
-  name: 'bastionHostDeployment'
+  name: 'deploy-bastion-${uniqueString(deployment().name)}'
   params: {
-    name: 'bas-${projectName}-${deployment().name}'
+    name: 'bas-${projectName}-${uniqueString(deployment().name)}'
     virtualNetworkResourceId: resourceId('Microsoft.Network/VirtualNetworks', vnetName )
     location : location
     publicIPAddressObject: {
@@ -48,9 +48,9 @@ module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBa
 }
 
 module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.1.3' = {
-  name: 'networkSecurityGroupDeployment'
+  name: 'deploy-nsg-${uniqueString(deployment().name)}'
   params: {
-    name: 'nsg-${projectName}-${deployment().name}'
+    name: 'nsg-${projectName}-${uniqueString(deployment().name)}'
     location : location
     securityRules: [
       {
@@ -123,18 +123,18 @@ module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.
 }
 
 module publicIpPrefix 'br/public:avm/res/network/public-ip-prefix:0.3.0' = {
-  name: 'publicIpPrefixDeployment'
+  name: 'deploy-ppipfx-${uniqueString(deployment().name)}'
   params: {
-    name: 'pipfx-${projectName}-${deployment().name}'
+    name: 'pipfx-${projectName}-${uniqueString(deployment().name)}'
     prefixLength: 30
     location : location
   }
 }
 
 module natGateway 'br/public:avm/res/network/nat-gateway:1.0.4' = {
-  name: 'natGatewayDeployment'
+  name: 'deploy-ngw-${uniqueString(deployment().name)}'
   params: {
-    name: 'ngw-${projectName}-${deployment().name}'
+    name: 'ngw-${projectName}-${uniqueString(deployment().name)}'
     zones: [ 1 ]
     location : location
     publicIPPrefixResourceIds: [ publicIpPrefix.outputs.resourceId ]

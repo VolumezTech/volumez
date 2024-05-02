@@ -29,7 +29,7 @@ var deploy_size = getSize(deploySize)
 
 
 module demonetwork './demo-network.bicep' = {
-  name: 'demoNetworkDeploy'
+  name: 'deploy-networkmodule-${uniqueString(deployment().name)}'
   params: {
     snetName : var.snetName
     vnetName : var.vnetName
@@ -48,9 +48,9 @@ module demonetwork './demo-network.bicep' = {
 */
 
 module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-group:0.1.2' = {
-  name: 'proximityPlacementGroupDeployment'
+  name: 'deploy-ppg-${uniqueString(deployment().name)}'
   params: {
-    name: 'ppg-${var.projectName}-${deployment().name}'
+    name: 'ppg-${var.projectName}-${uniqueString(deployment().name)}'
     location: location
   }
 }
@@ -64,60 +64,60 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 */
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
+  name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
 
-name: 'vmDeploy${i}-${var.projectName}-app${uniqueString(deployment().name)}'
-params: {
-    adminUsername: '${var.projectName}User'
-    adminPassword: adminPassword
-    availabilityZone: 0
-    customData: cloudInitScript
-    proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
+  params: {
+      adminUsername: '${var.projectName}User'
+      adminPassword: adminPassword
+      availabilityZone: 0
+      customData: cloudInitScript
+      proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
 
-    imageReference: {
-      offer: var.vmAppOffer
-      publisher: var.vmAppPublisher
-      sku: var.vmAppSku
-      version: var.vmAppVersion
-    }
-
-    name: 'vm${i}-${var.projectName}-app${uniqueString(deployment().name)}'
-    nicConfigurations: [
-      {
-        ipConfigurations: [
-          {
-            enablePublicIP: false
-            name: 'ipc-${var.projectName}-app${i}'
-            subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
-            zones: [
-              '1'
-            ]
-          }
-        ]
-        nicSuffix: '-nic${i}'
+      imageReference: {
+        offer: var.vmAppOffer
+        publisher: var.vmAppPublisher
+        sku: var.vmAppSku
+        version: var.vmAppVersion
       }
-    ]
-    osDisk: {
-      diskSizeGB: 128
-      managedDisk: {
-        storageAccountType: 'Standard_LRS'
+
+      name: 'vm${i}-${var.projectName}-app${uniqueString(deployment().name)}'
+      nicConfigurations: [
+        {
+          ipConfigurations: [
+            {
+              enablePublicIP: false
+              name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
+              subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
+              zones: [
+                '1'
+              ]
+            }
+          ]
+          nicSuffix: '-nic${i}'
+        }
+      ]
+      osDisk: {
+        diskSizeGB: 128
+        managedDisk: {
+          storageAccountType: 'Standard_LRS'
+        }
+        caching: 'ReadWrite' 
       }
-      caching: 'ReadWrite' 
+      osType: 'Linux'
+      vmSize: deploy_size.sizeAppVm 
+      configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+      disablePasswordAuthentication: false
+      location : location
+      encryptionAtHost: false
     }
-    osType: 'Linux'
-    vmSize: deploy_size.sizeAppVm 
-    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    disablePasswordAuthentication: false
-    location : location
-    encryptionAtHost: false
+    dependsOn : [ demonetwork ]
   }
-  dependsOn : [ demonetwork ]
-}]
+]
 
 
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
-
-  name: 'vmDeploy${i}-${var.projectName}-media${uniqueString(deployment().name)}'
+  name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
     adminPassword: adminPassword
@@ -137,7 +137,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
         ipConfigurations: [
           {
             enablePublicIP: false
-            name: 'ipc-${var.projectName}-media${i}'
+            name: 'ipc${i}-${var.projectName}-media${uniqueString(deployment().name)}'
             subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
             zones: [
               '1'
