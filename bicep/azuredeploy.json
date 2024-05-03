@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "17840367820397534695"
+      "templateHash": "17619312549754696315"
     }
   },
   "functions": [
@@ -180,7 +180,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "17295766991291680925"
+              "templateHash": "1826354158890797855"
             }
           },
           "parameters": {
@@ -1412,7 +1412,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('bas-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
+                    "value": "[format('bas-{0}-net}}', parameters('projectName'))]"
                   },
                   "virtualNetworkResourceId": {
                     "value": "[resourceId('Microsoft.Network/VirtualNetworks', parameters('vnetName'))]"
@@ -2580,7 +2580,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('nsg-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
+                    "value": "[format('nsg-{0}', parameters('projectName'))]"
                   },
                   "location": {
                     "value": "[parameters('location')]"
@@ -3341,7 +3341,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('pipfx-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
+                    "value": "[format('pipfx-{0}', parameters('projectName'))]"
                   },
                   "prefixLength": {
                     "value": 30
@@ -3661,7 +3661,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('ngw-{0}-{1}', parameters('projectName'), uniqueString(deployment().name))]"
+                    "value": "[format('ngw-{0}', parameters('projectName'))]"
                   },
                   "zones": {
                     "value": [
@@ -5068,6 +5068,9 @@
           },
           "location": {
             "value": "[parameters('location')]"
+          },
+          "zones": {
+            "value": "[variables('_1.zones')]"
           }
         },
         "template": {

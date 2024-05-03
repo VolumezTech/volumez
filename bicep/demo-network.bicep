@@ -32,7 +32,7 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.1.5' = {
 module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBastion) {
   name: 'deploy-bastion-${uniqueString(deployment().name)}'
   params: {
-    name: 'bas-${projectName}-${uniqueString(deployment().name)}'
+    name: 'bas-${projectName}-net}'
     virtualNetworkResourceId: resourceId('Microsoft.Network/VirtualNetworks', vnetName )
     location : location
     publicIPAddressObject: {
@@ -50,7 +50,7 @@ module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBa
 module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.1.3' = {
   name: 'deploy-nsg-${uniqueString(deployment().name)}'
   params: {
-    name: 'nsg-${projectName}-${uniqueString(deployment().name)}'
+    name: 'nsg-${projectName}'
     location : location
     securityRules: [
       {
@@ -125,7 +125,7 @@ module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.
 module publicIpPrefix 'br/public:avm/res/network/public-ip-prefix:0.3.0' = {
   name: 'deploy-ppipfx-${uniqueString(deployment().name)}'
   params: {
-    name: 'pipfx-${projectName}-${uniqueString(deployment().name)}'
+    name: 'pipfx-${projectName}'
     prefixLength: 30
     location : location
   }
@@ -134,7 +134,7 @@ module publicIpPrefix 'br/public:avm/res/network/public-ip-prefix:0.3.0' = {
 module natGateway 'br/public:avm/res/network/nat-gateway:1.0.4' = {
   name: 'deploy-ngw-${uniqueString(deployment().name)}'
   params: {
-    name: 'ngw-${projectName}-${uniqueString(deployment().name)}'
+    name: 'ngw-${projectName}'
     zones: [ 1 ]
     location : location
     publicIPPrefixResourceIds: [ publicIpPrefix.outputs.resourceId ]

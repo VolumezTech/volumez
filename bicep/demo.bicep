@@ -52,6 +52,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
   params: {
     name: 'ppg-${var.projectName}-${uniqueString(deployment().name)}'
     location: location
+    zones: var.zones
   }
 }
 
