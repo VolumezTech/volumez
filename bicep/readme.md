@@ -71,7 +71,7 @@ The uiDefinition files in this repository are customization files that help you 
 You can see an overview of all available major linux operating distributions on azure with this command:
 
 ```
-for publisher in [ 'Debian' 'Redhat' 'SUSE' 'Canonical' 'OpenLogic' ]; do az vm image list -l westeurope --publisher $publisher --all -o table; don
+for publisher in [ 'Debian' 'Redhat' 'SUSE' 'Canonical' 'OpenLogic' ]; do az vm image list -l westeurope --publisher $publisher --all -o table; done
 ```
 
 You can change the operating systems in your config with the config file you are using in your bicep code, the following fields determine the OS of your VM: Offer, Publisher, SKU and Version. You can configure the OS for your APP VM's and your Media VM's.
@@ -89,3 +89,7 @@ You can configure the zones via the zones variable in the parameters file (withi
 |---|---|
 | Standard Demo |[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)|
 | Customized Demo starter | [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)|
+|[Azure Verified Modules](https://github.com/Azure/bicep-registry-modules)||
+|[Azure VM Sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes)|
+|[Portal Form Designer](https://portal.azure.com/#view/Microsoft_Azure_CreateUIDef/FormSandboxBlade) | Tool to edit UI Input for Azure Portal |
+| [Proximity Placement Groups](https://learn.microsoft.com/en-us/azure/virtual-machines/co-location) |
