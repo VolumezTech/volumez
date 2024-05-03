@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "14953794923257502546"
+      "templateHash": "17840367820397534695"
     }
   },
   "functions": [
@@ -140,7 +140,11 @@
     "_1.vmMediaPublisher": "RedHat",
     "_1.vmMediaSku": "8_7",
     "_1.vmMediaVersion": "latest",
-    "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]"
+    "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
+    "_1.zones": [
+      1,
+      2
+    ]
   },
   "resources": {
     "demonetwork": {
@@ -5408,7 +5412,7 @@
                     "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
-                      "1"
+                      "[variables('_1.zones')]"
                     ]
                   }
                 ],
@@ -10502,7 +10506,7 @@
                     "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
-                      "1"
+                      "[variables('_1.zones')]"
                     ]
                   }
                 ],
