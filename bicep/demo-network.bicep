@@ -32,7 +32,7 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.1.5' = {
 module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBastion) {
   name: 'deploy-bastion-${uniqueString(deployment().name)}'
   params: {
-    name: 'bas-${projectName}-net}'
+    name: 'bas-${projectName}-net'
     virtualNetworkResourceId: resourceId('Microsoft.Network/VirtualNetworks', vnetName )
     location : location
     publicIPAddressObject: {

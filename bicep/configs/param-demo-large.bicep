@@ -26,3 +26,5 @@ var vmAppVersion = 'latest'
 var vmMediaVersion = 'latest'
 @export()
 var signup_domain = 'signup.volumez.com'
+@export()
+var zones = [ 2 ]

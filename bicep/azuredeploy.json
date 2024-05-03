@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "17294063774442555639"
+      "templateHash": "2081990016683302889"
     }
   },
   "functions": [
@@ -179,7 +179,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "1826354158890797855"
+              "templateHash": "60454059466886353"
             }
           },
           "parameters": {
@@ -1411,7 +1411,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "name": {
-                    "value": "[format('bas-{0}-net}}', parameters('projectName'))]"
+                    "value": "[format('bas-{0}-net', parameters('projectName'))]"
                   },
                   "virtualNetworkResourceId": {
                     "value": "[resourceId('Microsoft.Network/VirtualNetworks', parameters('vnetName'))]"

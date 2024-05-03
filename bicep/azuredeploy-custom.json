@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "13260372632634152042"
+      "templateHash": "13270925628119367559"
     }
   },
   "functions": [
@@ -94,7 +94,10 @@
     "_1.vmMediaPublisher": "RedHat",
     "_1.vmMediaSku": "8_7",
     "_1.vmMediaVersion": "latest",
-    "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]"
+    "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
+    "_1.zones": [
+      2
+    ]
   },
   "resources": {
     "proximityPlacementGroup": {
@@ -113,6 +116,17 @@
           },
           "location": {
             "value": "[parameters('location')]"
+          },
+          "intent": {
+            "value": {
+              "vmSizes": [
+                "[parameters('sizeAppVm')]",
+                "[parameters('sizeMediaVm')]"
+              ]
+            }
+          },
+          "zones": {
+            "value": "[variables('_1.zones')]"
           }
         },
         "template": {
@@ -458,7 +472,7 @@
                     "name": "[format('ipc{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId(parameters('rgNameNetwork'), 'Microsoft.Network/VirtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                     "zones": [
-                      "1"
+                      "[variables('_1.zones')]"
                     ]
                   }
                 ],
@@ -5552,7 +5566,7 @@
                     "name": "[format('ipc-{0}-media{1}', variables('_1.projectName'), range(1, parameters('nrMediaVms'))[copyIndex()])]",
                     "subnetResourceId": "[resourceId(parameters('rgNameNetwork'), 'Microsoft.Network/VirtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                     "zones": [
-                      "1"
+                      "[variables('_1.zones')]"
                     ]
                   }
                 ],

@@ -27,6 +27,13 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
   params: {
     name: 'ppg-${var.projectName}-${uniqueString(deployment().name)}'
     location: location
+    intent: {
+      vmSizes: [
+        sizeAppVm
+        sizeMediaVm
+      ]
+    }
+    zones: var.zones
   }
 }
 
@@ -64,7 +71,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
             name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
             subnetResourceId:  resourceId(rgNameNetwork,'Microsoft.Network/VirtualNetworks/subnets', vnetName, subnetName)
             zones: [
-              '1'
+              var.zones
             ]
           }
         ]
@@ -113,7 +120,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
             name: 'ipc-${var.projectName}-media${i}'
             subnetResourceId:  resourceId(rgNameNetwork,'Microsoft.Network/VirtualNetworks/subnets', vnetName, subnetName)
             zones: [
-              '1'
+              var.zones
             ]
           }
         ]
