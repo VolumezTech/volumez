@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "3945186349561006599"
+      "templateHash": "17294063774442555639"
     }
   },
   "functions": [
@@ -5067,6 +5067,14 @@
           },
           "location": {
             "value": "[parameters('location')]"
+          },
+          "intent": {
+            "value": {
+              "vmSizes": [
+                "[variables('deploy_size').sizeAppVm]",
+                "[variables('deploy_size').sizeMediaVm]"
+              ]
+            }
           },
           "zones": {
             "value": "[variables('_1.zones')]"
