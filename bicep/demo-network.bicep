@@ -1,3 +1,5 @@
+import * as var from './configs/param-demo-normal.bicep'
+
 param snetName string
 param vnetName string
 param location string
@@ -41,7 +43,7 @@ module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBa
       publicIPPrefixResourceId: ''
       skuName: 'Standard'
       skuTier: 'Regional'
-      zones: [ 1 ]
+      zones: [ var.zones ]
     }
   }
   dependsOn : [ virtualNetwork ]
@@ -135,7 +137,7 @@ module natGateway 'br/public:avm/res/network/nat-gateway:1.0.4' = {
   name: 'deploy-ngw-${uniqueString(deployment().name)}'
   params: {
     name: 'ngw-${projectName}'
-    zones: [ 1 ]
+    zones: [ var.zones ]
     location : location
     publicIPPrefixResourceIds: [ publicIpPrefix.outputs.resourceId ]
   }

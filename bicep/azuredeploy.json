@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "2081990016683302889"
+      "templateHash": "15213687389230838308"
     }
   },
   "functions": [
@@ -174,12 +174,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "60454059466886353"
+              "templateHash": "16141048713041676625"
             }
           },
           "parameters": {
@@ -199,8 +200,27 @@
               "type": "bool"
             }
           },
-          "resources": [
-            {
+          "variables": {
+            "_1.projectName": "volumezdemo",
+            "_1.signup_domain": "signup.volumez.com",
+            "_1.sizeAppVm": "Standard_D64_v5",
+            "_1.sizeMediaVm": "Standard_L8as_v3",
+            "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
+            "_1.vmAppOffer": "RHEL",
+            "_1.vmAppPublisher": "RedHat",
+            "_1.vmAppSku": "8_7",
+            "_1.vmAppVersion": "latest",
+            "_1.vmMediaOffer": "RHEL",
+            "_1.vmMediaPublisher": "RedHat",
+            "_1.vmMediaSku": "8_7",
+            "_1.vmMediaVersion": "latest",
+            "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
+            "_1.zones": [
+              2
+            ]
+          },
+          "resources": {
+            "virtualNetwork": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('deploy-vnet-{0}', uniqueString(deployment().name))]",
@@ -230,8 +250,8 @@
                       {
                         "addressPrefix": "10.0.1.0/24",
                         "name": "[parameters('snetName')]",
-                        "networkSecurityGroupResourceId": "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-nsg-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]",
-                        "natGatewayResourceId": "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-ngw-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]"
+                        "networkSecurityGroupResourceId": "[reference('networkSecurityGroup').outputs.resourceId.value]",
+                        "natGatewayResourceId": "[reference('natGateway').outputs.resourceId.value]"
                       }
                     ]
                   }
@@ -1395,11 +1415,11 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', format('deploy-ngw-{0}', uniqueString(deployment().name)))]",
-                "[resourceId('Microsoft.Resources/deployments', format('deploy-nsg-{0}', uniqueString(deployment().name)))]"
+                "natGateway",
+                "networkSecurityGroup"
               ]
             },
-            {
+            "bastionHost": {
               "condition": "[parameters('deployBastion')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
@@ -1427,7 +1447,7 @@
                       "skuName": "Standard",
                       "skuTier": "Regional",
                       "zones": [
-                        1
+                        "[variables('_1.zones')]"
                       ]
                     }
                   }
@@ -2565,10 +2585,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', format('deploy-vnet-{0}', uniqueString(deployment().name)))]"
+                "virtualNetwork"
               ]
             },
-            {
+            "networkSecurityGroup": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('deploy-nsg-{0}', uniqueString(deployment().name))]",
@@ -3329,7 +3349,7 @@
                 }
               }
             },
-            {
+            "publicIpPrefix": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('deploy-ppipfx-{0}', uniqueString(deployment().name))]",
@@ -3649,7 +3669,7 @@
                 }
               }
             },
-            {
+            "natGateway": {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
               "name": "[format('deploy-ngw-{0}', uniqueString(deployment().name))]",
@@ -3664,7 +3684,7 @@
                   },
                   "zones": {
                     "value": [
-                      1
+                      "[variables('_1.zones')]"
                     ]
                   },
                   "location": {
@@ -3672,7 +3692,7 @@
                   },
                   "publicIPPrefixResourceIds": {
                     "value": [
-                      "[reference(resourceId('Microsoft.Resources/deployments', format('deploy-ppipfx-{0}', uniqueString(deployment().name))), '2022-09-01').outputs.resourceId.value]"
+                      "[reference('publicIpPrefix').outputs.resourceId.value]"
                     ]
                   }
                 },
@@ -5045,10 +5065,10 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', format('deploy-ppipfx-{0}', uniqueString(deployment().name)))]"
+                "publicIpPrefix"
               ]
             }
-          ]
+          }
         }
       }
     },

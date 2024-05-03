@@ -22,12 +22,14 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 
 This demo provides the following scenarios:
 
-| Scenario | Nr of App VM's | App VM SKU | Nr of Media VM's | Media VM SKU |
+| Scenario | Nr of App VM's | App VM Size | Nr of Media VM's | Media VM Size |
 |---|---|---|---|---|
 |Small|1|Standard_D16_v5|2|Standard_L8as_v3|
 |Medium|1|Standard_D64_v5|6|Standard_L8as_v3|
 |Large|1|Standard_D64_v5|12|Standard_L64s_v3|
 |Extra Large|1|Standard_D64_v5|24|Standard_L64as_v3|
+
+More info on Azure VM Sizes can be found [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes)
 
 ## Customized resourcegroup deployment
 
@@ -61,6 +63,25 @@ az deployment group create -g bicep --template-file demo.bicep  -n deploymentNam
 ```
 
 The uiDefinition files in this repository are customization files that help you with filling in the right parameters in the azure portal. Use [this](https://portal.azure.com/#view/Microsoft_Azure_CreateUIDef/FormSandboxBlade) tool to edit them or develop them yourself.
+
+## Settings
+
+### Operating System
+
+You can see an overview of all available major linux operating distributions on azure with this command:
+
+```
+for publisher in [ 'Debian' 'Redhat' 'SUSE' 'Canonical' 'OpenLogic' ]; do az vm image list -l westeurope --publisher $publisher --all -o table; don
+```
+
+You can change the operating systems in your config with the config file you are using in your bicep code, the following fields determine the OS of your VM: Offer, Publisher, SKU and Version. You can configure the OS for your APP VM's and your Media VM's.
+
+### Zones
+
+The zones for the VMs are configured via the Proximity Placement groups. More information [here](https://learn.microsoft.com/en-us/azure/virtual-machines/co-location).
+
+You can configure the zones via the zones variable in the parameters file (within the config folder). Please note that the Proximity Placement group only supports 1 zone.
+
 
 ## Links
 
