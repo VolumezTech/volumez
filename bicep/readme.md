@@ -24,10 +24,10 @@ This demo provides the following scenarios:
 
 | Scenario | Nr of App VM's | App VM Size | Nr of Media VM's | Media VM Size |
 |---|---|---|---|---|
-|Small|1|Standard_D16_v5|2|Standard_L8as_v3|
-|Medium|1|Standard_D64_v5|6|Standard_L8as_v3|
-|Large|1|Standard_D64_v5|12|Standard_L64s_v3|
-|Extra Large|1|Standard_D64_v5|24|Standard_L64as_v3|
+|Small|1|Standard_D16_v5|2|Standard_L8s_v3|
+|Medium|1|Standard_D32_v5|6|Standard_L8s_v3|
+|Large|1|Standard_D64_v5|12|Standard_L8s_v3|
+|Extra Large|1|Standard_D96_v5|18|Standard_L8s_v3|
 
 More info on Azure VM Sizes can be found [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes)
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "15213687389230838308"
+      "templateHash": "14198532119522419485"
     }
   },
   "functions": [
@@ -23,28 +23,28 @@
                 "nrAppVms": 1,
                 "nrMediaVms": 2,
                 "sizeAppVm": "Standard_D16_v5",
-                "sizeMediaVm": "Standard_L8as_v3"
+                "sizeMediaVm": "Standard_L8s_v3"
               },
               {
                 "name": "medium",
                 "nrAppVms": 1,
                 "nrMediaVms": 6,
-                "sizeAppVm": "Standard_D64_v5",
-                "sizeMediaVm": "Standard_L8as_v3"
+                "sizeAppVm": "Standard_D32_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
               },
               {
                 "name": "large",
                 "nrAppVms": 1,
                 "nrMediaVms": 12,
                 "sizeAppVm": "Standard_D64_v5",
-                "sizeMediaVm": "Standard_L64s_v3"
+                "sizeMediaVm": "Standard_L8s_v3"
               },
               {
                 "name": "xlarge",
                 "nrAppVms": 1,
-                "nrMediaVms": 24,
-                "sizeAppVm": "Standard_D64_v5",
-                "sizeMediaVm": "Standard_L64as_v3"
+                "nrMediaVms": 18,
+                "sizeAppVm": "Standard_D96_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
               }
             ]
           },

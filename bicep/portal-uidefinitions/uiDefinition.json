@@ -57,19 +57,19 @@
 								"constraints": {
 										"allowedValues": [
 											{
-												"label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8as_v3",
+												"label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8s_v3",
 												"value": "small"
 											},
 											{
-												"label": "Medium: App = 1 x Standard_D64_v5, Media = 6 X Standard_L8as_v3",
+												"label": "Medium: App = 1 x Standard_D32_v5, Media = 6 X Standard_L8s_v3",
 												"value": "medium"
 											},
 											{
-												"label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L64s_v3",
+												"label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L8s_v3",
 												"value": "large"
 											},
 											{
-												"label": "Extra Large: App = 1 x Standard_D64_v5, Media = 24 X Standard_L64as_v3",
+												"label": "Extra Large: App = 1 x Standard_D96_v5, Media = 18 X Standard_L8s_v3",
 												"value": "xlarge"
 											}
 										],
