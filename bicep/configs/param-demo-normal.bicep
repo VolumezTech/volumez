@@ -27,4 +27,4 @@ var vmMediaVersion = 'latest'
 @export()
 var signup_domain = 'signup.volumez.com'
 @export()
-var zones = [ 1, 2 ]
+var zones = [ 2 ]
