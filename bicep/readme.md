@@ -20,6 +20,14 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
 
+This demo provides the following scenarios:
+
+| Scenario | Nr of App VM's | App VM SKU | Nr of Media VM's | Media VM SKU |
+|---|---|---|---|---|
+|Small|1|Standard_D16_v5|2|Standard_L8as_v3|
+|Medium|1|Standard_D64_v5|6|Standard_L8as_v3|
+|Large|1|Standard_D64_v5|12|Standard_L64s_v3|
+|Extra Large|1|Standard_D64_v5|24|Standard_L64as_v3|
 
 ## Customized resourcegroup deployment
 
