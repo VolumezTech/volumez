@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "17619312549754696315"
+      "templateHash": "3945186349561006599"
     }
   },
   "functions": [
@@ -142,7 +142,6 @@
     "_1.vmMediaVersion": "latest",
     "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
     "_1.zones": [
-      1,
       2
     ]
   },
