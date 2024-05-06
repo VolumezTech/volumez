@@ -6,12 +6,12 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "14198532119522419485"
+      "templateHash": "12113825275071765036"
     }
   },
   "functions": [
     {
-      "namespace": "_2",
+      "namespace": "_1",
       "members": {
         "allSizes": {
           "parameters": [],
@@ -50,7 +50,7 @@
           },
           "metadata": {
             "__bicep_imported_from!": {
-              "sourceTemplate": "configs/t-shirts.bicep"
+              "sourceTemplate": "configs/demo-config.bicep"
             }
           }
         }
@@ -68,11 +68,11 @@
           ],
           "output": {
             "type": "object",
-            "value": "[last(filter(_2.allSizes(), lambda('size', equals(lambdaVariables('size').name, parameters('sizeInput')))))]"
+            "value": "[last(filter(_1.allSizes(), lambda('size', equals(lambdaVariables('size').name, parameters('sizeInput')))))]"
           },
           "metadata": {
             "__bicep_imported_from!": {
-              "sourceTemplate": "configs/t-shirts.bicep"
+              "sourceTemplate": "configs/demo-config.bicep"
             }
           }
         },
@@ -180,9 +180,74 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "16141048713041676625"
+              "templateHash": "14938892756635490292"
             }
           },
+          "functions": [
+            {
+              "namespace": "_1",
+              "members": {
+                "allSizes": {
+                  "parameters": [],
+                  "output": {
+                    "type": "array",
+                    "value": [
+                      {
+                        "name": "small",
+                        "nrAppVms": 1,
+                        "nrMediaVms": 2,
+                        "sizeAppVm": "Standard_D16_v5",
+                        "sizeMediaVm": "Standard_L8s_v3"
+                      },
+                      {
+                        "name": "medium",
+                        "nrAppVms": 1,
+                        "nrMediaVms": 6,
+                        "sizeAppVm": "Standard_D32_v5",
+                        "sizeMediaVm": "Standard_L8s_v3"
+                      },
+                      {
+                        "name": "large",
+                        "nrAppVms": 1,
+                        "nrMediaVms": 12,
+                        "sizeAppVm": "Standard_D64_v5",
+                        "sizeMediaVm": "Standard_L8s_v3"
+                      },
+                      {
+                        "name": "xlarge",
+                        "nrAppVms": 1,
+                        "nrMediaVms": 18,
+                        "sizeAppVm": "Standard_D96_v5",
+                        "sizeMediaVm": "Standard_L8s_v3"
+                      }
+                    ]
+                  },
+                  "metadata": {
+                    "__bicep_imported_from!": {
+                      "sourceTemplate": "configs/demo-config.bicep"
+                    }
+                  }
+                },
+                "getSize": {
+                  "parameters": [
+                    {
+                      "type": "string",
+                      "name": "sizeInput"
+                    }
+                  ],
+                  "output": {
+                    "type": "object",
+                    "value": "[last(filter(_1.allSizes(), lambda('size', equals(lambdaVariables('size').name, parameters('sizeInput')))))]"
+                  },
+                  "metadata": {
+                    "__bicep_imported_from!": {
+                      "sourceTemplate": "configs/demo-config.bicep"
+                    }
+                  }
+                }
+              }
+            }
+          ],
           "parameters": {
             "snetName": {
               "type": "string"

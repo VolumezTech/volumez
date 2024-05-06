@@ -1,5 +1,5 @@
 import { replaceMultiple } from './lib/util.bicep'
-import * as var from './configs/param-demo-normal.bicep'
+import * as var from './configs/demo-config.bicep'
 
 @secure()
 param adminPassword string

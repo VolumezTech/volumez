@@ -1,6 +1,6 @@
 import { replaceMultiple } from './lib/util.bicep'
-import * as var from './configs/param-demo-normal.bicep'
-import { getSize } from './configs/t-shirts.bicep'
+import * as var from './configs/demo-config.bicep'
+import { getSize } from './configs/demo-config.bicep'
 
 @secure()
 param adminPassword string

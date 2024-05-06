@@ -6,10 +6,73 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "13270925628119367559"
+      "templateHash": "10919635560953165161"
     }
   },
   "functions": [
+    {
+      "namespace": "_1",
+      "members": {
+        "allSizes": {
+          "parameters": [],
+          "output": {
+            "type": "array",
+            "value": [
+              {
+                "name": "small",
+                "nrAppVms": 1,
+                "nrMediaVms": 2,
+                "sizeAppVm": "Standard_D16_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
+              },
+              {
+                "name": "medium",
+                "nrAppVms": 1,
+                "nrMediaVms": 6,
+                "sizeAppVm": "Standard_D32_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
+              },
+              {
+                "name": "large",
+                "nrAppVms": 1,
+                "nrMediaVms": 12,
+                "sizeAppVm": "Standard_D64_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
+              },
+              {
+                "name": "xlarge",
+                "nrAppVms": 1,
+                "nrMediaVms": 18,
+                "sizeAppVm": "Standard_D96_v5",
+                "sizeMediaVm": "Standard_L8s_v3"
+              }
+            ]
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "configs/demo-config.bicep"
+            }
+          }
+        },
+        "getSize": {
+          "parameters": [
+            {
+              "type": "string",
+              "name": "sizeInput"
+            }
+          ],
+          "output": {
+            "type": "object",
+            "value": "[last(filter(_1.allSizes(), lambda('size', equals(lambdaVariables('size').name, parameters('sizeInput')))))]"
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "configs/demo-config.bicep"
+            }
+          }
+        }
+      }
+    },
     {
       "namespace": "__bicep",
       "members": {

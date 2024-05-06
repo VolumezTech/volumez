@@ -1,4 +1,4 @@
-import * as var from './configs/param-demo-normal.bicep'
+import * as var from './configs/demo-config.bicep'
 
 param snetName string
 param vnetName string
