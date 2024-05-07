@@ -60,10 +60,10 @@
 			"parameters": {
 				"tenant_token": "[steps('basics').tenant_token]",
 				"deploySize": "[steps('basics').deploySize]",
-				"region": "[steps('basics').resourceScope.location.name"
+				"region": "westeurope"
 			},
 			"kind": "Subscription",
-			"location": "[steps('basics').resourceScope.location.name",
+			"location": "westeurope",
 			"subscriptionId": "[steps('basics').resourceScope.subscriptionId]"		
 		}
 	}
