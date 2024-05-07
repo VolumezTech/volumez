@@ -10,43 +10,377 @@
 					"label": "Basics",
 					"elements": [
 						{
-                            "name": "resourceScope",
-                            "type": "Microsoft.Common.ResourceScope",
-                            "location": {
-                                "resourceTypes": [
-                                    "microsoft.resources/resourcegroups"
-                                ]
-                            }
-                        },
-						{
-							"name": "adminPassword",
-							"type": "Microsoft.Common.PasswordBox",
-							"label": "Password for your volumezdemoUser"
+							"name": "region",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Deployment region",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+									"allowedValues": [
+										{
+											"label": "(Africa) South Africa North",
+											"value": "southafricanorth"
+										  },
+										  {
+											"label": "(Africa) South Africa West",
+											"value": "southafricawest"
+										  },
+										  {
+											"label": "(Asia Pacific) Australia Central",
+											"value": "australiacentral"
+										  },
+										  {
+											"label": "(Asia Pacific) Australia Central 2",
+											"value": "australiacentral2"
+										  },
+										  {
+											"label": "(Asia Pacific) Australia East",
+											"value": "australiaeast"
+										  },
+										  {
+											"label": "(Asia Pacific) Australia Southeast",
+											"value": "australiasoutheast"
+										  },
+										  {
+											"label": "(Asia Pacific) Central India",
+											"value": "centralindia"
+										  },
+										  {
+											"label": "(Asia Pacific) East Asia",
+											"value": "eastasia"
+										  },
+										  {
+											"label": "(Asia Pacific) East Asia (Stage)",
+											"value": "eastasiastage"
+										  },
+										  {
+											"label": "(Asia Pacific) Japan East",
+											"value": "japaneast"
+										  },
+										  {
+											"label": "(Asia Pacific) Japan West",
+											"value": "japanwest"
+										  },
+										  {
+											"label": "(Asia Pacific) Jio India Central",
+											"value": "jioindiacentral"
+										  },
+										  {
+											"label": "(Asia Pacific) Jio India West",
+											"value": "jioindiawest"
+										  },
+										  {
+											"label": "(Asia Pacific) Korea Central",
+											"value": "koreacentral"
+										  },
+										  {
+											"label": "(Asia Pacific) Korea South",
+											"value": "koreasouth"
+										  },
+										  {
+											"label": "(Asia Pacific) South India",
+											"value": "southindia"
+										  },
+										  {
+											"label": "(Asia Pacific) Southeast Asia",
+											"value": "southeastasia"
+										  },
+										  {
+											"label": "(Asia Pacific) Southeast Asia (Stage)",
+											"value": "southeastasiastage"
+										  },
+										  {
+											"label": "(Asia Pacific) West India",
+											"value": "westindia"
+										  },
+										  {
+											"label": "(Canada) Canada Central",
+											"value": "canadacentral"
+										  },
+										  {
+											"label": "(Canada) Canada East",
+											"value": "canadaeast"
+										  },
+										  {
+											"label": "(Europe) France Central",
+											"value": "francecentral"
+										  },
+										  {
+											"label": "(Europe) France South",
+											"value": "francesouth"
+										  },
+										  {
+											"label": "(Europe) Germany North",
+											"value": "germanynorth"
+										  },
+										  {
+											"label": "(Europe) Germany West Central",
+											"value": "germanywestcentral"
+										  },
+										  {
+											"label": "(Europe) Italy North",
+											"value": "italynorth"
+										  },
+										  {
+											"label": "(Europe) North Europe",
+											"value": "northeurope"
+										  },
+										  {
+											"label": "(Europe) Norway East",
+											"value": "norwayeast"
+										  },
+										  {
+											"label": "(Europe) Norway West",
+											"value": "norwaywest"
+										  },
+										  {
+											"label": "(Europe) Poland Central",
+											"value": "polandcentral"
+										  },
+										  {
+											"label": "(Europe) Sweden Central",
+											"value": "swedencentral"
+										  },
+										  {
+											"label": "(Europe) Switzerland North",
+											"value": "switzerlandnorth"
+										  },
+										  {
+											"label": "(Europe) Switzerland West",
+											"value": "switzerlandwest"
+										  },
+										  {
+											"label": "(Europe) UK South",
+											"value": "uksouth"
+										  },
+										  {
+											"label": "(Europe) UK West",
+											"value": "ukwest"
+										  },
+										  {
+											"label": "(Europe) West Europe",
+											"value": "westeurope"
+										  },
+										  {
+											"label": "(Mexico) Mexico Central",
+											"value": "mexicocentral"
+										  },
+										  {
+											"label": "(Middle East) Israel Central",
+											"value": "israelcentral"
+										  },
+										  {
+											"label": "(Middle East) Qatar Central",
+											"value": "qatarcentral"
+										  },
+										  {
+											"label": "(Middle East) UAE Central",
+											"value": "uaecentral"
+										  },
+										  {
+											"label": "(Middle East) UAE North",
+											"value": "uaenorth"
+										  },
+										  {
+											"label": "(South America) Brazil South",
+											"value": "brazilsouth"
+										  },
+										  {
+											"label": "(South America) Brazil Southeast",
+											"value": "brazilsoutheast"
+										  },
+										  {
+											"label": "(South America) Brazil US",
+											"value": "brazilus"
+										  },
+										  {
+											"label": "(US) Central US",
+											"value": "centralus"
+										  },
+										  {
+											"label": "(US) Central US (Stage)",
+											"value": "centralusstage"
+										  },
+										  {
+											"label": "(US) Central US EUAP",
+											"value": "centraluseuap"
+										  },
+										  {
+											"label": "(US) East US",
+											"value": "eastus"
+										  },
+										  {
+											"label": "(US) East US (Stage)",
+											"value": "eastusstage"
+										  },
+										  {
+											"label": "(US) East US 2",
+											"value": "eastus2"
+										  },
+										  {
+											"label": "(US) East US 2 (Stage)",
+											"value": "eastus2stage"
+										  },
+										  {
+											"label": "(US) East US 2 EUAP",
+											"value": "eastus2euap"
+										  },
+										  {
+											"label": "(US) East US STG",
+											"value": "eastusstg"
+										  },
+										  {
+											"label": "(US) North Central US",
+											"value": "northcentralus"
+										  },
+										  {
+											"label": "(US) North Central US (Stage)",
+											"value": "northcentralusstage"
+										  },
+										  {
+											"label": "(US) South Central US",
+											"value": "southcentralus"
+										  },
+										  {
+											"label": "(US) South Central US (Stage)",
+											"value": "southcentralusstage"
+										  },
+										  {
+											"label": "(US) West Central US",
+											"value": "westcentralus"
+										  },
+										  {
+											"label": "(US) West US",
+											"value": "westus"
+										  },
+										  {
+											"label": "(US) West US (Stage)",
+											"value": "westusstage"
+										  },
+										  {
+											"label": "(US) West US 2",
+											"value": "westus2"
+										  },
+										  {
+											"label": "(US) West US 2 (Stage)",
+											"value": "westus2stage"
+										  },
+										  {
+											"label": "(US) West US 3",
+											"value": "westus3"
+										  },
+										  {
+											"label": "Asia",
+											"value": "asia"
+										  },
+										  {
+											"label": "Asia Pacific",
+											"value": "asiapacific"
+										  },
+										  {
+											"label": "Australia",
+											"value": "australia"
+										  },
+										  {
+											"label": "Brazil",
+											"value": "brazil"
+										  },
+										  {
+											"label": "Canada",
+											"value": "canada"
+										  },
+										  {
+											"label": "Europe",
+											"value": "europe"
+										  },
+										  {
+											"label": "France",
+											"value": "france"
+										  },
+										  {
+											"label": "Germany",
+											"value": "germany"
+										  },
+										  {
+											"label": "Global",
+											"value": "global"
+										  },
+										  {
+											"label": "India",
+											"value": "india"
+										  },
+										  {
+											"label": "Israel",
+											"value": "israel"
+										  },
+										  {
+											"label": "Italy",
+											"value": "italy"
+										  },
+										  {
+											"label": "Japan",
+											"value": "japan"
+										  },
+										  {
+											"label": "Korea",
+											"value": "korea"
+										  },
+										  {
+											"label": "New Zealand",
+											"value": "newzealand"
+										  },
+										  {
+											"label": "Norway",
+											"value": "norway"
+										  },
+										  {
+											"label": "Poland",
+											"value": "poland"
+										  },
+										  {
+											"label": "Qatar",
+											"value": "qatar"
+										  },
+										  {
+											"label": "Singapore",
+											"value": "singapore"
+										  },
+										  {
+											"label": "South Africa",
+											"value": "southafrica"
+										  },
+										  {
+											"label": "Sweden",
+											"value": "sweden"
+										  },
+										  {
+											"label": "Switzerland",
+											"value": "switzerland"
+										  },
+										  {
+											"label": "United Arab Emirates",
+											"value": "uae"
+										  },
+										  {
+											"label": "United Kingdom",
+											"value": "uk"
+										  },
+										  {
+											"label": "United States",
+											"value": "unitedstates"
+										  },
+										  {
+											"label": "United States EUAP",
+											"value": "unitedstateseuap"
+										  }
+									],
+									"required": true
+								}
 						},
 						{
 							"name": "tenant_token",
 							"type": "Microsoft.Common.TextBox",
 							"label": "You can find your tenant_token in the Volumez developer info"
-						},
-						{
-							"name": "deployBastion",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Deploy a Bastion Host",
-							"multiselect": false,
-							"multiLine": false,
-							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "True",
-									"value": "true" 
-								  },
-								  {
-									"label": "False",
-									"value": "false"
-								  }
-								],
-								"required": true
-							  }		
 						},
 						{
 								"name": "deploySize",
@@ -76,21 +410,20 @@
 										"required": true
 									}
 						}
+
 					]
 				}
 			]
 		},
 		"outputs": {
 			"parameters": {
-				"adminPassword": "[steps('basics').adminPassword]",
 				"tenant_token": "[steps('basics').tenant_token]",
-				"deployBastion": "[steps('basics').deployBastion]",
 				"deploySize": "[steps('basics').deploySize]",
-				"location": "[steps('basics').resourceScope.location.name]"
+				"location": "[steps('basics').region]"
 			},
-			"kind": "ResourceGroup",
-			"location": "[steps('basics').resourceScope.location.name]",
-			"resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"		
+			"kind": "Subscription",
+			"subscriptionId": "Subscription().subscriptionId",
+			"location": "Subscription().location"
 		}
 	}
 }
