@@ -5,6 +5,7 @@ import { getSize } from './configs/demo-config.bicep'
 param tenant_token string
 param deploySize string
 param region string
+param subId        string
 
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -19,7 +20,7 @@ var rgName            = 'rg-${var.projectName}-${uniqString}'
 
 module resourceGroup 'br/public:avm/res/resources/resource-group:0.2.3' = {
   name: 'deploy-rg-${uniqString}'
-  scope: subscription()
+  scope: subscription(subId)
   params: {
     name: rgName
     location: region

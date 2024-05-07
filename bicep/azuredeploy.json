@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "10773435398467959977"
+      "templateHash": "3089706265052301336"
     }
   },
   "functions": [
@@ -113,6 +113,9 @@
     },
     "region": {
       "type": "string"
+    },
+    "subId": {
+      "type": "string"
     }
   },
   "variables": {
@@ -144,7 +147,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('deploy-rg-{0}', variables('uniqString'))]",
-      "subscriptionId": "[subscription().subscriptionId]",
+      "subscriptionId": "[parameters('subId')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "expressionEvaluationOptions": {

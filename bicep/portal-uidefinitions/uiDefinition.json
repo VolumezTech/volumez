@@ -60,11 +60,12 @@
 			"parameters": {
 				"tenant_token": "[steps('basics').tenant_token]",
 				"deploySize": "[steps('basics').deploySize]",
-				"region": "[steps('basics').resourceScope.location.name]"
+				"region": "[steps('basics').resourceScope.location.name]",
+				"subId": "[steps('basics').resourceScope.subId]"
 			},
-			"kind": "Subscription",
-			"subscriptionId": "[steps('basics').resourceScope.subscriptionId]",
-			"location": "[steps('basics').resourceScope.location.name]"
+			"kind": "ResourceGroup",
+			"location": "[steps('basics').resourceScope.location.name]",
+			"resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"		
 		}
 	}
 }
