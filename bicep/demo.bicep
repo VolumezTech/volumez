@@ -4,7 +4,7 @@ import { getSize } from './configs/demo-config.bicep'
 
 param tenant_token string
 param deploySize string
-param location string
+param region string
 
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -22,7 +22,7 @@ module resourceGroup 'br/public:avm/res/resources/resource-group:0.2.3' = {
   scope: subscription()
   params: {
     name: rgName
-    location: location
+    location: region
   }
 }
 
@@ -41,7 +41,7 @@ module demonetwork './demo-network.bicep' = {
   params: {
     snetName : var.snetName
     vnetName : var.vnetName
-    location : location
+    region : region
     projectName : var.projectName
     deployBastion : false
   }
@@ -60,7 +60,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
   scope: az.resourceGroup(rgName)
   params: {
     name: 'ppg-${var.projectName}-${uniqString}'
-    location: location
+    location: region
 
     intent: {
       vmSizes: [
@@ -129,7 +129,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
       disablePasswordAuthentication: true
-      location : location
+      location : region
       encryptionAtHost: false
     }
     dependsOn : [ demonetwork ]
@@ -180,7 +180,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    location : location
+    location : region
     encryptionAtHost: false
   }
   dependsOn : [ demonetwork ]

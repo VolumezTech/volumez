@@ -419,7 +419,7 @@
 			"parameters": {
 				"tenant_token": "[steps('basics').tenant_token]",
 				"deploySize": "[steps('basics').deploySize]",
-				"location": "[steps('basics').region]"
+				"region": "[steps('basics').region]"
 			},
 			"kind": "Subscription",
 			"subscriptionId": "Subscription().subscriptionId",
