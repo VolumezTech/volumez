@@ -61,7 +61,7 @@
 				"tenant_token": "[steps('basics').tenant_token]",
 				"deploySize": "[steps('basics').deploySize]",
 				"region": "[steps('basics').resourceScope.location.name]",
-				"subId": "[steps('basics').resourceScope.subId]"
+				"subId": "[steps('basics').resourceScope.subscriptions.id]"
 			},
 			"kind": "ResourceGroup",
 			"location": "[steps('basics').resourceScope.location.name]",
