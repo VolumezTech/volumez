@@ -423,7 +423,7 @@
 			},
 			"kind": "Subscription",
 			"subscriptionId": "Subscription().subscriptionId",
-			"location": "Subscription().location"
+			"location": "[steps('basics').region]"
 		}
 	}
 }
