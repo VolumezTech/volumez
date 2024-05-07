@@ -5,8 +5,8 @@ import { getSize } from './configs/demo-config.bicep'
 param tenant_token string
 param deploySize string
 param region string
-param subId        string
 
+targetScope = 'subscription'
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
 var cloudInitScript = replaceMultiple(script, {
@@ -18,13 +18,9 @@ var uniqString  = uniqueString(deployment().name)
 var rgName            = 'rg-${var.projectName}-${uniqString}'
 
 
-module resourceGroup 'br/public:avm/res/resources/resource-group:0.2.3' = {
-  name: 'deploy-rg-${uniqString}'
-  scope: subscription(subId)
-  params: {
-    name: rgName
-    location: region
-  }
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
+  name: rgName
+  location: region
 }
 
 /*
@@ -38,7 +34,7 @@ module resourceGroup 'br/public:avm/res/resources/resource-group:0.2.3' = {
 
 module demonetwork './demo-network.bicep' = {
   name: 'deploy-networkmodule-${uniqString}'
-  scope: az.resourceGroup(rgName)
+  scope: resourceGroup
   params: {
     snetName : var.snetName
     vnetName : var.vnetName
@@ -46,7 +42,6 @@ module demonetwork './demo-network.bicep' = {
     projectName : var.projectName
     deployBastion : false
   }
-  dependsOn: [ resourceGroup ]
 }
 
 /*
@@ -59,7 +54,7 @@ module demonetwork './demo-network.bicep' = {
 
 module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-group:0.1.2' = {
   name: 'deploy-ppg-${uniqString}'
-  scope: az.resourceGroup(rgName)
+  scope: resourceGroup
   params: {
     name: 'ppg-${var.projectName}-${uniqString}'
     location: region
@@ -72,7 +67,6 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
     }
     zones: var.zones
   }
-  dependsOn: [ resourceGroup ]
 }
 
 /*
@@ -85,7 +79,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
   name: 'deploy-vm${i}-app${uniqString}'
-  scope: az.resourceGroup(rgName)
+  scope: resourceGroup
   params: {
       adminUsername: '${var.projectName}User'
       availabilityZone: 0
@@ -143,7 +137,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
   name: 'deploy-vm${i}-media${uniqString}'
-  scope: az.resourceGroup(rgName)
+  scope: resourceGroup
   params: {
     adminUsername: '${var.projectName}User'
     availabilityZone: 0
