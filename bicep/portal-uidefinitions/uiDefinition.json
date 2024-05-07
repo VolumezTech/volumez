@@ -421,8 +421,8 @@
 				"deploySize": "[steps('basics').deploySize]",
 				"region": "[steps('basics').region]"
 			},
-			"kind": "Subscription",
-			"subscriptionId": "[Subscription().subscriptionId]",
+			"kind": "ResourceGroup",
+			"resourceGroupId": "ResourceGroup().resourceGroupId",
 			"location": "[steps('basics').region]"
 		}
 	}
