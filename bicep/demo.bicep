@@ -45,6 +45,7 @@ module demonetwork './demo-network.bicep' = {
     projectName : var.projectName
     deployBastion : false
   }
+  dependsOn: [ resourceGroup ]
 }
 
 /*
@@ -70,6 +71,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
     }
     zones: var.zones
   }
+  dependsOn: [ resourceGroup ]
 }
 
 /*

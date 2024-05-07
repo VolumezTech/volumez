@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "3723116481738858099"
+      "templateHash": "10773435398467959977"
     }
   },
   "functions": [
@@ -5586,7 +5586,10 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "resourceGroup"
+      ]
     },
     "proximityPlacementGroup": {
       "type": "Microsoft.Resources/deployments",
@@ -5908,7 +5911,10 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "resourceGroup"
+      ]
     },
     "appVirtualMachine": {
       "copy": {
