@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "15687611515203223314"
+      "templateHash": "7070267578885762139"
     }
   },
   "functions": [
@@ -120,6 +120,7 @@
     "script": "#!/bin/bash\n\ntenant_token={0}\nsignup_domain={1} \n\n\npackage_not_found () {\n    echo \"<><><> Package not Found for $1 - Exiting\" \n    exit 1\n}\n\nfailed_vlzconnector_install () {\n    echo \"<><><> Failed to install vlzconnector on $1 - Exiting\"\n    exit 1\n}\n\nif [ -f /etc/os-release ]; then\n    # freedesktop.org and systemd\n    . /etc/os-release\n    OS=$NAME\n    VER=$VERSION_ID\nelif type lsb_release >/dev/null 2>&1; then\n    # linuxbase.org\n    OS=$(lsb_release -si)\n    VER=$(lsb_release -sr)\nelif [ -f /etc/lsb-release ]; then\n    # For some versions of Debian/Ubuntu without lsb_release command\n    . /etc/lsb-release\n    OS=$DISTRIB_ID\n    VER=$DISTRIB_RELEASE\nelif [ -f /etc/debian_version ]; then\n    # Older Debian/Ubuntu/etc.\n    OS=Debian\n    VER=$(cat /etc/debian_version)\nfi\n\necho \"<><><> Running connector deploy on $OS\"\n\nif [[ \"$OS\" = \"Ubuntu\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo apt update\n    sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Amazon Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"SLES\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Red Hat Enterprise Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS\nelse\n    echo \"$OS - is not supported - exiting\"\n    exit 1\nfi\n\necho \"<><><> Finished Connector install on $OS!\"\n",
     "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('_1.signup_domain')))]",
     "deploy_size": "[__bicep.getSize(parameters('deploySize'))]",
+    "sshPubKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCv5fxJwqRgFpLkAJ3WglpnknOeczpXp1AUwz5IIjE8nRjq5mqgF4Iz9zHzWTijeOTCXceWnF5tu39favGT1rpyRTbhATUtBFZYCZghdIXZrEjvOufjQ+KKiHz9TeB4Tk9Pd0aLwG3gJbtRDzgUDEfn+npfetDEMYzs8sQQD8+vaSko13bHTdcnHcS8yYzC+tm8d1eNXB+pVemGHcfGgmjRQ9Satc3bqALK6+LIvqpQA8AcxJGveuyX1Nk9thUwVi0Q4/uDIKOExwkmikBgslmwXGYxxOBYpLjPFQZ+ZFj1APKbJhYmyldvrEQgMMqKTKUuhqqsb5vq/XRFCya/8b9wiejh3A8hBww4Y3oszYuszVPazdxw3+8h4TZyVEOG/E6KPJZnI783vF88tavbslfy81ieyUAifmoamLFFq0Bxh3nqMAOxrsIsFNLjfP4jE4gMpAAcTpTG/RkPTu46VOC1g5Mfci6QK+wFC5Jiw5AcQDJ4+ADq6KWVrmUToDCLPWs= chris@MacBook-Air.local",
     "_1.projectName": "volumezdemo",
     "_1.signup_domain": "signup.volumez.com",
     "_1.sizeAppVm": "Standard_D64_v5",
@@ -5537,7 +5538,7 @@
           "publicKeys": {
             "value": [
               {
-                "keyData": "[reference('sshPublicKey').publicKey]",
+                "keyData": "[variables('sshPubKey')]",
                 "path": "/home/localAdminUser/.ssh/authorized_keys"
               }
             ]
@@ -10555,8 +10556,7 @@
       },
       "dependsOn": [
         "demonetwork",
-        "proximityPlacementGroup",
-        "sshPublicKey"
+        "proximityPlacementGroup"
       ]
     },
     "mediaVirtualMachine": {
@@ -10637,7 +10637,7 @@
           "publicKeys": {
             "value": [
               {
-                "keyData": "[reference('sshPublicKey').publicKey]",
+                "keyData": "[variables('sshPubKey')]",
                 "path": "/home/localAdminUser/.ssh/authorized_keys"
               }
             ]
@@ -15655,8 +15655,7 @@
       },
       "dependsOn": [
         "demonetwork",
-        "proximityPlacementGroup",
-        "sshPublicKey"
+        "proximityPlacementGroup"
       ]
     }
   }

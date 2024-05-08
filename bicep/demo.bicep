@@ -12,7 +12,7 @@ var cloudInitScript = replaceMultiple(script, {
   '{1}': var.signup_domain
 })
 var deploy_size = getSize(deploySize)
-
+var sshPubKey = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCv5fxJwqRgFpLkAJ3WglpnknOeczpXp1AUwz5IIjE8nRjq5mqgF4Iz9zHzWTijeOTCXceWnF5tu39favGT1rpyRTbhATUtBFZYCZghdIXZrEjvOufjQ+KKiHz9TeB4Tk9Pd0aLwG3gJbtRDzgUDEfn+npfetDEMYzs8sQQD8+vaSko13bHTdcnHcS8yYzC+tm8d1eNXB+pVemGHcfGgmjRQ9Satc3bqALK6+LIvqpQA8AcxJGveuyX1Nk9thUwVi0Q4/uDIKOExwkmikBgslmwXGYxxOBYpLjPFQZ+ZFj1APKbJhYmyldvrEQgMMqKTKUuhqqsb5vq/XRFCya/8b9wiejh3A8hBww4Y3oszYuszVPazdxw3+8h4TZyVEOG/E6KPJZnI783vF88tavbslfy81ieyUAifmoamLFFq0Bxh3nqMAOxrsIsFNLjfP4jE4gMpAAcTpTG/RkPTu46VOC1g5Mfci6QK+wFC5Jiw5AcQDJ4+ADq6KWVrmUToDCLPWs= chris@MacBook-Air.local'
 
 
 /*
@@ -117,7 +117,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       disablePasswordAuthentication: true
       publicKeys: [
         {
-          keyData: sshPublicKey.properties.publicKey
+          keyData: sshPubKey
           path: '/home/localAdminUser/.ssh/authorized_keys'
         }
       ]
@@ -174,7 +174,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: sshPublicKey.properties.publicKey
+        keyData: sshPubKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
