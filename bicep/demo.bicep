@@ -67,14 +67,10 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 #######################################################################################
 */
 
-module sshPublicKey 'br/public:avm/res/compute/ssh-public-key:0.2.5' = {
+resource sshPublicKey 'Microsoft.Compute/sshPublicKeys@2023-09-01' = {
   name: 'deploy-sshkey-${uniqueString(deployment().name)}'
-  params: {
-    name: 'pky-${var.projectName}-${uniqueString(deployment().name)}'
-  }
+  location: location
 }
-
-
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
@@ -121,7 +117,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       disablePasswordAuthentication: true
       publicKeys: [
         {
-          keyData: 'keyData'
+          keyData: sshPublicKey.properties.publicKey
           path: '/home/localAdminUser/.ssh/authorized_keys'
         }
       ]
@@ -129,7 +125,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       location : location
       encryptionAtHost: false
     }
-    dependsOn : [ demonetwork,sshPublicKey ]
+    dependsOn : [ demonetwork ]
   }
 ]
 
@@ -178,14 +174,14 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: 'keyData'
+        keyData: sshPublicKey.properties.publicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
     location : location
     encryptionAtHost: false
   }
-  dependsOn : [ demonetwork,sshPublicKey ]
+  dependsOn : [ demonetwork ]
 }]
 
 
