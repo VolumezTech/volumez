@@ -80,7 +80,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
 
   params: {
-      adminUsername: '${var.projectName}User'
+      adminUsername: 'localAdminUser'
       availabilityZone: 0
       customData: cloudInitScript
       proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -119,7 +119,12 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
       disablePasswordAuthentication: true
-      publicKeys: [ sshPublicKey ]
+      publicKeys: [
+        {
+          keyData: 'keyData'
+          path: '/home/localAdminUser/.ssh/authorized_keys'
+        }
+      ]
   
       location : location
       encryptionAtHost: false
@@ -133,7 +138,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
   name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
-    adminUsername: '${var.projectName}User'
+    adminUsername: 'localAdminUser'
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -171,7 +176,12 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    publicKeys: [ sshPublicKey ]
+    publicKeys: [
+      {
+        keyData: 'keyData'
+        path: '/home/localAdminUser/.ssh/authorized_keys'
+      }
+    ]
     location : location
     encryptionAtHost: false
   }

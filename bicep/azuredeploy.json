@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "14233442905279300229"
+      "templateHash": "10915291533743002801"
     }
   },
   "functions": [
@@ -5747,7 +5747,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "[format('{0}User', variables('_1.projectName'))]"
+            "value": "localAdminUser"
           },
           "availabilityZone": {
             "value": 0
@@ -5809,7 +5809,10 @@
           },
           "publicKeys": {
             "value": [
-              "[reference('sshPublicKey')]"
+              {
+                "keyData": "keyData",
+                "path": "/home/localAdminUser/.ssh/authorized_keys"
+              }
             ]
           },
           "location": {
@@ -10844,7 +10847,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "[format('{0}User', variables('_1.projectName'))]"
+            "value": "localAdminUser"
           },
           "availabilityZone": {
             "value": 0
@@ -10906,7 +10909,10 @@
           },
           "publicKeys": {
             "value": [
-              "[reference('sshPublicKey')]"
+              {
+                "keyData": "keyData",
+                "path": "/home/localAdminUser/.ssh/authorized_keys"
+              }
             ]
           },
           "location": {
