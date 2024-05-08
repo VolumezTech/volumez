@@ -70,9 +70,11 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 module sshPublicKey 'br/public:avm/res/compute/ssh-public-key:0.2.5' = {
   name: 'deploy-sshkey-${uniqueString(deployment().name)}'
   params: {
-    name: 'pky-${var.projectName}-app${uniqueString(deployment().name)}'
+    name: 'pky-${var.projectName}-${uniqueString(deployment().name)}'
   }
 }
+
+
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
@@ -117,12 +119,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
       disablePasswordAuthentication: true
-      publicKeys: [
-        {
-          keyData: sshPublicKey
-          path: '/home/${var.projectName}User/.ssh/authorized_keys'
-        }
-      ]
+      publicKeys: [ sshPublicKey ]
   
       location : location
       encryptionAtHost: false
@@ -174,12 +171,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    publicKeys: [
-      {
-        keyData: sshPublicKey
-        path: '/home/${var.projectName}User/.ssh/authorized_keys'
-      }
-    ]
+    publicKeys: [ sshPublicKey ]
     location : location
     encryptionAtHost: false
   }
