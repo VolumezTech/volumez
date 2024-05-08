@@ -137,7 +137,7 @@ module natGateway 'br/public:avm/res/network/nat-gateway:1.0.4' = {
   name: 'deploy-ngw-${uniqueString(deployment().name)}'
   params: {
     name: 'ngw-${projectName}'
-    zones: [ var.zones ]
+    zones: [ var.zone ]
     location : location
     publicIPPrefixResourceIds: [ publicIpPrefix.outputs.resourceId ]
   }

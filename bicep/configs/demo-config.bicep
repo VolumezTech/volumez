@@ -28,6 +28,8 @@ var vmMediaVersion = 'latest'
 var signup_domain = 'signup.volumez.com'
 @export()
 var zones = [ 2 ]
+@export()
+var zone = 2
 
 
 func allSizes() array => [
