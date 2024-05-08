@@ -67,6 +67,13 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 #######################################################################################
 */
 
+module sshPublicKey 'br/public:avm/res/compute/ssh-public-key:0.2.5' = {
+  name: 'deploy-sshkey-${uniqueString(deployment().name)}'
+  params: {
+    name: 'pky-${var.projectName}-app${uniqueString(deployment().name)}'
+  }
+}
+
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
 
@@ -112,7 +119,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       disablePasswordAuthentication: true
       publicKeys: [
         {
-          keyData: 'app${uniqueString(deployment().name)}'
+          keyData: sshPublicKey
           path: '/home/${var.projectName}User/.ssh/authorized_keys'
         }
       ]
@@ -120,7 +127,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       location : location
       encryptionAtHost: false
     }
-    dependsOn : [ demonetwork ]
+    dependsOn : [ demonetwork,sshPublicKey ]
   }
 ]
 
@@ -169,14 +176,14 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: 'media${uniqueString(deployment().name)}'
+        keyData: sshPublicKey
         path: '/home/${var.projectName}User/.ssh/authorized_keys'
       }
     ]
     location : location
     encryptionAtHost: false
   }
-  dependsOn : [ demonetwork ]
+  dependsOn : [ demonetwork,sshPublicKey ]
 }]
 
 
