@@ -2,7 +2,7 @@ import * as var from './configs/demo-config.bicep'
 
 param snetName string
 param vnetName string
-param region string
+param location string
 param projectName string
 param deployBastion bool
 
@@ -13,7 +13,7 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.1.5' = {
       '10.0.0.0/16'
     ]
     name: vnetName
-    location : region
+    location : location
     subnets: [
       {
         addressPrefix: '10.0.0.0/24'
@@ -36,7 +36,7 @@ module bastionHost 'br/public:avm/res/network/bastion-host:0.2.1' = if (deployBa
   params: {
     name: 'bas-${projectName}-net'
     virtualNetworkResourceId: resourceId('Microsoft.Network/VirtualNetworks', vnetName )
-    location : region
+    location : location
     publicIPAddressObject: {
       alregionMethod: 'Static'
       name: 'pip-${projectName}-net'
@@ -53,7 +53,7 @@ module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.
   name: 'deploy-nsg-${uniqueString(deployment().name)}'
   params: {
     name: 'nsg-${projectName}'
-    location : region
+    location : location
     securityRules: [
       {
         name: 'allow_ssh_in'
@@ -129,7 +129,7 @@ module publicIpPrefix 'br/public:avm/res/network/public-ip-prefix:0.3.0' = {
   params: {
     name: 'pipfx-${projectName}'
     prefixLength: 30
-    location : region
+    location : location
   }
 }
 
@@ -138,7 +138,7 @@ module natGateway 'br/public:avm/res/network/nat-gateway:1.0.4' = {
   params: {
     name: 'ngw-${projectName}'
     zones: [ var.zones ]
-    location : region
+    location : location
     publicIPPrefixResourceIds: [ publicIpPrefix.outputs.resourceId ]
   }
   dependsOn: [

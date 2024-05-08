@@ -1,12 +1,12 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "10704092732710896889"
+      "templateHash": "12113825275071765036"
     }
   },
   "functions": [
@@ -105,22 +105,28 @@
     }
   ],
   "parameters": {
+    "adminPassword": {
+      "type": "securestring"
+    },
     "tenant_token": {
+      "type": "string"
+    },
+    "deployBastion": {
       "type": "string"
     },
     "deploySize": {
       "type": "string"
     },
-    "region": {
-      "type": "string"
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
     }
   },
   "variables": {
     "script": "#!/bin/bash\n\ntenant_token={0}\nsignup_domain={1} \n\n\npackage_not_found () {\n    echo \"<><><> Package not Found for $1 - Exiting\" \n    exit 1\n}\n\nfailed_vlzconnector_install () {\n    echo \"<><><> Failed to install vlzconnector on $1 - Exiting\"\n    exit 1\n}\n\nif [ -f /etc/os-release ]; then\n    # freedesktop.org and systemd\n    . /etc/os-release\n    OS=$NAME\n    VER=$VERSION_ID\nelif type lsb_release >/dev/null 2>&1; then\n    # linuxbase.org\n    OS=$(lsb_release -si)\n    VER=$(lsb_release -sr)\nelif [ -f /etc/lsb-release ]; then\n    # For some versions of Debian/Ubuntu without lsb_release command\n    . /etc/lsb-release\n    OS=$DISTRIB_ID\n    VER=$DISTRIB_RELEASE\nelif [ -f /etc/debian_version ]; then\n    # Older Debian/Ubuntu/etc.\n    OS=Debian\n    VER=$(cat /etc/debian_version)\nfi\n\necho \"<><><> Running connector deploy on $OS\"\n\nif [[ \"$OS\" = \"Ubuntu\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo apt update\n    sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Amazon Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"SLES\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Red Hat Enterprise Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS\nelse\n    echo \"$OS - is not supported - exiting\"\n    exit 1\nfi\n\necho \"<><><> Finished Connector install on $OS!\"\n",
     "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('_1.signup_domain')))]",
+    "deployBastionBool": "[bool(parameters('deployBastion'))]",
     "deploy_size": "[__bicep.getSize(parameters('deploySize'))]",
-    "uniqString": "[uniqueString(deployment().name)]",
-    "rgName": "[format('rg-{0}-{1}', variables('_1.projectName'), variables('uniqString'))]",
     "_1.projectName": "volumezdemo",
     "_1.signup_domain": "signup.volumez.com",
     "_1.sizeAppVm": "Standard_D64_v5",
@@ -140,17 +146,10 @@
     ]
   },
   "resources": {
-    "resourceGroup": {
-      "type": "Microsoft.Resources/resourceGroups",
-      "apiVersion": "2021-01-01",
-      "name": "[variables('rgName')]",
-      "location": "[parameters('region')]"
-    },
     "demonetwork": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('deploy-networkmodule-{0}', variables('uniqString'))]",
-      "resourceGroup": "[variables('rgName')]",
+      "name": "[format('deploy-networkmodule-{0}', uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -163,14 +162,14 @@
           "vnetName": {
             "value": "[variables('_1.vnetName')]"
           },
-          "region": {
-            "value": "[parameters('region')]"
+          "location": {
+            "value": "[parameters('location')]"
           },
           "projectName": {
             "value": "[variables('_1.projectName')]"
           },
           "deployBastion": {
-            "value": false
+            "value": "[variables('deployBastionBool')]"
           }
         },
         "template": {
@@ -181,7 +180,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "11033051568617592390"
+              "templateHash": "14938892756635490292"
             }
           },
           "functions": [
@@ -256,7 +255,7 @@
             "vnetName": {
               "type": "string"
             },
-            "region": {
+            "location": {
               "type": "string"
             },
             "projectName": {
@@ -305,7 +304,7 @@
                     "value": "[parameters('vnetName')]"
                   },
                   "location": {
-                    "value": "[parameters('region')]"
+                    "value": "[parameters('location')]"
                   },
                   "subnets": {
                     "value": [
@@ -1503,7 +1502,7 @@
                     "value": "[resourceId('Microsoft.Network/VirtualNetworks', parameters('vnetName'))]"
                   },
                   "location": {
-                    "value": "[parameters('region')]"
+                    "value": "[parameters('location')]"
                   },
                   "publicIPAddressObject": {
                     "value": {
@@ -2668,7 +2667,7 @@
                     "value": "[format('nsg-{0}', parameters('projectName'))]"
                   },
                   "location": {
-                    "value": "[parameters('region')]"
+                    "value": "[parameters('location')]"
                   },
                   "securityRules": {
                     "value": [
@@ -3432,7 +3431,7 @@
                     "value": 30
                   },
                   "location": {
-                    "value": "[parameters('region')]"
+                    "value": "[parameters('location')]"
                   }
                 },
                 "template": {
@@ -3754,7 +3753,7 @@
                     ]
                   },
                   "location": {
-                    "value": "[parameters('region')]"
+                    "value": "[parameters('location')]"
                   },
                   "publicIPPrefixResourceIds": {
                     "value": [
@@ -5136,16 +5135,12 @@
             }
           }
         }
-      },
-      "dependsOn": [
-        "resourceGroup"
-      ]
+      }
     },
     "proximityPlacementGroup": {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('deploy-ppg-{0}', variables('uniqString'))]",
-      "resourceGroup": "[variables('rgName')]",
+      "name": "[format('deploy-ppg-{0}', uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5153,10 +5148,10 @@
         "mode": "Incremental",
         "parameters": {
           "name": {
-            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), variables('uniqString'))]"
+            "value": "[format('ppg-{0}-{1}', variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "location": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "intent": {
             "value": {
@@ -5461,10 +5456,7 @@
             }
           }
         }
-      },
-      "dependsOn": [
-        "resourceGroup"
-      ]
+      }
     },
     "appVirtualMachine": {
       "copy": {
@@ -5473,8 +5465,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('deploy-vm{0}-app{1}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('uniqString'))]",
-      "resourceGroup": "[variables('rgName')]",
+      "name": "[format('deploy-vm{0}-app{1}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5483,6 +5474,9 @@
         "parameters": {
           "adminUsername": {
             "value": "[format('{0}User', variables('_1.projectName'))]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
           },
           "availabilityZone": {
             "value": 0
@@ -5502,25 +5496,19 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), variables('uniqString'))]"
+            "value": "[format('vm{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [
               {
                 "ipConfigurations": [
                   {
-                    "enablePublicIP": true,
-                    "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), variables('uniqString'))]",
+                    "enablePublicIP": false,
+                    "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "[variables('_1.zones')]"
-                    ],
-                    "pipConfiguration": {
-                      "publicIpNameSuffix": "-pip-01",
-                      "zones": [
-                        "[variables('_1.zones')]"
-                      ]
-                    }
+                    ]
                   }
                 ],
                 "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
@@ -5546,10 +5534,10 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": true
+            "value": false
           },
           "location": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "encryptionAtHost": {
             "value": false
@@ -10561,8 +10549,7 @@
       },
       "dependsOn": [
         "demonetwork",
-        "proximityPlacementGroup",
-        "resourceGroup"
+        "proximityPlacementGroup"
       ]
     },
     "mediaVirtualMachine": {
@@ -10572,8 +10559,7 @@
       },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('deploy-vm{0}-media{1}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('uniqString'))]",
-      "resourceGroup": "[variables('rgName')]",
+      "name": "[format('deploy-vm{0}-media{1}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], uniqueString(deployment().name))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -10582,6 +10568,9 @@
         "parameters": {
           "adminUsername": {
             "value": "[format('{0}User', variables('_1.projectName'))]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
           },
           "availabilityZone": {
             "value": 0
@@ -10601,7 +10590,7 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), variables('uniqString'))]"
+            "value": "[format('vm{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [
@@ -10609,7 +10598,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": false,
-                    "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), variables('uniqString'))]",
+                    "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "[variables('_1.zones')]"
@@ -10639,10 +10628,10 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": true
+            "value": false
           },
           "location": {
-            "value": "[parameters('region')]"
+            "value": "[parameters('location')]"
           },
           "encryptionAtHost": {
             "value": false
@@ -15654,8 +15643,7 @@
       },
       "dependsOn": [
         "demonetwork",
-        "proximityPlacementGroup",
-        "resourceGroup"
+        "proximityPlacementGroup"
       ]
     }
   }

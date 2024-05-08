@@ -2,26 +2,22 @@ import { replaceMultiple } from './lib/util.bicep'
 import * as var from './configs/demo-config.bicep'
 import { getSize } from './configs/demo-config.bicep'
 
+@secure()
+param adminPassword string
 param tenant_token string
+param deployBastion string
 param deploySize string
-param region string
-
-targetScope = 'subscription'
+param location string = resourceGroup().location
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
 var cloudInitScript = replaceMultiple(script, {
   '{0}': tenant_token
   '{1}': var.signup_domain
 })
+var deployBastionBool = bool(deployBastion)
 var deploy_size = getSize(deploySize)
-var uniqString  = uniqueString(deployment().name)
-var rgName            = 'rg-${var.projectName}-${uniqString}'
 
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
-  name: rgName
-  location: region
-}
 
 /*
 #######################################################################################
@@ -33,14 +29,13 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
 
 
 module demonetwork './demo-network.bicep' = {
-  name: 'deploy-networkmodule-${uniqString}'
-  scope: resourceGroup
+  name: 'deploy-networkmodule-${uniqueString(deployment().name)}'
   params: {
     snetName : var.snetName
     vnetName : var.vnetName
-    region : region
+    location : location
     projectName : var.projectName
-    deployBastion : false
+    deployBastion : deployBastionBool
   }
 }
 
@@ -53,11 +48,10 @@ module demonetwork './demo-network.bicep' = {
 */
 
 module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-group:0.1.2' = {
-  name: 'deploy-ppg-${uniqString}'
-  scope: resourceGroup
+  name: 'deploy-ppg-${uniqueString(deployment().name)}'
   params: {
-    name: 'ppg-${var.projectName}-${uniqString}'
-    location: region
+    name: 'ppg-${var.projectName}-${uniqueString(deployment().name)}'
+    location: location
 
     intent: {
       vmSizes: [
@@ -78,10 +72,11 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 */
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
-  name: 'deploy-vm${i}-app${uniqString}'
-  scope: resourceGroup
+  name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
+
   params: {
       adminUsername: '${var.projectName}User'
+      adminPassword: adminPassword
       availabilityZone: 0
       customData: cloudInitScript
       proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -93,23 +88,17 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
         version: var.vmAppVersion
       }
 
-      name: 'vm${i}-${var.projectName}-app${uniqString}'
+      name: 'vm${i}-${var.projectName}-app${uniqueString(deployment().name)}'
       nicConfigurations: [
         {
           ipConfigurations: [
             {
-              enablePublicIP: true
-              name: 'ipc${i}-${var.projectName}-app${uniqString}'
+              enablePublicIP: false
+              name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
               subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
               zones: [
                 var.zones
               ]
-              pipConfiguration: {
-                publicIpNameSuffix: '-pip-01'
-                zones: [
-                  var.zones
-                ]
-              }
             }
           ]
           nicSuffix: '-nic${i}'
@@ -125,8 +114,8 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       osType: 'Linux'
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-      disablePasswordAuthentication: true
-      location : region
+      disablePasswordAuthentication: false
+      location : location
       encryptionAtHost: false
     }
     dependsOn : [ demonetwork ]
@@ -136,10 +125,10 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
 
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
-  name: 'deploy-vm${i}-media${uniqString}'
-  scope: resourceGroup
+  name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
+    adminPassword: adminPassword
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -150,13 +139,13 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       sku: var.vmMediaSku
       version: var.vmMediaVersion
     }
-    name: 'vm${i}-${var.projectName}-media${uniqString}'
+    name: 'vm${i}-${var.projectName}-media${uniqueString(deployment().name)}'
     nicConfigurations: [
       {
         ipConfigurations: [
           {
             enablePublicIP: false
-            name: 'ipc${i}-${var.projectName}-media${uniqString}'
+            name: 'ipc${i}-${var.projectName}-media${uniqueString(deployment().name)}'
             subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
             zones: [
               var.zones
@@ -176,8 +165,8 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     osType: 'Linux'
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    disablePasswordAuthentication: true
-    location : region
+    disablePasswordAuthentication: false
+    location : location
     encryptionAtHost: false
   }
   dependsOn : [ demonetwork ]
