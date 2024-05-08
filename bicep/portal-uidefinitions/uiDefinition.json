@@ -19,34 +19,9 @@
                             }
                         },
 						{
-							"name": "adminPassword",
-							"type": "Microsoft.Common.PasswordBox",
-							"label": "Password for your volumezdemoUser"
-						},
-						{
 							"name": "tenant_token",
 							"type": "Microsoft.Common.TextBox",
 							"label": "You can find your tenant_token in the Volumez developer info"
-						},
-						{
-							"name": "deployBastion",
-							"type": "Microsoft.Common.DropDown",
-							"label": "Deploy a Bastion Host",
-							"multiselect": false,
-							"multiLine": false,
-							"constraints": {
-								"allowedValues": [
-								  {
-									"label": "True",
-									"value": "true" 
-								  },
-								  {
-									"label": "False",
-									"value": "false"
-								  }
-								],
-								"required": true
-							  }		
 						},
 						{
 								"name": "deploySize",
@@ -82,9 +57,7 @@
 		},
 		"outputs": {
 			"parameters": {
-				"adminPassword": "[steps('basics').adminPassword]",
 				"tenant_token": "[steps('basics').tenant_token]",
-				"deployBastion": "[steps('basics').deployBastion]",
 				"deploySize": "[steps('basics').deploySize]",
 				"location": "[steps('basics').resourceScope.location.name]"
 			},

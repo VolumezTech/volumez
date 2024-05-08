@@ -2,10 +2,7 @@ import { replaceMultiple } from './lib/util.bicep'
 import * as var from './configs/demo-config.bicep'
 import { getSize } from './configs/demo-config.bicep'
 
-@secure()
-param adminPassword string
 param tenant_token string
-param deployBastion string
 param deploySize string
 param location string = resourceGroup().location
 
@@ -14,7 +11,6 @@ var cloudInitScript = replaceMultiple(script, {
   '{0}': tenant_token
   '{1}': var.signup_domain
 })
-var deployBastionBool = bool(deployBastion)
 var deploy_size = getSize(deploySize)
 
 
@@ -35,7 +31,7 @@ module demonetwork './demo-network.bicep' = {
     vnetName : var.vnetName
     location : location
     projectName : var.projectName
-    deployBastion : deployBastionBool
+    deployBastion : false
   }
 }
 
@@ -76,7 +72,6 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
   params: {
       adminUsername: '${var.projectName}User'
-      adminPassword: adminPassword
       availabilityZone: 0
       customData: cloudInitScript
       proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -114,7 +109,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       osType: 'Linux'
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-      disablePasswordAuthentication: false
+      disablePasswordAuthentication: true
       location : location
       encryptionAtHost: false
     }
@@ -128,7 +123,6 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
   name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
-    adminPassword: adminPassword
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -165,7 +159,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     osType: 'Linux'
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    disablePasswordAuthentication: false
+    disablePasswordAuthentication: true
     location : location
     encryptionAtHost: false
   }

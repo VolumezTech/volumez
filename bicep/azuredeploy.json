@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "4293890749229968501"
+      "templateHash": "6037557089145472056"
     }
   },
   "functions": [
@@ -105,13 +105,7 @@
     }
   ],
   "parameters": {
-    "adminPassword": {
-      "type": "securestring"
-    },
     "tenant_token": {
-      "type": "string"
-    },
-    "deployBastion": {
       "type": "string"
     },
     "deploySize": {
@@ -125,7 +119,6 @@
   "variables": {
     "script": "#!/bin/bash\n\ntenant_token={0}\nsignup_domain={1} \n\n\npackage_not_found () {\n    echo \"<><><> Package not Found for $1 - Exiting\" \n    exit 1\n}\n\nfailed_vlzconnector_install () {\n    echo \"<><><> Failed to install vlzconnector on $1 - Exiting\"\n    exit 1\n}\n\nif [ -f /etc/os-release ]; then\n    # freedesktop.org and systemd\n    . /etc/os-release\n    OS=$NAME\n    VER=$VERSION_ID\nelif type lsb_release >/dev/null 2>&1; then\n    # linuxbase.org\n    OS=$(lsb_release -si)\n    VER=$(lsb_release -sr)\nelif [ -f /etc/lsb-release ]; then\n    # For some versions of Debian/Ubuntu without lsb_release command\n    . /etc/lsb-release\n    OS=$DISTRIB_ID\n    VER=$DISTRIB_RELEASE\nelif [ -f /etc/debian_version ]; then\n    # Older Debian/Ubuntu/etc.\n    OS=Debian\n    VER=$(cat /etc/debian_version)\nfi\n\necho \"<><><> Running connector deploy on $OS\"\n\nif [[ \"$OS\" = \"Ubuntu\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo apt update\n    sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Amazon Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"SLES\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS\nelif [[ \"$OS\" = \"Red Hat Enterprise Linux\" ]]; then\n    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS\n    sudo mkdir -p /opt/vlzconnector\n    echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken\n    sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS\nelse\n    echo \"$OS - is not supported - exiting\"\n    exit 1\nfi\n\necho \"<><><> Finished Connector install on $OS!\"\n",
     "cloudInitScript": "[__bicep.replaceMultiple(variables('script'), createObject('{0}', parameters('tenant_token'), '{1}', variables('_1.signup_domain')))]",
-    "deployBastionBool": "[bool(parameters('deployBastion'))]",
     "deploy_size": "[__bicep.getSize(parameters('deploySize'))]",
     "_1.projectName": "volumezdemo",
     "_1.signup_domain": "signup.volumez.com",
@@ -170,7 +163,7 @@
             "value": "[variables('_1.projectName')]"
           },
           "deployBastion": {
-            "value": "[variables('deployBastionBool')]"
+            "value": false
           }
         },
         "template": {
@@ -5477,9 +5470,6 @@
           "adminUsername": {
             "value": "[format('{0}User', variables('_1.projectName'))]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
           "availabilityZone": {
             "value": 0
           },
@@ -5536,7 +5526,7 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": false
+            "value": true
           },
           "location": {
             "value": "[parameters('location')]"
@@ -10571,9 +10561,6 @@
           "adminUsername": {
             "value": "[format('{0}User', variables('_1.projectName'))]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
           "availabilityZone": {
             "value": 0
           },
@@ -10630,7 +10617,7 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": false
+            "value": true
           },
           "location": {
             "value": "[parameters('location')]"
