@@ -68,7 +68,7 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 */
 
 resource sshPublicKey 'Microsoft.Compute/sshPublicKeys@2023-09-01' = {
-  name: 'deploy-sshkey-${uniqueString(deployment().name)}'
+  name: 'sshkey-${uniqueString(deployment().name)}'
   location: location
 }
 

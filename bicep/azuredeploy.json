@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "7070267578885762139"
+      "templateHash": "15655666859024764287"
     }
   },
   "functions": [
@@ -144,7 +144,7 @@
     "sshPublicKey": {
       "type": "Microsoft.Compute/sshPublicKeys",
       "apiVersion": "2023-09-01",
-      "name": "[format('deploy-sshkey-{0}', uniqueString(deployment().name))]",
+      "name": "[format('sshkey-{0}', uniqueString(deployment().name))]",
       "location": "[parameters('location')]"
     },
     "demonetwork": {
