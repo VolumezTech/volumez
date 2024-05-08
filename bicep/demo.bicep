@@ -110,6 +110,13 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
       disablePasswordAuthentication: true
+      publicKeys: [
+        {
+          keyData: 'app${uniqueString(deployment().name)}'
+          path: '/home/${var.projectName}User/.ssh/authorized_keys'
+        }
+      ]
+  
       location : location
       encryptionAtHost: false
     }
@@ -160,6 +167,12 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
+    publicKeys: [
+      {
+        keyData: 'media${uniqueString(deployment().name)}'
+        path: '/home/${var.projectName}User/.ssh/authorized_keys'
+      }
+    ]
     location : location
     encryptionAtHost: false
   }

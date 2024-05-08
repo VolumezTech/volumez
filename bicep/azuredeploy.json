@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "6037557089145472056"
+      "templateHash": "3518271409725089510"
     }
   },
   "functions": [
@@ -5528,6 +5528,14 @@
           "disablePasswordAuthentication": {
             "value": true
           },
+          "publicKeys": {
+            "value": [
+              {
+                "keyData": "[format('app{0}', uniqueString(deployment().name))]",
+                "path": "[format('/home/{0}User/.ssh/authorized_keys', variables('_1.projectName'))]"
+              }
+            ]
+          },
           "location": {
             "value": "[parameters('location')]"
           },
@@ -10618,6 +10626,14 @@
           },
           "disablePasswordAuthentication": {
             "value": true
+          },
+          "publicKeys": {
+            "value": [
+              {
+                "keyData": "[format('media{0}', uniqueString(deployment().name))]",
+                "path": "[format('/home/{0}User/.ssh/authorized_keys', variables('_1.projectName'))]"
+              }
+            ]
           },
           "location": {
             "value": "[parameters('location')]"
