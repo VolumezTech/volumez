@@ -33,13 +33,11 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 
 ## EC2
 ---
-### Pre Requisite  ###
-Minimum IAM permissions for ec2 easy-starter.  
-iam_policy.json is located 
+### Prerequisite  ###
+Minimum AWS IAM permissions.   
+
+> iam_policy.json is located 
 [here](https://github.com/VolumezTech/volumez/blob/master/terraform/aws/examples/ec2/complete/easy_starter)
-
-Click on details to expand the policy: 
-
 <details>
 
 ```json
@@ -113,7 +111,7 @@ Click on details to expand the policy:
       ]
   }
 ```
-</details>
+  </details>
 
 ### Inputs ###
 > Mandatory: 
