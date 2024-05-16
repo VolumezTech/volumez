@@ -33,6 +33,87 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 
 ## EC2
 ---
+### Pre Requisite  ###
+Minimum IAM permissions for ec2 easy-starter.  
+iam_policy.json is located 
+[here](https://github.com/VolumezTech/volumez/blob/master/terraform/aws/examples/ec2/complete/easy_starter)
+
+Click on details to expand the policy: 
+
+<details>
+
+```json
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "sts:GetCallerIdentity",
+                  "ec2:DescribeKeyPairs",
+                  "ec2:DescribeVpcs",
+                  "ec2:DescribeNetworkAcls",
+                  "ec2:DescribeRouteTables",
+                  "ec2:DescribeSecurityGroups",
+                  "ec2:DescribeSubnets",
+                  "ec2:DescribeInternetGateways",
+                  "ec2:DescribeAddresses",
+                  "ec2:DescribeNetworkInterfaces",
+                  "ec2:DescribeAddressesAttribute",
+                  "ec2:DescribeInstanceTypes",
+                  "ec2:DescribeImages",
+                  "ec2:DescribeNatGateways",
+                  "iam:PassRole",
+                  "ec2:DescribeInstances",
+                  "ec2:DescribeSecurityGroupRules",
+                  "ec2:DescribeTags",
+                  "ec2:DescribeVolumes",
+                  "ec2:DescribeInstanceCreditSpecifications",
+                  "ec2:ImportKeyPair",
+                  "ec2:CreateInternetGateway",
+                  "ec2:CreateVpc",
+                  "ec2:CreateTags",
+                  "ec2:CreateSubnet",
+                  "ec2:CreateRoute",
+                  "ec2:CreateNetworkInterface",
+                  "ec2:CreateSecurityGroup",
+                  "ec2:CreateNatGateway",
+                  "ec2:CreateRouteTable",
+                  "ec2:AssociateRouteTable",
+                  "ec2:RunInstances",
+                  "ec2:AllocateAddress",
+                  "ec2:ModifySubnetAttribute",
+                  "ec2:AttachInternetGateway",
+                  "ec2:ModifyVpcAttribute",
+                  "ec2:DescribeVpcAttribute",
+                  "ec2:DeleteVpc",
+                  "ec2:DescribeInstanceAttribute",
+                  "ec2:ModifyInstanceAttribute",
+                  "ec2:TerminateInstances",
+                  "ec2:DisassociateRouteTable",
+                  "ec2:RevokeSecurityGroupIngress",
+                  "ec2:RevokeSecurityGroupEgress",
+                  "ec2:AuthorizeSecurityGroupEgress",
+                  "ec2:AuthorizeSecurityGroupIngress",
+                  "ec2:DeleteNatGateway",
+                  "ec2:DetachNetworkInterface",
+                  "ec2:DeleteNetworkInterface",
+                  "ec2:DeleteSecurityGroup",
+                  "ec2:DisassociateAddress",
+                  "ec2:ReleaseAddress",
+                  "ec2:DeleteRouteTable",
+                  "ec2:DeleteRoute",
+                  "ec2:DeleteSubnet",
+                  "ec2:DetachInternetGateway",
+                  "ec2:DeleteInternetGateway"
+                  "ec2:DescribeInstanceStatus"
+              ],
+              "Resource": "*"
+          }
+      ]
+  }
+```
+</details>
 
 ### Inputs ###
 > Mandatory: 
