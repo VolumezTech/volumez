@@ -6,13 +6,17 @@ param tenant_token string
 param deploySize string
 param location string = resourceGroup().location
 
+@secure()
+param adminPassword string = uniqueString(resourceGroup().id, utcNow())
+
+
 var script = loadTextContent('./scripts/deploy_connector.sh')
 var cloudInitScript = replaceMultiple(script, {
   '{0}': tenant_token
   '{1}': var.signup_domain
 })
 var deploy_size = getSize(deploySize)
-var sshPubKey = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCv5fxJwqRgFpLkAJ3WglpnknOeczpXp1AUwz5IIjE8nRjq5mqgF4Iz9zHzWTijeOTCXceWnF5tu39favGT1rpyRTbhATUtBFZYCZghdIXZrEjvOufjQ+KKiHz9TeB4Tk9Pd0aLwG3gJbtRDzgUDEfn+npfetDEMYzs8sQQD8+vaSko13bHTdcnHcS8yYzC+tm8d1eNXB+pVemGHcfGgmjRQ9Satc3bqALK6+LIvqpQA8AcxJGveuyX1Nk9thUwVi0Q4/uDIKOExwkmikBgslmwXGYxxOBYpLjPFQZ+ZFj1APKbJhYmyldvrEQgMMqKTKUuhqqsb5vq/XRFCya/8b9wiejh3A8hBww4Y3oszYuszVPazdxw3+8h4TZyVEOG/E6KPJZnI783vF88tavbslfy81ieyUAifmoamLFFq0Bxh3nqMAOxrsIsFNLjfP4jE4gMpAAcTpTG/RkPTu46VOC1g5Mfci6QK+wFC5Jiw5AcQDJ4+ADq6KWVrmUToDCLPWs= chris@MacBook-Air.local'
+
 
 
 /*
@@ -67,16 +71,13 @@ module proximityPlacementGroup 'br/public:avm/res/compute/proximity-placement-gr
 #######################################################################################
 */
 
-resource sshPublicKey 'Microsoft.Compute/sshPublicKeys@2023-09-01' = {
-  name: 'sshkey-${uniqueString(deployment().name)}'
-  location: location
-}
 
 module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrAppVms): {
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
 
   params: {
       adminUsername: 'localAdminUser'
+      adminPassword: adminPassword
       availabilityZone: 0
       customData: cloudInitScript
       proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -115,12 +116,6 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
       disablePasswordAuthentication: true
-      publicKeys: [
-        {
-          keyData: sshPubKey
-          path: '/home/localAdminUser/.ssh/authorized_keys'
-        }
-      ]
   
       location : location
       encryptionAtHost: false
@@ -135,6 +130,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
   name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: 'localAdminUser'
+    adminPassword: adminPassword
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -172,12 +168,6 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
-    publicKeys: [
-      {
-        keyData: sshPubKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
-      }
-    ]
     location : location
     encryptionAtHost: false
   }
