@@ -7,7 +7,7 @@ param deploySize string
 param location string = resourceGroup().location
 
 @secure()
-param adminPassword string = uniqueString(resourceGroup().id, utcNow())
+param adminPassword string = uniqueString(resourceGroup().id, newGuid())
 
 
 var script = loadTextContent('./scripts/deploy_connector.sh')
@@ -115,7 +115,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       osType: 'Linux'
       vmSize: deploy_size.sizeAppVm 
       configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-      disablePasswordAuthentication: true
+      disablePasswordAuthentication: false
   
       location : location
       encryptionAtHost: false
@@ -167,7 +167,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
     osType: 'Linux'
     vmSize: deploy_size.sizeMediaVm
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    disablePasswordAuthentication: true
+    disablePasswordAuthentication: false
     location : location
     encryptionAtHost: false
   }

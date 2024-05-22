@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "6294122924547570143"
+      "templateHash": "2696302723191667983"
     }
   },
   "functions": [
@@ -117,7 +117,7 @@
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue": "[uniqueString(resourceGroup().id, utcNow())]"
+      "defaultValue": "[uniqueString(resourceGroup().id, newGuid())]"
     }
   },
   "variables": {
@@ -5533,7 +5533,7 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": true
+            "value": false
           },
           "location": {
             "value": "[parameters('location')]"
@@ -10627,7 +10627,7 @@
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
           },
           "disablePasswordAuthentication": {
-            "value": true
+            "value": false
           },
           "location": {
             "value": "[parameters('location')]"
