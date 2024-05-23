@@ -7,7 +7,7 @@ param deploySize string
 param location string = resourceGroup().location
 
 @secure()
-param adminPassword string = uniqueString(resourceGroup().id, newGuid())
+param adminPassword string = '!${uniqueString(newGuid())}99?'
 
 
 var script = loadTextContent('./scripts/deploy_connector.sh')

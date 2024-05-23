@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "2696302723191667983"
+      "templateHash": "5530264620505279451"
     }
   },
   "functions": [
@@ -117,7 +117,7 @@
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue": "[uniqueString(resourceGroup().id, newGuid())]"
+      "defaultValue": "[format('!{0}99?', uniqueString(newGuid()))]"
     }
   },
   "variables": {
