@@ -100,15 +100,20 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
         {
           ipConfigurations: [
             {
-              enablePublicIP: true
-              name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
+              name: 'ipcp${i}-${var.projectName}-app${uniqueString(deployment().name)}'
               subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
-              zones: [
-                var.zones
-              ]
               pipConfiguration: {
                 publicIpNameSuffix: '-pipa${i}'
               }  
+              enablePublicIP: true
+              zones: [
+                var.zones
+              ]
+            }
+            {
+                name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
+                subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
+                enablePublicIP: false
             }
           ]
           nicSuffix: '-nic${i}'
@@ -156,7 +161,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
         ipConfigurations: [
           {
             enablePublicIP: true
-            name: 'ipc${i}-${var.projectName}-media${uniqueString(deployment().name)}'
+            name: 'ipcp${i}-${var.projectName}-media${uniqueString(deployment().name)}'
             subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
             zones: [
               var.zones
@@ -164,6 +169,11 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
             pipConfiguration : {
               publicIpNameSuffix: '-pipm${i}'
             }
+          }
+          {
+            name: 'ipc${i}-${var.projectName}-media${uniqueString(deployment().name)}'
+            subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
+            enablePublicIP: false
           }
         ]
         nicSuffix: '-nic${i}'

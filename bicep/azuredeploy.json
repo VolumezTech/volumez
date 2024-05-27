@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "11861578018913040601"
+      "templateHash": "16135130090111456099"
     }
   },
   "functions": [
@@ -5516,15 +5516,20 @@
               {
                 "ipConfigurations": [
                   {
-                    "enablePublicIP": true,
-                    "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+                    "name": "[format('ipcp{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
-                    "zones": [
-                      "[variables('_1.zones')]"
-                    ],
                     "pipConfiguration": {
                       "publicIpNameSuffix": "[format('-pipa{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
-                    }
+                    },
+                    "enablePublicIP": true,
+                    "zones": [
+                      "[variables('_1.zones')]"
+                    ]
+                  },
+                  {
+                    "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+                    "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
+                    "enablePublicIP": false
                   }
                 ],
                 "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
@@ -10614,7 +10619,7 @@
                 "ipConfigurations": [
                   {
                     "enablePublicIP": true,
-                    "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+                    "name": "[format('ipcp{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "[variables('_1.zones')]"
@@ -10622,6 +10627,11 @@
                     "pipConfiguration": {
                       "publicIpNameSuffix": "[format('-pipm{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
                     }
+                  },
+                  {
+                    "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
+                    "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
+                    "enablePublicIP": false
                   }
                 ],
                 "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
