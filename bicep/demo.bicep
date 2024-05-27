@@ -3,6 +3,12 @@ import * as var from './configs/demo-config.bicep'
 import { getSize } from './configs/demo-config.bicep'
 
 param tenant_token string
+@allowed([
+  'small'
+  'medium'
+  'large'
+  'xlarge'
+])
 param deploySize string
 param location string = resourceGroup().location
 
@@ -76,7 +82,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
   name: 'deploy-vm${i}-app${uniqueString(deployment().name)}'
 
   params: {
-      adminUsername: 'localAdminUser'
+      adminUsername: var.username
       adminPassword: adminPassword
       availabilityZone: 0
       customData: cloudInitScript
@@ -129,7 +135,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [for i in range(1, deploy_size.nrMediaVms): {
   name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
-    adminUsername: 'localAdminUser'
+    adminUsername: var.username
     adminPassword: adminPassword
     availabilityZone: 0
     customData: cloudInitScript

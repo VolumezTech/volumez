@@ -29,8 +29,11 @@ var signup_domain = 'signup.volumez.com'
 @export()
 var zones = [ 2 ]
 @export()
+var vmss_zones = [ 1 ]
+@export()
 var zone = 2
-
+@export()
+var username = 'localAdminUser'
 
 func allSizes() array => [
   {

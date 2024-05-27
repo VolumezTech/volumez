@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "5530264620505279451"
+      "templateHash": "4060111150549398846"
     }
   },
   "functions": [
@@ -109,7 +109,13 @@
       "type": "string"
     },
     "deploySize": {
-      "type": "string"
+      "type": "string",
+      "allowedValues": [
+        "small",
+        "medium",
+        "large",
+        "xlarge"
+      ]
     },
     "location": {
       "type": "string",
@@ -129,6 +135,7 @@
     "_1.sizeAppVm": "Standard_D64_v5",
     "_1.sizeMediaVm": "Standard_L8as_v3",
     "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
+    "_1.username": "localAdminUser",
     "_1.vmAppOffer": "RHEL",
     "_1.vmAppPublisher": "RedHat",
     "_1.vmAppSku": "8_7",
@@ -178,7 +185,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.27.1.19265",
-              "templateHash": "11576301831987101839"
+              "templateHash": "14811903318917508342"
             }
           },
           "functions": [
@@ -269,6 +276,7 @@
             "_1.sizeAppVm": "Standard_D64_v5",
             "_1.sizeMediaVm": "Standard_L8as_v3",
             "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
+            "_1.username": "localAdminUser",
             "_1.vmAppOffer": "RHEL",
             "_1.vmAppPublisher": "RedHat",
             "_1.vmAppSku": "8_7",
@@ -5472,7 +5480,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "localAdminUser"
+            "value": "[variables('_1.username')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
@@ -10566,7 +10574,7 @@
         "mode": "Incremental",
         "parameters": {
           "adminUsername": {
-            "value": "localAdminUser"
+            "value": "[variables('_1.username')]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
