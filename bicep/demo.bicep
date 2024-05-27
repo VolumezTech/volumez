@@ -107,7 +107,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
                 var.zones
               ]
               pipConfiguration: {
-                publicIpNameSuffix: '-pip${i}'
+                publicIpNameSuffix: '-pipa${i}'
               }  
             }
           ]
@@ -162,7 +162,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
               var.zones
             ]
             pipConfiguration : {
-              publicIpNameSuffix: '-pip${i}'
+              publicIpNameSuffix: '-pipm${i}'
             }
           }
         ]

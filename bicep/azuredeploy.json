@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "13812318915306413234"
+      "templateHash": "11861578018913040601"
     }
   },
   "functions": [
@@ -5523,7 +5523,7 @@
                       "[variables('_1.zones')]"
                     ],
                     "pipConfiguration": {
-                      "publicIpNameSuffix": "[format('-pip{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
+                      "publicIpNameSuffix": "[format('-pipa{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
                     }
                   }
                 ],
@@ -10620,7 +10620,7 @@
                       "[variables('_1.zones')]"
                     ],
                     "pipConfiguration": {
-                      "publicIpNameSuffix": "[format('-pip{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
+                      "publicIpNameSuffix": "[format('-pipm{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
                     }
                   }
                 ],
