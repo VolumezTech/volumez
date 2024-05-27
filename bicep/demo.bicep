@@ -106,6 +106,9 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
               zones: [
                 var.zones
               ]
+              pipConfiguration: {
+                publicIpNameSuffix: '-pip${i}'
+              }  
             }
           ]
           nicSuffix: '-nic${i}'
@@ -158,6 +161,9 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
             zones: [
               var.zones
             ]
+            pipConfiguration : {
+              publicIpNameSuffix: '-pip${i}'
+            }
           }
         ]
         nicSuffix: '-nic${i}'

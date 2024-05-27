@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "4880564592583903209"
+      "templateHash": "13812318915306413234"
     }
   },
   "functions": [
@@ -5521,7 +5521,10 @@
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "[variables('_1.zones')]"
-                    ]
+                    ],
+                    "pipConfiguration": {
+                      "publicIpNameSuffix": "[format('-pip{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
+                    }
                   }
                 ],
                 "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrAppVms)[copyIndex()])]"
@@ -10615,7 +10618,10 @@
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
                       "[variables('_1.zones')]"
-                    ]
+                    ],
+                    "pipConfiguration": {
+                      "publicIpNameSuffix": "[format('-pip{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
+                    }
                   }
                 ],
                 "nicSuffix": "[format('-nic{0}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()])]"
