@@ -12,7 +12,7 @@ This uses Bicep modules from the [Azure Verified Modules](https://github.com/Azu
 - a valid Azure subscription
 - a valid user account/ service principal for your Azure subscription  with contributor permissions on the existing resourcegroups
 
-## Simple resourcegroup deployment
+## Standard VM deployment
 
 This is ideal if you simply like to get started with default parameters. Just select an existing resourcegroup, define a password and the amount of application VMS and media vms. The tenant_token parameter is needed for communication with the Volumez backend, you can find this information in your volumez Account panel under developer info.
 If you like to login to your VM, use the Bastion to connect; the default username is: volumezdemoUser.
@@ -20,6 +20,9 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 ![alt text](./documentation/standard.png)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
+
+## Standard VMSS deployment
+
 
 [![Deploy VMSS to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-vmss.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-vmss.json)
 
@@ -35,7 +38,7 @@ The following standard sizes are provided:
 
 More info on Azure VM Sizes can be found [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes)
 
-## Customized resourcegroup deployment
+## Customized VM deploment
 
 If you like to have more control of the deployment, use this to get started yourself. This is ideal as a starter for people with an **existing** environment; you like to have the VMS in a seperate resource group, customize the size of your VMS and use an **existing** Virtual network.  
 
@@ -92,8 +95,10 @@ You can configure the zones via the zones variable in the parameters file (withi
 
 ## Links
 
-- Standard Demo [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
-- Customized Demo starter  [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)
+- Default VM Starter [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
+- Default VMSS Starter [![Deploy VMSS to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-vmss.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-vmss.json)
+
+- Customized VM starter  [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)
 - [Volumez Sign up form](https://signup.volumez.com/)
 - [Azure Verified Modules](https://github.com/Azure/bicep-registry-modules)
 - [Azure VM Sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes)
