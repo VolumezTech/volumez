@@ -100,7 +100,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
         {
           ipConfigurations: [
             {
-              enablePublicIP: false
+              enablePublicIP: true
               name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
               subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
               zones: [
@@ -152,7 +152,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       {
         ipConfigurations: [
           {
-            enablePublicIP: false
+            enablePublicIP: true
             name: 'ipc${i}-${var.projectName}-media${uniqueString(deployment().name)}'
             subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
             zones: [

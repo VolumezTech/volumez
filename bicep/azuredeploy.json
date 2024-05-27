@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.27.1.19265",
-      "templateHash": "4060111150549398846"
+      "templateHash": "4880564592583903209"
     }
   },
   "functions": [
@@ -144,6 +144,9 @@
     "_1.vmMediaPublisher": "RedHat",
     "_1.vmMediaSku": "8_7",
     "_1.vmMediaVersion": "latest",
+    "_1.vmss_zones": [
+      1
+    ],
     "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
     "_1.zone": 2,
     "_1.zones": [
@@ -185,7 +188,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.27.1.19265",
-              "templateHash": "14811903318917508342"
+              "templateHash": "16868792567564735695"
             }
           },
           "functions": [
@@ -285,6 +288,9 @@
             "_1.vmMediaPublisher": "RedHat",
             "_1.vmMediaSku": "8_7",
             "_1.vmMediaVersion": "latest",
+            "_1.vmss_zones": [
+              1
+            ],
             "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
             "_1.zone": 2,
             "_1.zones": [
@@ -5510,7 +5516,7 @@
               {
                 "ipConfigurations": [
                   {
-                    "enablePublicIP": false,
+                    "enablePublicIP": true,
                     "name": "[format('ipc{0}-{1}-app{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
@@ -10604,7 +10610,7 @@
               {
                 "ipConfigurations": [
                   {
-                    "enablePublicIP": false,
+                    "enablePublicIP": true,
                     "name": "[format('ipc{0}-{1}-media{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]",
                     "subnetResourceId": "[resourceId('Microsoft.Network/VirtualNetworks/subnets', variables('_1.vnetName'), variables('_1.snetName'))]",
                     "zones": [
