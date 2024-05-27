@@ -105,10 +105,6 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
               pipConfiguration: {
                 publicIpNameSuffix: '-pipa${i}'
               }  
-              enablePublicIP: true
-              zones: [
-                var.zones
-              ]
             }
             {
                 name: 'ipc${i}-${var.projectName}-app${uniqueString(deployment().name)}'
@@ -160,12 +156,8 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       {
         ipConfigurations: [
           {
-            enablePublicIP: true
             name: 'ipcp${i}-${var.projectName}-media${uniqueString(deployment().name)}'
             subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', var.vnetName, var.snetName)
-            zones: [
-              var.zones
-            ]
             pipConfiguration : {
               publicIpNameSuffix: '-pipm${i}'
             }
