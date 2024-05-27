@@ -21,6 +21,9 @@ If you like to login to your VM, use the Bastion to connect; the default usernam
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition.json)
 
+[![Deploy VMSS to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-vmss.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-vmss.json)
+
+
 The following standard sizes are provided:
 
 | Scenario | Nr of App VM's | App VM Size | Nr of Media VM's | Media VM Size |
