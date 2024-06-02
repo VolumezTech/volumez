@@ -1,0 +1,75 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+	"view": {
+		"kind": "Form",
+		"properties": {
+			"title": "Volumez demo on Azure",
+			"steps": [
+				{
+					"name": "basics",
+					"label": "Basics",
+					"elements": [
+						{
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": [
+                                    "microsoft.resources/resourcegroups"
+                                ]
+                            }
+                        },
+						{
+							"name": "adminPassword",
+							"type": "Microsoft.Common.PasswordBox",
+							"label": "Password for your volumezdemoUser"
+						},
+						{
+							"name": "tenant_token",
+							"type": "Microsoft.Common.TextBox",
+							"label": "You can find your tenant_token in the Volumez developer info"
+						},
+						{
+								"name": "deploySize",
+								"type": "Microsoft.Common.DropDown",
+								"label": "Size of your demo",
+								"multiselect": false,
+								"multiLine": false,
+								"constraints": {
+										"allowedValues": [
+											{
+												"label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8s_v3",
+												"value": "small"
+											},
+											{
+												"label": "Medium: App = 1 x Standard_D32_v5, Media = 6 X Standard_L8s_v3",
+												"value": "medium"
+											},
+											{
+												"label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L8s_v3",
+												"value": "large"
+											},
+											{
+												"label": "Extra Large: App = 1 x Standard_D96_v5, Media = 18 X Standard_L8s_v3",
+												"value": "xlarge"
+											}
+										],
+										"required": true
+									}
+						}
+					]
+				}
+			]
+		},
+		"outputs": {
+			"parameters": {
+				"adminPassword": "[steps('basics').adminPassword]",
+				"tenant_token": "[steps('basics').tenant_token]",
+				"deploySize": "[steps('basics').deploySize]",
+				"location": "[steps('basics').resourceScope.location.name]"
+			},
+			"kind": "ResourceGroup",
+			"location": "[steps('basics').resourceScope.location.name]",
+			"resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"		
+		}
+	}
+}
