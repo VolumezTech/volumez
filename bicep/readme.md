@@ -49,7 +49,7 @@ Please note that the creation of a new Resource Group or New Virtual Network is 
 ![alt text](./documentation/customized.png)
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fazuredeploy-custom.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FVolumezTech%2Fvolumez%2Ffeature%2Fbicep-azure%2Fbicep%2Fportal-uidefinitions%2FuiDefinition-custom.json)
 
-[![Deploy to Azure](documentation/youtube.png)](https://youtu.be/FkZLBDdTn7I)
+[![Deploy to Azure](documentation/youtube.png)](https://youtu.be/5vTUuXvb3kU)
 
 ---
 
