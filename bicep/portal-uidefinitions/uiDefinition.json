@@ -23,8 +23,8 @@
 							"type": "Microsoft.Common.PasswordBox",
 							"label": "Password for your volumezdemoUser"
                                                         "constraints": {
-                                                           "required": true,
-                                                           "regex": "^[a-zA-Z0-9][$&+,:;=?@#|'<>.^*()%!-]{8,}$",
+                                                           "required": true
+                                                           "regex": "^[a-zA-Z0-9][$&+,:;=?@#|'<>.^*()%!-]{8,}$"
                                                            "validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters"
                                                         },
 						},
