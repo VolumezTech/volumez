@@ -21,7 +21,7 @@
 						{
 							"name": "adminPassword",
 							"type": "Microsoft.Common.PasswordBox",
-							"label": "Password for your volumezdemoUser"
+							"label": "Password for your volumezdemoUser",
                                                         "constraints": {
                                                            "required": true,
                                                            "regex": "^[a-zA-Z0-9][$&+,:;=?@#|'<>.^*()%!-]{8,}$",
