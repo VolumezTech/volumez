@@ -27,7 +27,7 @@
 								},
 								"constraints": {
 									"required": true,
-									"regex": "(?i)^(?=[a-z])(?=.*[0-9])([a-z0-9!@#$%&*()_?+=]){8,15}$",
+									"regex": "^(?=.*[A-Z])(?=.*[.!@#$%^&*()-_=+])(?=.*[0-9])(?=.*[a-z]).{6,76}$",
 									"validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters"
 								},
 								"options": {
