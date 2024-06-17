@@ -24,9 +24,13 @@
 							"label": "Password for your volumezdemoUser",
                                                         "constraints": {
                                                            "required": true,
-                                                           "regex": "^[a-zA-Z0-9][$&+,:;=?@#|'<>.^*()%!-]{8,}$",
+                                                           "regex": "regex": "^[a-zA-Z0-9]{8,}$",
                                                            "validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters",
                                                         },
+                                                        "options": {
+                                                           "hideConfirmation": false
+                                                        },
+                                                        "visible": true
 						},
 						{
 							"name": "tenant_token",
