@@ -28,7 +28,7 @@
 								"constraints": {
 									"required": true,
 									"regex": "^[a-zA-Z0-9]{6,}$",
-									"validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters",
+									"validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters"
 								},
 								"options": {
 									"hideConfirmation": false
