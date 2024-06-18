@@ -62,7 +62,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
       sku: var.vmAppSku
       version: var.vmAppVersion
     }
-    name: 'vm${i}-${rgName}-app-${uniqueString(deployment().name)}'
+    name: 'vm${i}-${rgName}-app${uniqueString(deployment().name)}'
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -111,7 +111,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
       sku: var.vmMediaSku
       version: var.vmMediaVersion
     }
-    name: 'vm${i}-${rgName}-media-${uniqueString(deployment().name)}'
+    name: 'vm${i}-${rgName}-media${uniqueString(deployment().name)}'
     nicConfigurations: [
       {
         ipConfigurations: [
