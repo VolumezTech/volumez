@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">=0.14"
-}
+
 
 resource "aws_vpc" "env_vpc" {
   cidr_block           = var.vpc_cidr_block

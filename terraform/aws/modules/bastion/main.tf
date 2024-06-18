@@ -23,9 +23,7 @@
   - None
 */
 
-terraform {
-  required_version = ">=0.14"
-}
+
 
 // New sg for bastion with ssh 22 from all
 resource "aws_security_group" "bastion_sg" {

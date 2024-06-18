@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">=0.14"
-}
+
 
 resource "aws_network_interface" "this" {
   count = var.num_of_nodes

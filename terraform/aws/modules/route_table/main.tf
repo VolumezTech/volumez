@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">=0.14"
-}
+
 
 resource "aws_internet_gateway" "this" {
   vpc_id = var.vpc_id

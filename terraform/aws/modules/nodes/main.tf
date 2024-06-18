@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">=0.14"
-}
+
 
 data "aws_ec2_instance_type" "node-type-info" {
   instance_type = var.node_type
@@ -42,6 +40,12 @@ resource "aws_instance" "this" {
   network_interface {
     network_interface_id = var.pub_eni_list[count.index]
     device_index         = 0
+  }
+
+  root_block_device {
+    volume_type = "gp3"
+    delete_on_termination = true
+    
   }
 
   tags = {
