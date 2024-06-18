@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">=0.14"
-}
+
 
 locals {
   availability_zone_list = ["${var.region}a", "${var.region}b", "${var.region}c", "${var.region}d"]
