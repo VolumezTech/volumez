@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "12123800491445496438"
+      "templateHash": "9456553244837526932"
     }
   },
   "functions": [
@@ -5660,7 +5660,7 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-app{1}-{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], uniqueString(deployment().name), resourceGroup().name)]"
+            "value": "[format('vm{0}-{1}-app-{2}', range(1, variables('deploy_size').nrAppVms)[copyIndex()], resourceGroup().name, uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [
@@ -10758,7 +10758,7 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-media{1}-{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], uniqueString(deployment().name), resourceGroup().name)]"
+            "value": "[format('vm{0}-{1}-media-{2}', range(1, variables('deploy_size').nrMediaVms)[copyIndex()], resourceGroup().name, uniqueString(deployment().name))]"
           },
           "nicConfigurations": {
             "value": [

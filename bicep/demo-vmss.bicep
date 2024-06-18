@@ -88,7 +88,7 @@ module virtualMachineScaleSet 'br/public:avm/res/compute/virtual-machine-scale-s
     }
     //proximityPlacementGroupResourceId : proximityPlacementGroup.outputs.resourceId
     customData: cloudInitScript
-    name: 'vmss-media${uniqueString(deployment().name)}-${resourceGroup().name}'
+    name: 'vmss-${resourceGroup().name}-media-${uniqueString(deployment().name)}'
     adminPassword: adminPassword
     osDisk: {
       createOption: 'fromImage'

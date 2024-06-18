@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "11888994363115521243"
+      "templateHash": "10293141529657426899"
     }
   },
   "functions": [
@@ -5493,7 +5493,7 @@
             "value": "[variables('cloudInitScript')]"
           },
           "name": {
-            "value": "[format('vmss-media{0}-{1}', uniqueString(deployment().name), resourceGroup().name)]"
+            "value": "[format('vmss-{0}-media-{1}', resourceGroup().name, uniqueString(deployment().name))]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
