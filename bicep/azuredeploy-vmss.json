@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.27.1.19265",
-      "templateHash": "4409735388429681777"
+      "version": "0.28.1.47646",
+      "templateHash": "11888994363115521243"
     }
   },
   "functions": [
@@ -187,8 +187,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.27.1.19265",
-              "templateHash": "16868792567564735695"
+              "version": "0.28.1.47646",
+              "templateHash": "7787748480601715096"
             }
           },
           "functions": [
@@ -5493,7 +5493,7 @@
             "value": "[variables('cloudInitScript')]"
           },
           "name": {
-            "value": "[format('vmss-{0}-media{1}', variables('_1.projectName'), uniqueString(deployment().name))]"
+            "value": "[format('vmss-media{0}-{1}', uniqueString(deployment().name), resourceGroup().name)]"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"

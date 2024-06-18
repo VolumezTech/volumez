@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.26.170.59819",
-      "templateHash": "10919635560953165161"
+      "version": "0.28.1.47646",
+      "templateHash": "9563594696746207565"
     }
   },
   "functions": [
@@ -149,6 +149,7 @@
     "_1.sizeAppVm": "Standard_D64_v5",
     "_1.sizeMediaVm": "Standard_L8as_v3",
     "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
+    "_1.username": "localAdminUser",
     "_1.vmAppOffer": "RHEL",
     "_1.vmAppPublisher": "RedHat",
     "_1.vmAppSku": "8_7",
@@ -157,7 +158,11 @@
     "_1.vmMediaPublisher": "RedHat",
     "_1.vmMediaSku": "8_7",
     "_1.vmMediaVersion": "latest",
+    "_1.vmss_zones": [
+      1
+    ],
     "_1.vnetName": "[format('vnet-{0}-services', variables('_1.projectName'))]",
+    "_1.zone": 2,
     "_1.zones": [
       2
     ]
@@ -524,7 +529,7 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-{1}-app{2}', range(1, parameters('nrAppVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
+            "value": "[format('vm{0}-app{1}-{2}', range(1, parameters('nrAppVms'))[copyIndex()], uniqueString(deployment().name), parameters('rgName'))]"
           },
           "nicConfigurations": {
             "value": [
@@ -5618,7 +5623,7 @@
             }
           },
           "name": {
-            "value": "[format('vm{0}-{1}-media{2}', range(1, parameters('nrMediaVms'))[copyIndex()], variables('_1.projectName'), uniqueString(deployment().name))]"
+            "value": "[format('vm{0}-media{1}-{2}', range(1, parameters('nrMediaVms'))[copyIndex()], uniqueString(deployment().name), parameters('rgName'))]"
           },
           "nicConfigurations": {
             "value": [
