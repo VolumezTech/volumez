@@ -13,7 +13,7 @@ variable "vpc_id" {
 
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   type    = string
   default = "volumez"
 }

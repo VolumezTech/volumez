@@ -8,11 +8,17 @@ terraform {
   required_version = ">= 1.3.5"
 }
 
+resource "random_string" "random" {
+  length  = 5
+  special = false
+}
+
 locals {
   create_vpc = var.target_vpc_id == "" ? true : false
   create_sn  = var.target_subnet_id == "" ? true : false
   create_pg  = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
   deploy_bastion = var.target_subnet_id == "" ? var.deploy_bastion : false
+  resource_prefix = "${var.resources_name_prefix}-${random_string.random.result}"
 }
 
 module "ssh_key" {
@@ -22,7 +28,7 @@ module "ssh_key" {
 module "vpc" {
   source                = "../../../../modules/vpc"
   count                 = local.create_vpc ? 1 : 0
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 }
 
 module "route_table" {
@@ -42,7 +48,7 @@ module "security_group" {
 
   count                 = local.create_vpc ? 1 : 0
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
   depends_on = [
     module.vpc
@@ -55,7 +61,7 @@ module "subnets" {
   count                 = local.create_sn ? 1 : 0
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones          = var.num_of_zones
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
   depends_on = [
     module.vpc
@@ -69,7 +75,7 @@ module "nat" {
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   private_sn_ids        = module.subnets[0].private_sn_ids
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
 
   depends_on = [module.vpc, module.subnets]
@@ -145,7 +151,7 @@ module "app_nodes" {
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.app_node_name_prefix
   signup_domain         = var.signup_domain
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
   depends_on = [
     module.vpc,
@@ -172,7 +178,7 @@ module "media_nodes" {
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.media_node_name_prefix
   signup_domain         = var.signup_domain
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
   depends_on = [
     module.vpc,
@@ -190,7 +196,7 @@ module "bastion" {
   sg_list               = [module.security_group[0].sg_id]
   key_pair              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
   private_key           = module.ssh_key.key_value
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = local.resource_prefix
 
   depends_on = [
     module.vpc,

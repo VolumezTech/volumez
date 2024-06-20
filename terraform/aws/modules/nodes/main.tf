@@ -49,7 +49,7 @@ resource "aws_instance" "this" {
   }
 
   tags = {
-    Name      = "${var.app_node_name_prefix}-${count.index}-${var.resources_name_suffix}"
+    Name      = "${var.resources_name_prefix}-${var.app_node_name_prefix}-${count.index}"
     Terraform = "true"
     Owner     = data.aws_caller_identity.current.user_id
   }

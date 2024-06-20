@@ -61,7 +61,7 @@ variable "app_node_name_prefix" {
   default = "node"
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   default = "Volumez"
 }
 

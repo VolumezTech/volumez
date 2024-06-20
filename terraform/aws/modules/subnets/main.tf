@@ -12,7 +12,7 @@ resource "aws_subnet" "private_sn" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name      = "Private-SN-${var.resources_name_suffix}-${count.index + 1}"
+    Name      = "Private-SN-${var.resources_name_prefix}-${count.index + 1}"
     Terraform = "true"
   }
 }
@@ -23,6 +23,6 @@ resource "aws_subnet" "public_sn" {
   availability_zone       = local.availability_zone_list[0]
   map_public_ip_on_launch = true
   tags = {
-    Name = "Public-SN-${var.resources_name_suffix}"
+    Name = "Public-SN-${var.resources_name_prefix}"
   }
 }

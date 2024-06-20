@@ -1,6 +1,6 @@
 # General Configuration
 region  = "us-east-1"
-resources_name_suffix = "volumez"
+resources_name_prefix = "iginor"
 num_of_zones = 1
 create_fault_domain = false
 avoid_pg = true

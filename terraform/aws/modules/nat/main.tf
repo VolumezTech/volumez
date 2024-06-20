@@ -7,7 +7,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = var.pub_sn_id[0]
 
   tags = {
-    Name = "nat-gateway-${var.resources_name_suffix}"
+    Name = "nat-gateway-${var.resources_name_prefix}"
   }
 }
 

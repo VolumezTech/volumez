@@ -1,7 +1,7 @@
 
 
 resource "aws_security_group" "node_sg" {
-  name = "${var.resources_name_suffix}-sg"
+  name = "${var.resources_name_prefix}-sg"
   vpc_id = var.vpc_id
 
    ingress {
@@ -128,7 +128,7 @@ resource "aws_security_group" "node_sg" {
   
 
   tags = {
-    Name      = "node-${var.resources_name_suffix}-sg"
+    Name      = "node-${var.resources_name_prefix}-sg"
     Terraform = "true"
   }
 }

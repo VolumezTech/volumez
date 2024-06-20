@@ -7,7 +7,7 @@ variable "region" {
   type        = string
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   default = "Volumez"
 }
 
