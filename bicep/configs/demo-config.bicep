@@ -33,7 +33,7 @@ var vmss_zones = [ 1 ]
 @export()
 var zone = 2
 @export()
-var username = 'localAdminUser'
+var username = 'volumezdemoUser'
 
 func allSizes() array => [
   {
