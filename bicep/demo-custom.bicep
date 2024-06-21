@@ -1,8 +1,18 @@
 import { replaceMultiple } from './lib/util.bicep'
+import { generatePassword } from './lib/util.bicep'
 import * as var from './configs/demo-config.bicep'
 
-@secure()
-param adminPassword string
+param randomNr1 int = dateTimeToEpoch(utcNow()) % 10
+param randomNr2 int = dateTimeToEpoch(dateTimeAdd(utcNow(), 'PT15H')) % 9
+param randomNr3 int = dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT39H')) % 8
+param randomNr4 int = dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT17H')) % 26
+param randomNr5 int = dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT8H')) % 25
+param randomChar string[] = [ '!' , '@' , '#' , '[' , ']' , '^' , '&' , '>' , '<' , '_' ]
+param randomNumber int[] = [ 0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ]
+param randomAlpha string[] = [ 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','U','V','W','X','Y','Z' ]
+param baseRandomString string = uniqueString(newGuid())
+
+param randomString string = generatePassword(baseRandomString,randomNr1, randomNr2, randomNr3, randomNr4, randomNr5, randomChar, randomNumber, randomAlpha)
 param tenant_token string
 param nrAppVms int
 param nrMediaVms int
@@ -52,7 +62,7 @@ module appVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [fo
 
   params: {
     adminUsername: '${var.projectName}User'
-    adminPassword: adminPassword
+    adminPassword: randomString
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
@@ -101,7 +111,7 @@ module mediaVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.2.3' = [
   name: 'deploy-vm${i}-media${uniqueString(deployment().name)}'
   params: {
     adminUsername: '${var.projectName}User'
-    adminPassword: adminPassword
+    adminPassword: randomString
     availabilityZone: 0
     customData: cloudInitScript
     proximityPlacementGroupResourceId: proximityPlacementGroup.outputs.resourceId
