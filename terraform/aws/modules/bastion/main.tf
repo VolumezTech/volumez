@@ -27,7 +27,7 @@
 
 // New sg for bastion with ssh 22 from all
 resource "aws_security_group" "bastion_sg" {
-  name   = "bastion-${var.resources_name_suffix}-sg"
+  name   = "bastion-${var.resources_name_prefix}-sg"
   vpc_id = var.vpc_id
 
   ingress {
@@ -47,7 +47,7 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   tags = {
-    Name      = "bastion-${var.resources_name_suffix}-sg"
+    Name      = "bastion-${var.resources_name_prefix}-sg"
     Terraform = "true"
   }
 }
@@ -92,7 +92,7 @@ resource "aws_instance" "bastion" {
 
 
   tags = {
-    Name      = "bastion-${var.resources_name_suffix}"
+    Name      = "${var.resources_name_prefix}-bastion"
     Terraform = "true"
   }
 }

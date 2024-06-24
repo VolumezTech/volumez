@@ -16,7 +16,7 @@ variable "enable_dns_hostnames" {
   default     = true
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   type    = string
   default = "volumez"
 }

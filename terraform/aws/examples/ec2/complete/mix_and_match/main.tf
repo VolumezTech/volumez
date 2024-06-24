@@ -15,7 +15,7 @@ module "ssh_key" {
 module "vpc" {
   source                = "../../../../modules/vpc"
   count                 = local.create_vpc ? 1 : 0
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = var.resources_name_prefix
 }
 
 module "route_table" {
@@ -135,7 +135,7 @@ module "app_nodes" {
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.app_node_name_prefix
   signup_domain         = var.signup_domain
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = var.resources_name_prefix
 
   depends_on = [
     module.vpc,
@@ -162,7 +162,7 @@ module "media_nodes" {
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.media_node_name_prefix
   signup_domain         = var.signup_domain
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = var.resources_name_prefix
 
   depends_on = [
     module.vpc,
@@ -180,7 +180,7 @@ module "bastion" {
   sg_list               = [local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id]
   key_pair              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
   private_key           = module.ssh_key.key_value
-  resources_name_suffix = var.resources_name_suffix
+  resources_name_prefix = var.resources_name_prefix
 
   depends_on = [
     module.vpc,

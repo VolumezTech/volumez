@@ -7,7 +7,7 @@ variable "ingress_cidr_block" {
   default = ["0.0.0.0/0"]
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   type    = string
   default = "volumez"
 

@@ -39,7 +39,7 @@ variable "private_key" {
 
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   description = "suffix to add to the resources names"
   default     = "Volumez"
 

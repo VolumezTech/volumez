@@ -2,7 +2,7 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "resources_name_suffix" {
+variable "resources_name_prefix" {
   type    = string
   default = "volumez"
 }
