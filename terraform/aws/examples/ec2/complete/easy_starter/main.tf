@@ -19,10 +19,12 @@ locals {
   create_pg  = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
   deploy_bastion = var.target_subnet_id == "" ? var.deploy_bastion : false
   resource_prefix = "${var.resources_name_prefix}-${random_string.random.result}"
+  create_ssh_key = var.key_name == "" ? true : false
 }
 
 module "ssh_key" {
   source = "../../../../modules/ssh_key"
+  count = local.create_ssh_key ? 1 : 0
 }
 
 module "vpc" {
@@ -144,8 +146,7 @@ module "app_nodes" {
   ami_username          = var.app_node_ami_username
   iam_role              = var.app_node_iam_role
   node_type             = var.app_node_type
-  key_name              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  key_value             = var.key_name == "" ? module.ssh_key.key_value : ""
+  key_name              = local.create_ssh_key ? module.ssh_key[0].key_name : var.key_name
   pub_eni_list          = module.network_interfaces_app_nodes.nodes_eni_ids
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
@@ -171,8 +172,7 @@ module "media_nodes" {
   ami_username          = var.media_node_ami_username
   iam_role              = var.media_node_iam_role
   node_type             = var.media_node_type
-  key_name              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  key_value             = var.key_name == "" ? module.ssh_key.key_value : ""
+  key_name              = local.create_ssh_key ? module.ssh_key[0].key_name : var.key_name
   pub_eni_list          = module.network_interfaces_media_nodes.nodes_eni_ids
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
@@ -194,9 +194,8 @@ module "bastion" {
   vpc_id                = module.vpc[0].vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   sg_list               = [module.security_group[0].sg_id]
-  key_pair              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  private_key           = module.ssh_key.key_value
   resources_name_prefix = local.resource_prefix
+  key_pair              = local.create_ssh_key ? module.ssh_key[0].key_name : var.key_name
 
   depends_on = [
     module.vpc,
@@ -205,4 +204,4 @@ module "bastion" {
     module.subnets,
     module.network_interfaces_app_nodes
   ]
-}
+}   

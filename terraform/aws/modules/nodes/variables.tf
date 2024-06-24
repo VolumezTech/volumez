@@ -45,11 +45,6 @@ variable "path_to_pem" {
   default = ""
 }
 
-variable "key_value" {
-  type    = string
-  default = ""
-}
-
 variable "iam_role" {
   description = "IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile"
   type        = string

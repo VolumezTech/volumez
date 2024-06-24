@@ -5,6 +5,7 @@ num_of_zones = 1
 create_fault_domain = false
 avoid_pg = true
 deploy_bastion = true
+key_name = ""
  
 # Existing Network Configuration (Optional)
 target_vpc_id             = ""

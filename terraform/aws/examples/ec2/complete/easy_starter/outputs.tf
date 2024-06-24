@@ -19,7 +19,7 @@ output "media_nodes_private_ips" {
 }
 
 output "ssh_key_value" {
-  value     = module.ssh_key.key_value
+  value     = join("", module.ssh_key.*.key_value)
   sensitive = true
 }
 
