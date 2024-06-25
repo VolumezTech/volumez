@@ -20,7 +20,7 @@ data "aws_ami" "rhel" {
 
   filter {
     name   = "name"
-    values = ["RHEL-8.7.0_*"]
+    values = ["RHEL-9.4.0_*"]
   }
 
   depends_on = [
