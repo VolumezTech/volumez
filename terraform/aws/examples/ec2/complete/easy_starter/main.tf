@@ -14,29 +14,29 @@ resource "random_string" "random" {
 }
 
 locals {
-  create_vpc = var.target_vpc_id == "" ? true : false
-  create_sn  = var.target_subnet_id == "" ? true : false
-  create_pg  = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
-  deploy_bastion = var.target_subnet_id == "" ? var.deploy_bastion : false
+  create_vpc      = var.target_vpc_id == "" ? true : false
+  create_sn       = var.target_subnet_id == "" ? true : false
+  create_pg       = var.target_placement_group_id == "" && var.avoid_pg == false ? true : false
+  deploy_bastion  = var.target_subnet_id == "" ? var.deploy_bastion : false
   resource_prefix = "${var.resources_name_prefix}-${random_string.random.result}"
-  create_ssh_key = var.key_name == "" ? true : false
+  create_ssh_key  = var.key_name == "" ? true : false
 }
 
 module "ssh_key" {
-  count = local.create_ssh_key ? 1 : 0
   source = "../../../../modules/ssh_key"
+  count  = local.create_ssh_key ? 1 : 0
 }
 
 module "vpc" {
-  count                 = local.create_vpc ? 1 : 0
-  source                = "../../../../modules/vpc"
+  source = "../../../../modules/vpc"
+  count  = local.create_vpc ? 1 : 0
 
   resources_name_prefix = local.resource_prefix
 }
 
 module "route_table" {
-  count          = local.create_vpc ? 1 : 0
   source = "../../../../modules/route_table"
+  count  = local.create_vpc ? 1 : 0
 
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   default_rtb_id = local.create_vpc ? module.vpc[0].default_rtb_id : ""
@@ -47,9 +47,9 @@ module "route_table" {
 }
 
 module "security_group" {
-  count                 = local.create_vpc ? 1 : 0
   source = "../../../../modules/security_group"
-  
+  count  = local.create_vpc ? 1 : 0
+
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   resources_name_prefix = local.resource_prefix
 
@@ -59,8 +59,8 @@ module "security_group" {
 }
 
 module "subnets" {
-  count                 = local.create_sn ? 1 : 0
   source = "../../../../modules/subnets"
+  count  = local.create_sn ? 1 : 0
 
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones          = var.num_of_zones
@@ -72,22 +72,21 @@ module "subnets" {
 }
 
 module "nat" {
-  count                 = local.create_sn ? 1 : 0
   source = "../../../../modules/nat"
+  count  = local.create_sn ? 1 : 0
 
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   private_sn_ids        = module.subnets[0].private_sn_ids
   resources_name_prefix = local.resource_prefix
 
-
   depends_on = [module.vpc, module.subnets]
 
 }
 
 module "placement_group" {
-  count                    = local.create_pg ? 1 : 0
   source = "../../../../modules/placement_group"
+  count  = local.create_pg ? 1 : 0
 
   num_of_zones             = var.num_of_zones
   vpc_id                   = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
@@ -189,8 +188,8 @@ module "media_nodes" {
 }
 
 module "bastion" {
-  count                 = local.deploy_bastion ? 1 : 0
   source = "../../../../modules/bastion"
+  count  = local.deploy_bastion ? 1 : 0
 
   vpc_id                = module.vpc[0].vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
@@ -205,4 +204,4 @@ module "bastion" {
     module.subnets,
     module.network_interfaces_app_nodes
   ]
-}   
+}
