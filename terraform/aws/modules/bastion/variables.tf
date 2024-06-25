@@ -34,11 +34,6 @@ variable "deployment_tag_name" {
   default = "default-tf-tag"
 }
 
-variable "private_key" {
-  description = "value of the private key path"
-
-}
-
 variable "resources_name_prefix" {
   description = "suffix to add to the resources names"
   default     = "Volumez"

@@ -143,28 +143,30 @@ terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_typ
 > Custom variables (edit easy_starter.tfvars if needed)  
 ```
 # General Configuration
-region  = "us-west-2"
-resources_name_suffix = "volumez"
+region  = "us-east-1"
+resources_name_prefix = "volumez"
 num_of_zones = 1
-create_fault_domain = true
+create_fault_domain = false
 avoid_pg = true
-
+deploy_bastion = true
+key_name = ""
+ 
 # Existing Network Configuration (Optional)
-target_vpc_id = "vpc-0206e352378bc22b3"
-target_subnet_id = "subnet-0669d33500b48cfd8"
-target_security_group_id = "sg-0899dcd5079369204"
+target_vpc_id             = ""
+target_subnet_id          = ""
+target_security_group_id  = ""
 target_placement_group_id = ""
-
+ 
 # Media Nodes
-media_node_count = 4
-media_node_type = "is4gen.2xlarge"
+media_node_count = 2
+media_node_type = "i4i.2xlarge"
 media_node_iam_role = null
 media_node_ami = "default"
 media_node_ami_username = "default"
 media_node_name_prefix = "media"
-
+ 
 # App Nodes
-app_node_count = 0
+app_node_count = 1
 app_node_type = "m5n.xlarge"
 app_node_iam_role = null
 app_node_ami = "default"
@@ -182,6 +184,8 @@ terraform destroy -var-file="easy_starter.tfvars"
 ```  
 
 ### SSH To Node ### 
+If using existing key, put your key name in .tfvars file as 'key_name' and use this key to ssh, otherwise:
+
 Create a key file from terraform output and name it
 ```
 terraform output ssh_key_value > <ssh-key-name>

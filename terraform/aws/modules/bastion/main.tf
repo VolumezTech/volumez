@@ -17,7 +17,6 @@
   - ami_id_bastion: The ID of the AMI to use for the bastion host.
   - key_pair: The name of the key pair to use for SSH access to the bastion host.
   - iam_role: The IAM instance profile to associate with the bastion host.
-  - private_key: The path to the private key file for SSH access to the bastion host.
 
   Outputs:
   - None

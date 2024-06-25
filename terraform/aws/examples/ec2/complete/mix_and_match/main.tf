@@ -129,7 +129,6 @@ module "app_nodes" {
   iam_role              = var.app_node_iam_role
   node_type             = var.app_node_type
   key_name              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  key_value             = var.key_name == "" ? module.ssh_key.key_value : ""
   pub_eni_list          = module.network_interfaces_app_nodes.nodes_eni_ids
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
@@ -156,7 +155,6 @@ module "media_nodes" {
   iam_role              = var.media_node_iam_role
   node_type             = var.media_node_type
   key_name              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  key_value             = var.key_name == "" ? module.ssh_key.key_value : ""
   pub_eni_list          = module.network_interfaces_media_nodes.nodes_eni_ids
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
@@ -179,7 +177,6 @@ module "bastion" {
   pub_sn_id             = local.create_sn ? module.subnets[0].public_sn_id : ""
   sg_list               = [local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id]
   key_pair              = var.key_name == "" ? module.ssh_key.key_name : var.key_name
-  private_key           = module.ssh_key.key_value
   resources_name_prefix = var.resources_name_prefix
 
   depends_on = [
