@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "14913531546386339124"
+      "templateHash": "10230216604169060899"
     }
   },
   "functions": [
@@ -59,6 +59,64 @@
     {
       "namespace": "__bicep",
       "members": {
+        "generatePassword": {
+          "parameters": [
+            {
+              "type": "string",
+              "name": "guid"
+            },
+            {
+              "type": "int",
+              "name": "nr1"
+            },
+            {
+              "type": "int",
+              "name": "nr2"
+            },
+            {
+              "type": "int",
+              "name": "nr3"
+            },
+            {
+              "type": "int",
+              "name": "nr4"
+            },
+            {
+              "type": "int",
+              "name": "nr5"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "name": "chars"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "int"
+              },
+              "name": "numbers"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "name": "alphaUpper"
+            }
+          ],
+          "output": {
+            "type": "string",
+            "value": "[format('{0}{1}{2}{3}{4}{5}{6}{7}', parameters('chars')[parameters('nr1')], parameters('chars')[parameters('nr2')], parameters('chars')[parameters('nr3')], parameters('guid'), parameters('numbers')[parameters('nr1')], parameters('numbers')[parameters('nr2')], parameters('alphaUpper')[parameters('nr5')], parameters('alphaUpper')[parameters('nr4')])]"
+          },
+          "metadata": {
+            "__bicep_imported_from!": {
+              "sourceTemplate": "lib/util.bicep"
+            }
+          }
+        },
         "getSize": {
           "parameters": [
             {
@@ -105,6 +163,99 @@
     }
   ],
   "parameters": {
+    "randomNr1": {
+      "type": "int",
+      "defaultValue": "[mod(dateTimeToEpoch(utcNow()), 10)]"
+    },
+    "randomNr2": {
+      "type": "int",
+      "defaultValue": "[mod(dateTimeToEpoch(dateTimeAdd(utcNow(), 'PT15H')), 9)]"
+    },
+    "randomNr3": {
+      "type": "int",
+      "defaultValue": "[mod(dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT39H')), 8)]"
+    },
+    "randomNr4": {
+      "type": "int",
+      "defaultValue": "[mod(dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT17H')), 26)]"
+    },
+    "randomNr5": {
+      "type": "int",
+      "defaultValue": "[mod(dateTimeToEpoch(dateTimeAdd(utcNow(), '-PT8H')), 25)]"
+    },
+    "randomChar": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "defaultValue": [
+        "!",
+        "@",
+        "#",
+        "[",
+        "]",
+        "^",
+        "&",
+        ">",
+        "<",
+        "_"
+      ]
+    },
+    "randomNumber": {
+      "type": "array",
+      "items": {
+        "type": "int"
+      },
+      "defaultValue": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "randomAlpha": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "defaultValue": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ]
+    },
+    "baseRandomString": {
+      "type": "string",
+      "defaultValue": "[uniqueString(newGuid())]"
+    },
     "deploySize": {
       "type": "string",
       "allowedValues": [
@@ -121,9 +272,9 @@
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
     },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "[format('!{0}99?', uniqueString(newGuid()))]"
+    "randomString": {
+      "type": "string",
+      "defaultValue": "[__bicep.generatePassword(parameters('baseRandomString'), parameters('randomNr1'), parameters('randomNr2'), parameters('randomNr3'), parameters('randomNr4'), parameters('randomNr5'), parameters('randomChar'), parameters('randomNumber'), parameters('randomAlpha'))]"
     }
   },
   "variables": {
@@ -135,7 +286,7 @@
     "_1.sizeAppVm": "Standard_D64_v5",
     "_1.sizeMediaVm": "Standard_L8as_v3",
     "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
-    "_1.username": "localAdminUser",
+    "_1.username": "volumezdemoUser",
     "_1.vmAppOffer": "RHEL",
     "_1.vmAppPublisher": "RedHat",
     "_1.vmAppSku": "8_7",
@@ -188,7 +339,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.28.1.47646",
-              "templateHash": "7787748480601715096"
+              "templateHash": "11282721034570106314"
             }
           },
           "functions": [
@@ -279,7 +430,7 @@
             "_1.sizeAppVm": "Standard_D64_v5",
             "_1.sizeMediaVm": "Standard_L8as_v3",
             "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
-            "_1.username": "localAdminUser",
+            "_1.username": "volumezdemoUser",
             "_1.vmAppOffer": "RHEL",
             "_1.vmAppPublisher": "RedHat",
             "_1.vmAppSku": "8_7",
@@ -5481,6 +5632,9 @@
           "adminUsername": {
             "value": "[variables('_1.username')]"
           },
+          "adminPassword": {
+            "value": "[parameters('randomString')]"
+          },
           "imageReference": {
             "value": {
               "offer": "[variables('_1.vmAppOffer')]",
@@ -5494,9 +5648,6 @@
           },
           "name": {
             "value": "[format('vmss-{0}-media{1}', resourceGroup().name, uniqueString(deployment().name))]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
           },
           "osDisk": {
             "value": {

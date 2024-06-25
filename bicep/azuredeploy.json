@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "10575351458210108540"
+      "templateHash": "9190123779512729504"
     }
   },
   "functions": [
@@ -286,7 +286,7 @@
     "_1.sizeAppVm": "Standard_D64_v5",
     "_1.sizeMediaVm": "Standard_L8as_v3",
     "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
-    "_1.username": "localAdminUser",
+    "_1.username": "volumezdemoUser",
     "_1.vmAppOffer": "RHEL",
     "_1.vmAppPublisher": "RedHat",
     "_1.vmAppSku": "8_7",
@@ -339,7 +339,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.28.1.47646",
-              "templateHash": "7787748480601715096"
+              "templateHash": "11282721034570106314"
             }
           },
           "functions": [
@@ -430,7 +430,7 @@
             "_1.sizeAppVm": "Standard_D64_v5",
             "_1.sizeMediaVm": "Standard_L8as_v3",
             "_1.snetName": "[format('snet-{0}-vms', variables('_1.projectName'))]",
-            "_1.username": "localAdminUser",
+            "_1.username": "volumezdemoUser",
             "_1.vmAppOffer": "RHEL",
             "_1.vmAppPublisher": "RedHat",
             "_1.vmAppSku": "8_7",

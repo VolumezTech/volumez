@@ -19,7 +19,7 @@
                             }
                         },
 						{
-							"name": "adminPassword",
+							"name": "randomString",
 							"type": "Microsoft.Common.PasswordBox",
 								"label": {
 									"password": "Password",
@@ -212,7 +212,7 @@
 		},
 		"outputs": {
 			"parameters": {
-				"adminPassword": "[steps('basics').adminPassword]",
+				"randomString": "[steps('basics').randomString]",
 				"tenant_token": "[steps('basics').tenant_token]",
 				"nrAppVms": "[steps('basics').nrAppVms]",
 				"sizeAppVm" : "[steps('basics').sizeAppVm]",
