@@ -144,12 +144,12 @@ terraform apply -var="media_node_ami=ami-08895422b5f3aa64a" -var="media_node_typ
 ```
 # General Configuration
 region  = "us-east-1"
-resources_name_suffix = "volumez"
+resources_name_prefix = "volumez"
 num_of_zones = 1
 create_fault_domain = false
 avoid_pg = true
 deploy_bastion = true
-key_name = "" # If using existing key, if left empty - terraform will create a key pair for you
+key_name = ""
  
 # Existing Network Configuration (Optional)
 target_vpc_id             = ""
@@ -159,7 +159,7 @@ target_placement_group_id = ""
  
 # Media Nodes
 media_node_count = 2
-media_node_type = "i3.2xlarge"
+media_node_type = "i4i.2xlarge"
 media_node_iam_role = null
 media_node_ami = "default"
 media_node_ami_username = "default"
