@@ -23,20 +23,21 @@ locals {
 }
 
 module "ssh_key" {
-  source = "../../../../modules/ssh_key"
   count = local.create_ssh_key ? 1 : 0
+  source = "../../../../modules/ssh_key"
 }
 
 module "vpc" {
-  source                = "../../../../modules/vpc"
   count                 = local.create_vpc ? 1 : 0
+  source                = "../../../../modules/vpc"
+
   resources_name_prefix = local.resource_prefix
 }
 
 module "route_table" {
+  count          = local.create_vpc ? 1 : 0
   source = "../../../../modules/route_table"
 
-  count          = local.create_vpc ? 1 : 0
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   default_rtb_id = local.create_vpc ? module.vpc[0].default_rtb_id : ""
 
@@ -46,9 +47,9 @@ module "route_table" {
 }
 
 module "security_group" {
-  source = "../../../../modules/security_group"
-
   count                 = local.create_vpc ? 1 : 0
+  source = "../../../../modules/security_group"
+  
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   resources_name_prefix = local.resource_prefix
 
@@ -58,9 +59,9 @@ module "security_group" {
 }
 
 module "subnets" {
+  count                 = local.create_sn ? 1 : 0
   source = "../../../../modules/subnets"
 
-  count                 = local.create_sn ? 1 : 0
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   num_of_zones          = var.num_of_zones
   resources_name_prefix = local.resource_prefix
@@ -71,9 +72,9 @@ module "subnets" {
 }
 
 module "nat" {
+  count                 = local.create_sn ? 1 : 0
   source = "../../../../modules/nat"
 
-  count                 = local.create_sn ? 1 : 0
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   private_sn_ids        = module.subnets[0].private_sn_ids
@@ -85,9 +86,9 @@ module "nat" {
 }
 
 module "placement_group" {
+  count                    = local.create_pg ? 1 : 0
   source = "../../../../modules/placement_group"
 
-  count                    = local.create_pg ? 1 : 0
   num_of_zones             = var.num_of_zones
   vpc_id                   = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   node_count               = var.media_node_count
@@ -188,9 +189,9 @@ module "media_nodes" {
 }
 
 module "bastion" {
+  count                 = local.deploy_bastion ? 1 : 0
   source = "../../../../modules/bastion"
 
-  count                 = local.deploy_bastion ? 1 : 0
   vpc_id                = module.vpc[0].vpc_id
   pub_sn_id             = module.subnets[0].public_sn_id
   sg_list               = [module.security_group[0].sg_id]
