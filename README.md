@@ -237,7 +237,7 @@ terraform apply -var-file="easy_starter.tfvars"
 > Custom variables (List of available variables can be found under Examples > mix_and_match)
 ```
 terraform init
-terraform apply -var="media_node_count=4" -var="media_node_type=i3en.3xlarge"
+terraform apply -var="media_node_count=6" -var="media_node_type=i3en.3xlarge"
 ```
 
 > Destroy
@@ -310,12 +310,16 @@ terraform apply -var-file="easy_starter.tfvars"
 
 > mix_and_match
 
-No default values, the following should be set in order to execute the terraform:
-1. region                   - target region
-2. media_node_count         - Number of media nodes to create
-3. media_node_type          - Media EC2 type
-4. app_node_count           - number of performance hosts
-5. app_node_type            - EC2 type for application node
+No default values, the following should be set in order to execute the terraform (alternatively you can edit values in easy_starter.tfvars):
+1. region              - region to deploy cluster
+2. k8s_version         - kubernetes version
+3. resource_prefix     - prefix for resources names
+4. media_node_count    - number of media nodes
+5. media_node_type     - instance type of media nodes
+6. media_node_ami_type - AMI type of media nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
+7. app_node_count      - number of app nodes (if grater than 0, app node group will be created, if 0 it won't be created)
+8. app_node_type       - instance type of app nodes
+9. app_node_ami_type   - AMI type of app nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
 
 ### Application deployment ###
 **power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
