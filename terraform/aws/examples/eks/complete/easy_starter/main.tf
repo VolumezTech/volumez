@@ -5,7 +5,36 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "${var.cluster_owner}-eks-${random_string.suffix.result}"
+  cluster_name = "${var.resource_prefix}-eks-${random_string.suffix.result}"
+  eks_managed_node_groups = merge(
+    {
+      "volumez-media-ng" = {
+        name = "${var.resource_prefix}-media-eks"
+
+        desired_size = var.media_node_count
+        ami_type     = var.media_node_ami_type
+
+        instance_types = ["${var.media_node_type}"]
+        capacity_type  = "ON_DEMAND"
+        labels = {
+          Origin        = "Volumez"
+          GithubRepo    = "terraform-aws-eks"
+          instance-type = "media-ng"
+        }
+      }
+    },
+    var.app_node_count > 0 ? {
+      "volumez-app-ng" = {
+        name = "${var.resource_prefix}-app-eks"
+
+        desired_size = var.app_node_count
+        ami_type     = var.app_node_ami_type
+
+        instance_types = ["${var.app_node_type}"]
+        capacity_type  = "ON_DEMAND"
+      }
+    } : {}
+  )
 }
 
 resource "random_string" "suffix" {
@@ -16,7 +45,7 @@ resource "random_string" "suffix" {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name                 = "${var.cluster_owner}-vpc-${random_string.suffix.result}"
+  name                 = "${var.resource_prefix}-vpc-${random_string.suffix.result}"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
@@ -86,27 +115,10 @@ module "eks" {
       resolve_conflicts = "OVERWRITE"
     }
   }
-
-  eks_managed_node_groups = {
-    volumez-media-ng = {
-      name = "volumez-media-eks"
-
-      desired_size = var.media_node_count
-      min_size     = var.media_node_count
-      max_size     = var.media_node_count
-      ami_type     = var.media_node_ami_type
-
-      instance_types = ["${var.media_node_type}"]
-      capacity_type  = "ON_DEMAND"
-      labels = {
-        Origin        = "Volumez"
-        GithubRepo    = "terraform-aws-eks"
-        instance-type = "media-ng"
-      }
-    }
-  }
+  eks_managed_node_groups = local.eks_managed_node_groups
   enable_cluster_creator_admin_permissions = true
 }
+
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_name
 }

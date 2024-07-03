@@ -1,6 +1,9 @@
 region              = "us-east-1"
 k8s_version         = "1.29"
-cluster_owner       = "volumez"
+resource_prefix     = "Volumez"
 media_node_count    = 6
 media_node_type     = "i3en.3xlarge"
 media_node_ami_type = "AL2_x86_64"
+app_node_count      = 0
+app_node_type       = "m5n.xlarge"
+app_node_ami_type   = "AL2_x86_64"
