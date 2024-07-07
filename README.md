@@ -225,19 +225,38 @@ No default values, the following should be set in order to execute the terraform
 ### Inputs ### 
 Mandatory:  
 1. CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
-2. Region - Target AWS region (example: us-east-1)  
 
-### Usage (Terraform) - Create EKS cluster ###
-> Create with default values
+### Examples ### 
+> easy_starter
+
+to use pre-defined easy starter variables you can use:
+
 ```
-terraform init
 terraform apply -var-file="easy_starter.tfvars"
 ```
 
-> Custom variables (List of available variables can be found under Examples > mix_and_match)
+using easy_starter.tfvars file as is will scale:
+* 6 media nodes
+* media node type: i3en.3xlarge  
+
+Edit easy_starter.tfvars file with custom values you desire:
+
+1. region              - region to deploy cluster
+2. k8s_version         - kubernetes version
+3. resource_prefix     - prefix for resources names
+4. media_node_count    - number of media nodes
+5. media_node_type     - instance type of media nodes
+6. media_node_ami_type - AMI type of media nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
+7. app_node_count      - number of app nodes (if grater than 0, app node group will be created, if 0 it won't be created)
+8. app_node_type       - instance type of app nodes
+9. app_node_ami_type   - AMI type of app nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
+
+
+### Usage (Terraform) - Create EKS cluster ###
+> Create 
 ```
 terraform init
-terraform apply -var="media_node_count=6" -var="media_node_type=i3en.3xlarge"
+terraform apply -var-file="easy_starter.tfvars"
 ```
 
 > Destroy
@@ -295,31 +314,6 @@ helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false
 helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
-### Examples ### 
-> easy_starter
-
-to use pre-defined easy starter variables you can use:
-
-```
-terraform apply -var-file="easy_starter.tfvars"
-```
-
-* 6 media nodes
-* media node type: i3en.3xlarge  
-
-
-> mix_and_match
-
-No default values, the following should be set in order to execute the terraform (alternatively you can edit values in easy_starter.tfvars):
-1. region              - region to deploy cluster
-2. k8s_version         - kubernetes version
-3. resource_prefix     - prefix for resources names
-4. media_node_count    - number of media nodes
-5. media_node_type     - instance type of media nodes
-6. media_node_ami_type - AMI type of media nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
-7. app_node_count      - number of app nodes (if grater than 0, app node group will be created, if 0 it won't be created)
-8. app_node_type       - instance type of app nodes
-9. app_node_ami_type   - AMI type of app nodes (AL2_x86_64/AL2_ARM_64 - needs to match instance type) 
 
 ### Application deployment ###
 **power_starter** and **mix_and_match** are supporting the creation of application nodes. In these examples 2 node groups will be created in a single EKS. In order to deploy your application use the following node affinity configuration:
