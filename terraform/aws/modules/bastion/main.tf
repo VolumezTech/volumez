@@ -70,10 +70,25 @@ resource "aws_network_interface" "pub-bastion" {
   security_groups = [aws_security_group.bastion_sg.id]
 }
 
+data "aws_ami" "bastion_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 
 resource "aws_instance" "bastion" {
   instance_type        = var.bastion_ec2_type
-  ami                  = var.ami_id_bastion
+  ami                  = data.aws_ami.bastion_ami.id
   key_name             = var.key_pair
   iam_instance_profile = var.iam_role
 

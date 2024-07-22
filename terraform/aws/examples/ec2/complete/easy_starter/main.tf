@@ -8,6 +8,10 @@ terraform {
   required_version = ">= 1.3.5"
 }
 
+provider "aws" {
+  region = var.region
+}
+
 resource "random_string" "random" {
   length  = 5
   special = false
@@ -63,6 +67,7 @@ module "subnets" {
   count  = local.create_sn ? 1 : 0
 
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
+  region                = var.region
   num_of_zones          = var.num_of_zones
   resources_name_prefix = local.resource_prefix
 
