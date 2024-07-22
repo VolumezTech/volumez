@@ -1,0 +1,233 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+	"view": {
+		"kind": "Form",
+		"properties": {
+			"title": "Volumez demo on Azure",
+			"steps": [
+				{
+					"name": "basics",
+					"label": "Basics",
+					"elements": [
+						{
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": [
+                                    "microsoft.resources/resourcegroups"
+                                ]
+                            }
+                        },
+						{
+							"name": "randomString",
+							"type": "Microsoft.Common.PasswordBox",
+								"label": {
+									"password": "Password",
+									"confirmPassword": "Confirm password"
+								},
+								"constraints": {
+									"required": true,
+									"regex": "^(?=.*[A-Z])(?=.*[.!@#$%^&*()-_=+])(?=.*[0-9])(?=.*[a-z]).{6,76}$",
+									"validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters"
+								},
+								"options": {
+									"hideConfirmation": false
+								},
+								"visible": true
+						},
+						{
+							"name": "tenant_token",
+							"type": "Microsoft.Common.TextBox",
+							"label": "You can find your tenant_token in the Volumez developer info"
+						},
+						{
+							"name": "rgName",
+							"type": "Microsoft.Common.TextBox",
+							"label": "ResourceGroup for your deployment"
+						},
+						{
+							"name": "nrAppVms",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Nr of Application VMS",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "1",
+									"value": "1"
+								  },
+								  {
+									"label": "2",
+									"value": "2"
+								  },
+								  {
+									"label": "3",
+									"value": "3"
+								  }
+								],
+								"required": true
+							  }
+						},
+						{
+							"name": "sizeAppVm",
+							"type": "Microsoft.Compute.SizeSelector",
+							"label": "Size App VM",
+							"toolTip": "Pick the size of your application VM's",
+							"recommendedSizes": [
+							  "Standard_D64_v5"
+							],
+							"constraints": {
+							  "allowedSizes": [],
+							  "excludedSizes": []
+							},
+							"options": {
+							  "hideDiskTypeFilter": false
+							},
+							"osPlatform": "Linux",
+							"imageReference": {
+							  "publisher": "RedHat",
+							  "offer": "RHEL",
+							  "sku": "8.7"
+							},
+							"visible": true,
+							"required": true
+						},
+						{
+							"name": "nrMediaVms",
+							"type": "Microsoft.Common.DropDown",
+							"label": "Nr of Media VMS",
+							"multiselect": false,
+							"multiLine": false,
+							"constraints": {
+								"allowedValues": [
+								  {
+									"label": "3",
+									"value": "3"
+								  },
+								  {
+									"label": "5",
+									"value": "5"
+								  },
+								  {
+									"label": "7",
+									"value": "7"
+								  },
+								  {
+									"label": "9",
+									"value": "9"
+								  },
+								  {
+									"label": "11",
+									"value": "11"
+								  },
+								  {
+									"label": "13",
+									"value": "13"
+								  },
+								  {
+									"label": "15",
+									"value": "15"
+								  },
+								  {
+									"label": "17",
+									"value": "17"
+								  }
+								],
+								"required": true
+							  }
+
+						},
+						{
+							"name": "sizeMediaVm",
+							"type": "Microsoft.Compute.SizeSelector",
+							"label": "Size Media VM",
+							"toolTip": "Pick the size of your media VM's",
+							"recommendedSizes": [
+							  "Standard_L8as_v3"
+							],
+							"constraints": {
+							  "allowedSizes": [
+								"Standard_L8as_v3",
+								"Standard_L8s_v3",
+								"Standard_L16as_v3",
+								"Standard_L16s_v3",
+								"Standard_L32as_v3",
+								"Standard_L32s_v3",
+								"Standard_L48as_v3",
+								"Standard_L48s_v3",
+								"Standard_L64as_v3",
+								"Standard_L64s_v3",
+								"Standard_L80as_v3",
+								"Standard_L80s_v3"
+							],
+							  "excludedSizes": []
+							},
+							"options": {
+							  "hideDiskTypeFilter": false
+							},
+							"osPlatform": "Linux",
+							"imageReference": {
+							  "publisher": "RedHat",
+							  "offer": "RHEL",
+							  "sku": "8.7"
+							},
+							"visible": true,
+							"required": true
+						},
+						{
+							"name": "vnetCombo1",
+							"type": "Microsoft.Network.VirtualNetworkCombo",
+							"label": {
+								"virtualNetwork": "Virtual network",
+								"subnets": "Subnets"
+							},
+							"newOrExisting": "existing",
+							"toolTip": {
+								"virtualNetwork": "Select your Existing virtualNetwork",
+								"subnets": "Select your Existing subnet"
+							},
+							"constraints": {
+								"minAddressPrefixSize": "/16"
+							},
+							"options": {
+								"newOrExisting" : "existing",
+								"hideExisting": false
+							},
+							"subnets": {
+								"subnet1": {
+									"label": "Subnet for VM",
+									"constraints": {
+										"minAddressPrefixSize": "/24",
+										"minAddressCount": 12
+									},
+									"newOrExisting" : "existing"
+								}
+							},
+							"visible": true
+						}
+					]
+				}
+			]
+		},
+		"outputs": {
+			"parameters": {
+				"randomString": "[steps('basics').randomString]",
+				"tenant_token": "[steps('basics').tenant_token]",
+				"nrAppVms": "[steps('basics').nrAppVms]",
+				"sizeAppVm" : "[steps('basics').sizeAppVm]",
+				"nrMediaVms": "[steps('basics').nrMediaVms]",
+				"sizeMediaVm" : "[steps('basics').sizeMediaVm]",
+				"vnetName": "[steps('basics').vnetCombo1.name]",
+				"subnetName": "[steps('basics').vnetCombo1.subnets.subnet1.name]",
+				"location": "[steps('basics').resourceScope.location.name]",
+				"rgName": "[steps('basics').rgName]",
+				"rgNameNetwork": "[steps('basics').vnetCombo1.resourceGroup]"
+			},
+                        "kind": "ResourceGroup",
+                        "location": "[steps('basics').resourceScope.location.name]",
+                        "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+		}
+	}
+}
+

@@ -1,0 +1,87 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+	"view": {
+		"kind": "Form",
+		"properties": {
+			"title": "Volumez demo on Azure",
+			"steps": [
+				{
+					"name": "basics",
+					"label": "Basics",
+					"elements": [
+						{
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope",
+                            "location": {
+                                "resourceTypes": [
+                                    "microsoft.resources/resourcegroups"
+                                ]
+                            }
+                        },
+						{
+							"name": "randomString",
+							"type": "Microsoft.Common.PasswordBox",
+								"label": {
+									"password": "Password",
+									"confirmPassword": "Confirm password"
+								},
+								"constraints": {
+									"required": true,
+									"regex": "^(?=.*[A-Z])(?=.*[.!@#$%^&*()-_=+])(?=.*[0-9])(?=.*[a-z]).{6,76}$",
+									"validationMessage": "Password must be at least 6 characters long, contain numbers and letters (upper and lower case), contain special characters but no control characters"
+								},
+								"options": {
+									"hideConfirmation": false
+								},
+								"visible": true
+						},
+						{
+							"name": "tenant_token",
+							"type": "Microsoft.Common.TextBox",
+							"label": "You can find your tenant_token in the Volumez developer info"
+						},
+						{
+								"name": "deploySize",
+								"type": "Microsoft.Common.DropDown",
+								"label": "Size of your demo",
+								"multiselect": false,
+								"multiLine": false,
+								"constraints": {
+										"allowedValues": [
+											{
+												"label": "Small: App = 1 x Standard_D16_v5, Media =  2 x Standard_L8s_v3",
+												"value": "small"
+											},
+											{
+												"label": "Medium: App = 1 x Standard_D32_v5, Media = 6 X Standard_L8s_v3",
+												"value": "medium"
+											},
+											{
+												"label": "Large: App = 1 x Standard_D64_v5, Media = 12 X Standard_L8s_v3",
+												"value": "large"
+											},
+											{
+												"label": "Extra Large: App = 1 x Standard_D96_v5, Media = 18 X Standard_L8s_v3",
+												"value": "xlarge"
+											}
+										],
+										"required": true
+									}
+						}
+					]
+				}
+			]
+		},
+		"outputs": {
+			"parameters": {
+				"randomString": "[steps('basics').randomString]",
+				"tenant_token": "[steps('basics').tenant_token]",
+				"deploySize": "[steps('basics').deploySize]",
+				"location": "[steps('basics').resourceScope.location.name]"
+			},
+			"kind": "ResourceGroup",
+			"location": "[steps('basics').resourceScope.location.name]",
+			"resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"		
+		}
+	}
+}
