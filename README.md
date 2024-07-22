@@ -189,7 +189,9 @@ If using existing key, put your key name in .tfvars file as 'key_name' and use t
 Create a key file from terraform output and name it
 ```
 terraform output ssh_key_value > <ssh-key-name>
+chmod 400 <ssh-key-name>
 ```
+
 SSH to media/app node in private subnet via Bastion server
 ```
 ssh -i <ssh-key-name> -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o "ProxyCommand=ssh -W %h:%p ec2-user@<bastion_public_dns> -i <ssh-key-name> -o StrictHostKeyChecking=no" ec2-user@<media/app_nodes_private_ips>
