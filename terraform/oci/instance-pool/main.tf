@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    oci = {
-      source  = "oracle/oci"
-      version = "5.31.0"
-    }
-  }
-}
-
 ### Random
 resource "random_string" "deploy_id" {
   length  = 4
@@ -14,14 +5,12 @@ resource "random_string" "deploy_id" {
 }
 
 ### SSH
-
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
 ### Network
-
 resource "oci_core_vcn" "vlz_vcn" {
   cidr_block     = "10.1.0.0/16"
   compartment_id = var.tenancy_ocid
@@ -61,9 +50,18 @@ resource "oci_core_subnet" "vlz_subnet" {
   dhcp_options_id     = oci_core_vcn.vlz_vcn.default_dhcp_options_id
 }
 
-### Compute
-# Media
+resource "oci_cluster_placement_groups_cluster_placement_group" "vlz_cluster_pg" {
+  count = local.num_of_pgs
 
+  availability_domain          = data.oci_identity_availability_domain.ad.name
+  cluster_placement_group_type = "STANDARD"
+  compartment_id               = var.tenancy_ocid
+  description                  = "bla"
+  name                         = "cluster_pg-${random_string.deploy_id.result}"
+}
+
+### Compute
+# Media #
 resource "oci_core_instance_configuration" "media_instance_configuration" {
   compartment_id = var.tenancy_ocid
   display_name   = "media_instance-${random_string.deploy_id.result}"
@@ -74,10 +72,14 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
     launch_details {
       compartment_id = var.tenancy_ocid
       shape          = var.media_shape
+      cluster_placement_group_id = local.media_cluster_pg_or_null
 
-      shape_config {
-        memory_in_gbs = var.media_memory_in_gbs
-        ocpus         = var.media_num_of_ocpus
+      dynamic "shape_config" {
+        for_each = var.media_ignore_cpu_mem_req ? [] : [1]
+        content {
+          memory_in_gbs = var.media_memory_in_gbs
+          ocpus         = var.media_num_of_ocpus
+        }
       }
 
       source_details {
@@ -98,24 +100,25 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
 }
 
 resource "oci_core_instance_pool" "media_instance_pool" {
-  for_each = zipmap(range(length(oci_core_subnet.vlz_subnet)), oci_core_subnet.vlz_subnet.*.id)
+  #for_each = zipmap(range(local.num_of_subnets), oci_core_subnet.vlz_subnet.*.id)
+  count = local.num_of_instance_pools
 
   compartment_id            = var.tenancy_ocid
   instance_configuration_id = oci_core_instance_configuration.media_instance_configuration.id
-  display_name              = format("media-instance-pool-${random_string.deploy_id.result}-%s", each.key)
+  display_name              = format("media-instance-pool-${random_string.deploy_id.result}-%s", count.index)
   placement_configurations {
     availability_domain = data.oci_identity_availability_domain.ad.name
-    primary_subnet_id   = each.value
+    primary_subnet_id   = oci_core_subnet.vlz_subnet[count.index].id
+    fault_domains       = local.fault_domains
   }
-  size = local.media_num_of_instances
+  size = local.instances_per_pool_list[count.index]
 
   timeouts {
-    create = "7m"
+    create = "10m"
   }
 }
 
-# Application
-
+# Application #
 resource "oci_core_instance_configuration" "app_instance_configuration" {
   compartment_id = var.tenancy_ocid
   display_name   = "app_instance-${random_string.deploy_id.result}"
@@ -126,9 +129,10 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
     launch_details {
       compartment_id = var.tenancy_ocid
       shape          = var.app_shape
+      cluster_placement_group_id = local.app_cluster_pg_or_null
 
       dynamic "shape_config" {
-        for_each = var.app_shape == "BM.Standard.E5.192" ? [] : [1]
+        for_each = var.app_ignore_cpu_mem_req ? [] : [1]
         content {
           memory_in_gbs = var.app_memory_in_gbs
           ocpus         = var.app_num_of_ocpus
@@ -150,7 +154,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 
       launch_options {
         network_type = "VFIO"
-        
+
       }
 
       metadata = {
@@ -180,6 +184,7 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   placement_configurations {
     availability_domain = data.oci_identity_availability_domain.ad.name
     primary_subnet_id   = oci_core_subnet.vlz_subnet[0].id
+    fault_domains       = local.fault_domains
     dynamic "secondary_vnic_subnets" {
       for_each = length(var.subnet_cidr_block_list) > 1 ? [1] : []
       content {
@@ -191,7 +196,7 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   size = var.app_num_of_instances
 
   timeouts {
-    create = "7m"
+    create = "10m"
   }
 }
 
@@ -214,7 +219,7 @@ resource "oci_core_instance_pool" "app_instance_pool" {
 resource "null_resource" "app_secondary_vnic_exec" {
   count = local.secondary_vnic_config
 
-  depends_on = [ oci_core_instance_pool.app_instance_pool ]
+  depends_on = [oci_core_instance_pool.app_instance_pool]
 
   provisioner "remote-exec" {
     inline = [
@@ -230,7 +235,7 @@ resource "null_resource" "app_secondary_vnic_exec" {
     ]
     connection {
       type        = "ssh"
-      host        = data.oci_core_instance.app_instance.public_ip
+      host        = data.oci_core_instance.app_instance[count.index].public_ip
       user        = "ubuntu"
       private_key = tls_private_key.ssh_key.private_key_pem
     }

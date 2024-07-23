@@ -11,7 +11,7 @@ runcmd:
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
   - refreshtoken=${vlz_refresh_token} 
   - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
-  - echo $idtoken > /opt/vlzconnector/dbg_idtoken
+  - echo $idtoken | sudo tee /opt/vlzconnector/dbg_idtoken
   - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"`
   - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
   - sudo apt update | sudo tee /opt/vlzconnector/update.log

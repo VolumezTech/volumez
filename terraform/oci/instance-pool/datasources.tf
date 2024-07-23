@@ -32,20 +32,23 @@ data "cloudinit_config" "operator" {
 ### App Data ###
 data "oci_core_instance_pool_instances" "app_pool" {
   depends_on = [oci_core_instance_pool.app_instance_pool]
+  count      = var.app_num_of_instances > 0 ? 1 : 0
 
   compartment_id   = var.tenancy_ocid
   instance_pool_id = oci_core_instance_pool.app_instance_pool.id
 }
 
 data "oci_core_instance" "app_instance" {
-  instance_id = data.oci_core_instance_pool_instances.app_pool.instances[0].id
+  count = var.app_num_of_instances > 0 ? 1 : 0
+
+  instance_id = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
 }
 
 data "oci_core_vnic_attachments" "app_vnic2_attachments" {
   count = local.secondary_vnic_config
 
   compartment_id = var.tenancy_ocid
-  instance_id    = data.oci_core_instance_pool_instances.app_pool.instances[0].id
+  instance_id    = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
 
   filter {
     name   = "subnet_id"
@@ -70,7 +73,7 @@ data "oci_core_private_ips" "app_vnic2_ip" {
 data "oci_core_instance_pool_instances" "media_pool" {
   depends_on = [oci_core_instance_pool.media_instance_pool]
 
-  for_each = oci_core_instance_pool.media_instance_pool
+  for_each = { for idx, instance_pool in oci_core_instance_pool.media_instance_pool : tostring(idx) => instance_pool }
 
   compartment_id   = var.tenancy_ocid
   instance_pool_id = each.value.id

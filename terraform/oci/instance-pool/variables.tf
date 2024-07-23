@@ -8,9 +8,14 @@ variable "ad_number" {
   description = "Availability Domain Number"
 }
 
+variable "fault_domains" {
+  type        = list(string)
+  description = "Fault Domains"
+}
+
 variable "subnet_cidr_block_list" {
-  type = list(string)
-  default = [ "10.1.20.0/24", "10.1.21.0/24" ]
+  type    = list(string)
+  default = ["10.1.20.0/24", "10.1.21.0/24"]
 }
 
 variable "tenancy_ocid" {
@@ -66,18 +71,26 @@ variable "media_shape" {
 variable "media_memory_in_gbs" {
   type        = number
   description = "Memory in GBs"
-  default     = 128
 }
 
 variable "media_num_of_ocpus" {
   type        = number
   description = "Memory in GBs"
-  default     = 8
+}
+
+variable "media_ignore_cpu_mem_req" {
+  type        = bool
+  description = "Ignore CPU and Memory requirements"
 }
 
 variable "media_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
+}
+
+variable "media_use_placement_group" {
+  type        = bool
+  description = "Use Cluster Placement Group or not"
 }
 
 ### App ###
@@ -98,16 +111,23 @@ variable "app_shape" {
 variable "app_memory_in_gbs" {
   type        = number
   description = "Memory in GBs"
-  default     = 128
 }
 
 variable "app_num_of_ocpus" {
   type        = number
   description = "Memory in GBs"
-  default     = 8
+}
+
+variable "app_ignore_cpu_mem_req" {
+  type        = bool
+  description = "Ignore CPU and Memory requirements"
 }
 
 variable "app_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
+}
+variable "app_use_placement_group" {
+  type        = bool
+  description = "Use Cluster Placement Group or not"
 }
