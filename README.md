@@ -5,7 +5,7 @@ Volumez is SaaS composable data infrastructure. With Volumez, you can deploy app
 This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM) and install the volumez connector.
 
 # Requirements
-* Terraform > 0.14  
+* Terraform > 1.7.0  
 * AWS/Azure credentials as environment variables 
 * kubectl (for EKS/AKS examples)
 * Helm v3.8 (for EKS/AKS examples) 
@@ -24,8 +24,9 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 * [AWS EC2 environment](#ec2)  
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
-* [Azure AKS environment](#aks)
-* [Azure VMSS](#vmss)
+* [Azure AKS environment](#aks)  
+* [Azure VMSS](#vmss)  
+* [Oracle Instance pool](#instance-pool)  
 <br />
 <br />
 <br />
@@ -593,6 +594,62 @@ verify bastion was deployed (deploy_bastion=true in easy_starter.tfvars)
 4. Select Authentication Type: SSH Private Key from Local File
 5. Username: adminuser
 6. Local File: upload ssh_key from stage 1
+
+## Instance Pool
+---
+### Path to Project ###
+```
+volumez/terraform/oci/instance-pool
+```
+### Inputs (easy_starter.tfvars) ### 
+1. Networking  
+  a. region    = Target Region (example: "us-chicago-1")  
+  b. ad_number = Availability Domain Number (example: 3)
+
+2. Credentials  
+  a. tenancy_ocid        = OCI tenancy ID  
+  b. compartment_ocid    = OCI compartment ID  
+  c. config_file_profile = Profile name to use in oci config file (example: "DEFAULT". Location of the file is ~/.oci/config)  
+
+3. VLZ
+  a. vlz_refresh_token   = CSI Driver Token (Refresh Token) - Can be fetched from Volumez.com -> Sign in -> Developer Info  
+  b. vlz_s3_path_to_conn = S3 path to VLZ connector (example: https://<bucket-name>.s3.amazonaws.com/<folder-name>/<os-name>)
+  c. vlz_rest_apigw      = REST Api Gateway URL (example: https://<apigw-id>.execute-api.<region>.amazonaws.com/dev)
+
+3. Media  
+  a. media_image_id         = OCI Image ID for Media VMs (example: "ocid1.image.oc1.us-chicago-1.aaaaaaaablgbvtnll3bamfwk5vjqk4fjnwheqyhsyez2juynjs6ycm5rhsla")  
+  b. media_num_of_instances = Number of Media VMs  
+  c. media_shape            = OCI Media Shape  
+  d. media_num_of_ocpus     = OCI Media number of OCPUS  
+  e. media_memory_in_gbs    = OCI Media memory (gbs)  
+
+4. App  
+  a. app_image_id         = OCI Image ID for Application VMs  
+  b. app_num_of_instances = Number of Application VMs  
+  c. app_shape            = OCI Application Shape  
+  d. app_num_of_ocpus     = OCI Application number of OCPUS  
+  e. app_memory_in_gbs    = OCI Application memory (gbs)  
+
+### Usage ###
+> Create & Install VLZ connector
+1. Edit easy_starter.tfvars with relevant values
+2. Execute the Terraform:
+```
+  terraform init
+  terraform apply -var-file="easy_starter.tfvars"
+```
+
+> Destroy
+```
+terraform destroy -var-file="easy_starter.tfvars"
+```
+
+### SSH into the VM ###
+1. ```terraform output tls_private_key > ssh_key```
+2. ```chmod 600 ssh_key```
+3. Check the relevant username and Public IP via OCI console
+4. ```ssh -i /path/to/ssh_key <username>@<pub-ip>```
+
 
 
 
