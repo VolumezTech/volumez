@@ -5,7 +5,8 @@ timezone: ${operator_timezone}
 
 runcmd:
   - set -e
-  - sudo systemctl stop unattended-upgrades
+  - sudo systemctl stop unattended-upgrades || true
+  - sudo pkill --signal SIGKILL unattended-upgrades || true
   - sudo apt-get install -y jq
   - sudo mkdir -p /opt/vlzconnector
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
@@ -20,8 +21,9 @@ runcmd:
   - sudo iptables -P FORWARD ACCEPT
   - sudo iptables -P INPUT ACCEPT
   - sudo iptables -F
-  - sudo ufw disable
+  - sudo ufw disable || true
   - sudo systemctl start unattended-upgrades
+  - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak
 
 # final_message: |
 #   cloud-init has finished
