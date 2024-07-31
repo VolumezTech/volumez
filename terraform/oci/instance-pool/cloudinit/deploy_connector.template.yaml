@@ -30,7 +30,6 @@ runcmd:
   - sudo iptables -P INPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -F 2>&1 | sudo tee -a $LOG_FILE
   - sudo ufw disable 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo systemctl start unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE
   - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak 2>&1 | sudo tee -a $LOG_FILE
   - echo "Deployment completed." 2>&1 | sudo tee -a $LOG_FILE
 
