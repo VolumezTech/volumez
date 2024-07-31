@@ -14,12 +14,12 @@ runcmd:
   - sudo mkdir -p /opt/vlzconnector | sudo tee -a $LOG_FILE
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee /etc/apt/sources.list.d/vlzconnector.list | sudo tee -a $LOG_FILE
   - refreshtoken=${vlz_refresh_token}
-  - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"` | sudo tee -a $LOG_FILE
+  - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"` 
   - echo $idtoken | sudo tee /opt/vlzconnector/dbg_idtoken | sudo tee -a $LOG_FILE
-  - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"` | sudo tee -a $LOG_FILE
-  - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken | sudo tee -a $LOG_FILE
-  - sudo apt update | sudo tee /opt/vlzconnector/update.log | sudo tee -a $LOG_FILE
-  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector | sudo tee /opt/vlzconnector/install.log | sudo tee -a $LOG_FILE
+  - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"` 
+  - echo -n $tenanttoken | sudo tee -a $LOG_FILE
+  - sudo apt update | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector | sudo tee -a $LOG_FILE
   - sudo iptables -P OUTPUT ACCEPT | sudo tee -a $LOG_FILE
   - sudo iptables -P FORWARD ACCEPT | sudo tee -a $LOG_FILE
   - sudo iptables -P INPUT ACCEPT | sudo tee -a $LOG_FILE
