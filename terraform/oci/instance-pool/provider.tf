@@ -10,7 +10,7 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = "6.3.0" # Specify the desired version or version constraint here
+      version = "6.4.0" # Specify the desired version or version constraint here
     }
     
   }
