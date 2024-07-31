@@ -7,27 +7,31 @@ runcmd:
   - set -e
   - mkdir -p /var/log/volumez/
   - LOG_FILE="/var/log/volumez/deploy_connector.log"
-  - echo "Starting deployment..." | sudo tee -a $LOG_FILE
-  - sudo systemctl stop unattended-upgrades || true | sudo tee -a $LOG_FILE
-  - sudo pkill --signal SIGKILL unattended-upgrades || true | sudo tee -a $LOG_FILE
-  - sudo apt-get install -y jq | sudo tee -a $LOG_FILE
-  - sudo mkdir -p /opt/vlzconnector | sudo tee -a $LOG_FILE
-  - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee /etc/apt/sources.list.d/vlzconnector.list | sudo tee -a $LOG_FILE
+  - echo "Starting deployment..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo systemctl stop unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
+  - sudo systemctl disable unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
+  - sudo pkill --signal SIGKILL unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
+  - sudo apt remove -y unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
+  - sudo apt-get install -y jq 2>&1 | sudo tee -a $LOG_FILE 
+  - sudo mkdir -p /opt/vlzconnector 2>&1 | sudo tee -a $LOG_FILE 
+  - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee /etc/apt/sources.list.d/vlzconnector.list 
   - refreshtoken=${vlz_refresh_token}
-  - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"` | sudo tee -a $LOG_FILE
-  - echo $idtoken | sudo tee /opt/vlzconnector/dbg_idtoken | sudo tee -a $LOG_FILE
-  - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"` | sudo tee -a $LOG_FILE
-  - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken | sudo tee -a $LOG_FILE
-  - sudo apt update | sudo tee /opt/vlzconnector/update.log | sudo tee -a $LOG_FILE
-  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector | sudo tee /opt/vlzconnector/install.log | sudo tee -a $LOG_FILE
-  - sudo iptables -P OUTPUT ACCEPT | sudo tee -a $LOG_FILE
-  - sudo iptables -P FORWARD ACCEPT | sudo tee -a $LOG_FILE
-  - sudo iptables -P INPUT ACCEPT | sudo tee -a $LOG_FILE
-  - sudo iptables -F | sudo tee -a $LOG_FILE
-  - sudo ufw disable || true | sudo tee -a $LOG_FILE
-  - sudo systemctl start unattended-upgrades | sudo tee -a $LOG_FILE
-  - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak | sudo tee -a $LOG_FILE
-  - echo "Deployment completed." | sudo tee -a $LOG_FILE
+  - echo "Fetching id token to /opt/vlzconnector/dbg_idtoken " 2>&1 | sudo tee -a $LOG_FILE
+  - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"` 
+  - echo $idtoken | sudo tee /opt/vlzconnector/dbg_idtoken 
+  - echo "Fetching tenant token to /opt/vlzconnector/tenantToken" 2>&1 | sudo tee -a $LOG_FILE
+  - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"` 
+  - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken 
+  - sudo apt update 2>&1 | sudo tee -a $LOG_FILE
+  - echo "installing vlzconnector..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector 2>&1 | sudo tee -a $LOG_FILE
+  - sudo iptables -P OUTPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
+  - sudo iptables -P FORWARD ACCEPT 2>&1 | sudo tee -a $LOG_FILE
+  - sudo iptables -P INPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
+  - sudo iptables -F 2>&1 | sudo tee -a $LOG_FILE
+  - sudo ufw disable 2>&1 | sudo tee -a $LOG_FILE || true
+  - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak 2>&1 | sudo tee -a $LOG_FILE
+  - echo "Deployment completed." 2>&1 | sudo tee -a $LOG_FILE
 
 # final_message: |
 #   cloud-init has finished
