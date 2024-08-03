@@ -10,9 +10,8 @@ runcmd:
   - echo "Starting deployment..." 2>&1 | sudo tee -a $LOG_FILE
   - sudo systemctl stop unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo systemctl disable unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo pkill --signal SIGKILL unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo apt remove -y unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo apt-get install -y jq 2>&1 | sudo tee -a $LOG_FILE 
+  - sudo apt-get install -y jq ufw 2>&1 | sudo tee -a $LOG_FILE 
   - sudo mkdir -p /opt/vlzconnector 2>&1 | sudo tee -a $LOG_FILE 
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee /etc/apt/sources.list.d/vlzconnector.list 
   - refreshtoken=${vlz_refresh_token}
@@ -24,6 +23,9 @@ runcmd:
   - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken 
   - sudo apt update 2>&1 | sudo tee -a $LOG_FILE
   - echo "installing vlzconnector..." 2>&1 | sudo tee -a $LOG_FILE
+  - echo "Checking lock processes..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo ps -ax 2>&1 | sudo tee -a $LOG_FILE
+  - sudo sleep 7
   - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -P OUTPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -P FORWARD ACCEPT 2>&1 | sudo tee -a $LOG_FILE
@@ -32,6 +34,10 @@ runcmd:
   - sudo ufw disable 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak 2>&1 | sudo tee -a $LOG_FILE
   - echo "Deployment completed." 2>&1 | sudo tee -a $LOG_FILE
+  # - echo "Upgrading apt..." 2>&1 | sudo tee -a $LOG_FILE
+  # - sudo apt upgrade -y 2>&1 | sudo tee -a $LOG_FILE
+  # - echo "Rebooting..." 2>&1 | sudo tee -a $LOG_FILE
+  # - sudo reboot 2>&1 | sudo tee -a $LOG_FILE
 
 # final_message: |
 #   cloud-init has finished
