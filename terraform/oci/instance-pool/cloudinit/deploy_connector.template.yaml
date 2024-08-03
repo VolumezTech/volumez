@@ -34,10 +34,10 @@ runcmd:
   - sudo ufw disable 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak 2>&1 | sudo tee -a $LOG_FILE
   - echo "Deployment completed." 2>&1 | sudo tee -a $LOG_FILE
-  # - echo "Upgrading apt..." 2>&1 | sudo tee -a $LOG_FILE
-  # - sudo apt upgrade -y 2>&1 | sudo tee -a $LOG_FILE
-  # - echo "Rebooting..." 2>&1 | sudo tee -a $LOG_FILE
-  # - sudo reboot 2>&1 | sudo tee -a $LOG_FILE
+  - echo "Upgrading apt..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo apt upgrade -y 2>&1 | sudo tee -a $LOG_FILE
+  - echo "Rebooting..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo reboot 2>&1 | sudo tee -a $LOG_FILE
 
 # final_message: |
 #   cloud-init has finished
