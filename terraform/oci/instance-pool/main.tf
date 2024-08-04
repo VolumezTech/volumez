@@ -179,6 +179,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 }
 
 resource "oci_core_instance_pool" "app_instance_pool" {
+  count                     = var.app_num_of_instances > 0 ? 1 : 0
   compartment_id            = var.tenancy_ocid
   instance_configuration_id = oci_core_instance_configuration.app_instance_configuration.id
   display_name              = "app-instance-pool-${random_string.deploy_id.result}"
