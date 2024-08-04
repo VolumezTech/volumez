@@ -4,34 +4,54 @@ timezone: ${operator_timezone}
 #   - [dnf, config-manager, --disable, ol8_MySQL80, --disable, ol8_MySQL80_connectors_community, --disable, ol8_MySQL80_tools_community, --disable, ol8_addons, --disable, ol8_ksplice]
 
 runcmd:
-  - set -e
+  - set -ex
   - mkdir -p /var/log/volumez/
   - LOG_FILE="/var/log/volumez/deploy_connector.log"
-  - echo "Starting deployment..." 2>&1 | sudo tee -a $LOG_FILE
+  - echo "***Starting deployment..." 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Checking current kernel version:" 2>&1 | sudo tee -a $LOG_FILE
+  - sudo uname -r 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Removing unattended-upgrades..." 2>&1 | sudo tee -a $LOG_FILE
   - sudo systemctl stop unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo systemctl disable unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo pkill --signal SIGKILL unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo apt remove -y unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
-  - sudo apt-get install -y jq 2>&1 | sudo tee -a $LOG_FILE 
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y unattended-upgrades 2>&1 | sudo tee -a $LOG_FILE || true
+  - echo "\n***Installing jq ufw..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get install -y jq ufw 2>&1 | sudo tee -a $LOG_FILE 
   - sudo mkdir -p /opt/vlzconnector 2>&1 | sudo tee -a $LOG_FILE 
   - echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${vlz_s3_path_to_conn} stable main" | sudo tee /etc/apt/sources.list.d/vlzconnector.list 
   - refreshtoken=${vlz_refresh_token}
-  - echo "Fetching id token to /opt/vlzconnector/dbg_idtoken " 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Fetching ID-token to /opt/vlzconnector/dbg_idtoken " 2>&1 | sudo tee -a $LOG_FILE
   - idtoken=`curl ${vlz_rest_apigw}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"` 
   - echo $idtoken | sudo tee /opt/vlzconnector/dbg_idtoken 
-  - echo "Fetching tenant token to /opt/vlzconnector/tenantToken" 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Fetching tenant-token to /opt/vlzconnector/tenantToken" 2>&1 | sudo tee -a $LOG_FILE
   - tenanttoken=`curl ${vlz_rest_apigw}/tenant/token -H "authorization:$idtoken" -H 'content-type:application/json'  | jq -r ".AccessToken"` 
   - echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken 
-  - sudo apt update 2>&1 | sudo tee -a $LOG_FILE
-  - echo "installing vlzconnector..." 2>&1 | sudo tee -a $LOG_FILE
-  - sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Checking lock processes befor apt-get update..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo ps -ax 2>&1 | sudo tee -a $LOG_FILE
+  - while pgrep -f "apt" > /dev/null; do
+      echo "\n!!! Waiting for other apt-get processes to finish...!!!" | sudo tee -a $LOG_FILE;
+      sleep 5;
+    done
+  - echo "\n***Update apt..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get update 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Checking lock processes..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo ps -ax 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Installing vlzconnector..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y vlzconnector 2>&1 | sudo tee -a $LOG_FILE
+  - if ! systemctl list-units --full -all | grep -Fq 'vlzconnector.service'; then
+      echo "!!! vlzconnector.service is not installed !!!" | sudo tee -a $LOG_FILE;
+      exit 1;
+    fi
   - sudo iptables -P OUTPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -P FORWARD ACCEPT 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -P INPUT ACCEPT 2>&1 | sudo tee -a $LOG_FILE
   - sudo iptables -F 2>&1 | sudo tee -a $LOG_FILE
   - sudo ufw disable 2>&1 | sudo tee -a $LOG_FILE || true
   - sudo mv /etc/iptables/rules.v4 /etc/iptables/rules.v4_bak 2>&1 | sudo tee -a $LOG_FILE
-  - echo "Deployment completed." 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***vlzconnector install completed." 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Upgrading apt..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --with-new-pkgs 2>&1 | sudo tee -a $LOG_FILE
+  - echo "\n***Rebooting..." 2>&1 | sudo tee -a $LOG_FILE
+  - sudo reboot 2>&1 | sudo tee -a $LOG_FILE
 
 # final_message: |
 #   cloud-init has finished

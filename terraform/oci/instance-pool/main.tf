@@ -106,6 +106,7 @@ resource "oci_core_instance_pool" "media_instance_pool" {
   compartment_id            = var.tenancy_ocid
   instance_configuration_id = oci_core_instance_configuration.media_instance_configuration.id
   display_name              = format("media-instance-pool-${random_string.deploy_id.result}-%s", count.index)
+  
   placement_configurations {
     availability_domain = data.oci_identity_availability_domain.ad.name
     primary_subnet_id   = oci_core_subnet.vlz_subnet[count.index].id
