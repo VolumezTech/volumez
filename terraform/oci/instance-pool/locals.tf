@@ -1,7 +1,7 @@
 locals {
   num_of_subnets          = length(var.subnet_cidr_block_list)
-  num_of_instance_pools   = var.media_num_of_instances == 1 ? 1 : local.num_of_subnets
-  base_instances_per_pool = floor(var.media_num_of_instances / local.num_of_instance_pools)
+  num_of_instance_pools   = var.media_num_of_instances == 0 ? 0 : (var.media_num_of_instances == 1 ? 1 : local.num_of_subnets)
+  base_instances_per_pool = var.media_num_of_instances == 0 ? 0 : floor(var.media_num_of_instances / local.num_of_instance_pools)
   extra_instances         = var.media_num_of_instances % local.num_of_instance_pools
 
   instances_per_pool_list = [
