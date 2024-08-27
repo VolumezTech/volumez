@@ -11,8 +11,8 @@ config_file_profile = "DEFAULT"
 
 ### VLZ ###
 vlz_refresh_token   = ""
-vlz_s3_path_to_conn = ""
-vlz_rest_apigw      = ""
+vlz_s3_path_to_conn = "https://signup.volumez.com/oci_poc_14/ubuntu"
+vlz_rest_apigw      = "https://oci.api.volumez.com"
 
 ### Media ###
 media_image_id            = "ocid1.image.oc1.phx.aaaaaaaajxeqzy3z5qwcwtksj76ymu5gxt24qbv22r7lzukux7dbfugdwyka"
