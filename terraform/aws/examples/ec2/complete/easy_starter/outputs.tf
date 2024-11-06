@@ -18,13 +18,13 @@ output "media_nodes_private_ips" {
   value = module.media_nodes.node_private_dns
 }
 
-output "ssh_key_value" {
+output "ssh_private_key" {
   value     = join("", module.ssh_key.*.key_value)
   sensitive = true
 }
 
 output "bastion_public_dns" {
-  value = module.bastion.*.bastion_public_dns
+  value = join(", ", module.bastion.*.bastion_public_dns)
 
 }
 
