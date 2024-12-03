@@ -1,7 +1,7 @@
 subscription_id = ""  // Please enter the subscription id
 
 ###  Resource Group ###
-resource_prefix = "ig_aks"  // Prefix for naming the resource group
+resource_prefix = "Volumez"  // Prefix for naming the resource group
 resource_group_location = "eastus"  // Location of the resource group
 
 ###  Network ###
