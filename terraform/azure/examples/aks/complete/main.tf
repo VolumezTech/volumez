@@ -1,5 +1,6 @@
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 resource "random_string" "this" {
@@ -10,6 +11,7 @@ resource "random_string" "this" {
 
 locals {
   use_ppg            = length(var.zones) <= 1 ? true : false
+  resource_prefix    = "${var.resource_prefix}-${random_string.this.result}"
 }
 
 ###############
@@ -27,7 +29,7 @@ module "resource-group" {
 
 resource "azurerm_proximity_placement_group" "this" {
   count               = local.use_ppg ? 1 : 0
-  name                = "${var.resource_prefix}-${random_string.this.result}-pg"
+  name                = "${local.resource_prefix}-pg"
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
 
@@ -43,12 +45,12 @@ resource "azurerm_proximity_placement_group" "this" {
 resource "azurerm_nat_gateway" "this" {
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
-  name                = "natgateway"
+  name                = "${local.resource_prefix}-natgateway"
   sku_name            = "Standard"
 }
 
 resource "azurerm_public_ip_prefix" "nat_prefix" {
-  name                = "pipp-nat-gateway"
+  name                = "${local.resource_prefix}-pipp-nat-gateway"
   resource_group_name = module.resource-group.rg_name
   location            = module.resource-group.rg_location
   ip_version          = "IPv4"
@@ -68,7 +70,7 @@ resource "azurerm_subnet_nat_gateway_association" "this" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.resource_prefix}-${random_string.this.result}-cluster"
+  name                = "${local.resource_prefix}-cluster"
   location            = module.resource-group.rg_location
   resource_group_name = module.resource-group.rg_name
   kubernetes_version  = var.k8s_version
@@ -86,15 +88,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   default_node_pool {
-    name           = "agentpool"
+    name           = "agentpool-${local.resource_prefix}"
     vm_size        = "Standard_D8s_v3"
     os_disk_type   = "Ephemeral"
     node_count     = 1
     vnet_subnet_id = module.resource-group.subnet_id
-
-    node_labels = {
-      "avoid-csi" = true
-    }
   }
 
   identity {
@@ -113,23 +111,18 @@ resource "azurerm_kubernetes_cluster_node_pool" "app" {
   node_count                   = var.app_node_count
   vm_size                      = var.app_node_type
   zones                        = var.zones
-  enable_auto_scaling          = true
   mode                         = "User"
   kubernetes_cluster_id        = azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id               = module.resource-group.subnet_id
-  max_count                    = var.app_node_count
-  min_count                    = var.app_node_count
   orchestrator_version         = var.k8s_version
   os_disk_size_gb              = "128"
   proximity_placement_group_id = local.use_ppg ? azurerm_proximity_placement_group.this[0].id : null
   priority                     = "Regular"
   node_labels = {
     "nodepool-type" = "app"
-    "environment"   = "dev"
   }
   tags = {
     "nodepool-type" = "user"
-    "environment"   = "dev"
   }
 }
 
@@ -139,22 +132,17 @@ resource "azurerm_kubernetes_cluster_node_pool" "media" {
   node_count                   = var.media_node_count
   vm_size                      = var.media_node_type
   zones                        = var.zones
-  enable_auto_scaling          = true
   mode                         = "User"
   kubernetes_cluster_id        = azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id               = module.resource-group.subnet_id
-  max_count                    = var.media_node_count
-  min_count                    = var.media_node_count
   orchestrator_version         = var.k8s_version
   os_disk_size_gb              = "128"
   proximity_placement_group_id = local.use_ppg ? azurerm_proximity_placement_group.this[0].id : null
   priority                     = "Regular"
   node_labels = {
     "nodepool-type" = "media"
-    "environment"   = "dev"
   }
   tags = {
     "nodepool-type" = "user"
-    "environment"   = "dev"
   }
 }
