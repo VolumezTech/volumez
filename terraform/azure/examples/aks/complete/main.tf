@@ -88,7 +88,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   default_node_pool {
-    name           = "agentpool-${local.resource_prefix}"
+    name           = "agentpool"
     vm_size        = "Standard_D8s_v3"
     os_disk_type   = "Ephemeral"
     node_count     = 1
