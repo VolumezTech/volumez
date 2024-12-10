@@ -24,6 +24,7 @@ locals {
   deploy_bastion  = var.target_subnet_id == "" ? var.deploy_bastion : false
   resource_prefix = "${var.resources_name_prefix}-${random_string.random.result}"
   create_ssh_key  = var.key_name == "" ? true : false
+  num_of_zones    = length(var.availability_zones)
 }
 
 module "ssh_key" {
@@ -68,7 +69,8 @@ module "subnets" {
 
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   region                = var.region
-  num_of_zones          = var.num_of_zones
+  # num_of_zones          = local.num_of_zones
+  availability_zones    = var.availability_zones
   resources_name_prefix = local.resource_prefix
 
   depends_on = [
@@ -93,7 +95,7 @@ module "placement_group" {
   source = "../../../../modules/placement_group"
   count  = local.create_pg ? 1 : 0
 
-  num_of_zones             = var.num_of_zones
+  num_of_zones             = local.num_of_zones
   vpc_id                   = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   node_count               = var.media_node_count
   placement_group_strategy = var.create_fault_domain ? "partition" : "cluster"
@@ -108,7 +110,7 @@ module "network_interfaces_app_nodes" {
 
   num_of_nodes   = var.app_node_count
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
-  num_of_zones   = var.num_of_zones
+  num_of_zones   = local.num_of_zones
   private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_subnet_id]
   env_sg_id      = local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id
 
@@ -126,7 +128,7 @@ module "network_interfaces_media_nodes" {
 
   num_of_nodes   = var.media_node_count
   vpc_id         = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
-  num_of_zones   = var.num_of_zones
+  num_of_zones   = local.num_of_zones
   private_sn_ids = local.create_sn ? module.subnets[0].private_sn_ids : [var.target_subnet_id]
   env_sg_id      = local.create_vpc ? module.security_group[0].sg_id : var.target_security_group_id
   start_ip       = (10 + var.app_node_count)
@@ -144,7 +146,7 @@ module "app_nodes" {
   source = "../../../../modules/nodes"
 
   num_of_nodes          = var.app_node_count
-  num_of_zones          = var.num_of_zones
+  num_of_zones          = local.num_of_zones
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   placement_group_ids   = local.create_pg ? module.placement_group[0].placement_group_ids : [var.target_placement_group_id]
   ami_id                = var.app_node_ami
@@ -170,7 +172,7 @@ module "media_nodes" {
   source = "../../../../modules/nodes"
 
   num_of_nodes          = var.media_node_count
-  num_of_zones          = var.num_of_zones
+  num_of_zones          = local.num_of_zones
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   placement_group_ids   = local.create_pg ? module.placement_group[0].placement_group_ids : [var.target_placement_group_id]
   ami_id                = var.media_node_ami
