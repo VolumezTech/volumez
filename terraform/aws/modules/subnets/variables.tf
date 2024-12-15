@@ -16,10 +16,10 @@ variable "create_pub_sn" {
   default = false
 }
 
-variable "num_of_zones" {
-  description = "Number of Availability Zones"
+variable "availability_zones" {
+  description = "List of Availability Zones"
+  type        = list(string)
 }
-
 variable "private_subnet_cidr_list" {
   description = "List of cidr blocks for each private subnet in every az"
   default     = ["10.0.85.0/24", "10.0.86.0/24", "10.0.87.0/24", "10.0.88.0/24"]

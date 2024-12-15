@@ -1,11 +1,12 @@
 
 
 locals {
-  availability_zone_list = ["${var.region}a", "${var.region}b", "${var.region}c", "${var.region}d"]
+  availability_zone_list = [for az in var.availability_zones : "${var.region}${az}"]
+  num_of_zones           = length(var.availability_zones)
 }
 
 resource "aws_subnet" "private_sn" {
-  count                   = var.num_of_zones
+  count                   = local.num_of_zones
   vpc_id                  = var.vpc_id
   cidr_block              = var.private_subnet_cidr_list[count.index]
   availability_zone       = local.availability_zone_list[count.index]

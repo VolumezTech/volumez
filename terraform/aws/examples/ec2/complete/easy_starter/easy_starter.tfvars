@@ -1,11 +1,11 @@
 # General Configuration
 region  = "us-east-1"
-resources_name_prefix = "volumez"
-num_of_zones = 1
+resources_name_prefix = "Volumez"
+# List of Availability Zones, e.g. ["a", "b", "c"]
+availability_zones = ["a"]  
 create_fault_domain = false
 avoid_pg = true
 deploy_bastion = true
-key_name = ""
  
 # Existing Network Configuration (Optional)
 target_vpc_id             = ""

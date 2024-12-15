@@ -36,3 +36,4 @@ output "public_sn_id" {
   value = module.subnets.*.public_sn_id
 
 }
+

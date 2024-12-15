@@ -15,9 +15,12 @@ variable "subnet_cidr_list" {
   default = ["10.0.85.0/24", "10.0.86.0/24", "10.0.87.0/24", "10.0.88.0/24"]
 }
 
-variable "num_of_zones" {
-  default = 2
+variable "availability_zones" {
+  description = "Enter the availability zones you want to create the environment in (example: [\"a\", \"b\"]):"
+  type        = list(string)
+  
 }
+
 
 variable "create_fault_domain" {
   type    = bool
