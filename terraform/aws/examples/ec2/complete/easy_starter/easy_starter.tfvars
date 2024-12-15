@@ -1,7 +1,8 @@
 # General Configuration
 region  = "us-east-1"
 resources_name_prefix = "Volumez"
-availability_zones = ["a"]
+# List of Availability Zones, e.g. ["a", "b", "c"]
+availability_zones = ["a"]  
 create_fault_domain = false
 avoid_pg = true
 deploy_bastion = true

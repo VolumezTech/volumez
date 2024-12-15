@@ -16,10 +16,6 @@ variable "create_pub_sn" {
   default = false
 }
 
-# variable "num_of_zones" {
-#   description = "Number of Availability Zones"
-# }
-
 variable "availability_zones" {
   description = "List of Availability Zones"
   type        = list(string)
