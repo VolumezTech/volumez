@@ -69,7 +69,6 @@ module "subnets" {
 
   vpc_id                = local.create_vpc ? module.vpc[0].vpc_id : var.target_vpc_id
   region                = var.region
-  # num_of_zones          = local.num_of_zones
   availability_zones    = var.availability_zones
   resources_name_prefix = local.resource_prefix
 
