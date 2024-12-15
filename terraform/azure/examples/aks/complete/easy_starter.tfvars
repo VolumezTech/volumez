@@ -1,4 +1,4 @@
-subscription_id = "453b58fc-f031-4f46-9d1a-b35f725143f4"  // Please enter the subscription id
+subscription_id = ""  // Please enter the subscription id
 
 ###  Resource Group ###
 resource_prefix = "Volumez"  // Prefix for naming the resource group
