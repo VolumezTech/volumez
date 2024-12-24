@@ -135,7 +135,7 @@ resource "oci_core_instance_pool" "media_instance_pool" {
   size = local.instances_per_pool_list[count.index]
 
   timeouts {
-    create = "10m"
+    create = "20m"
   }
 }
 
@@ -219,7 +219,7 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   size = var.app_num_of_instances
 
   timeouts {
-    create = "10m"
+    create = "20m"
   }
 }
 
@@ -227,15 +227,21 @@ resource "null_resource" "app_secondary_vnic_copy_script" {
   count = local.app_secondary_vnic_config
 
   depends_on = [oci_core_instance_pool.app_instance_pool]
+
   provisioner "file" {
     source = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/home/ubuntu/secondary_vnic_config.sh"
+    destination = "/home/ubuntu/"
+  }
+  provisioner "file" {
+    source      = "${path.module}/cloudinit/secondary_vnic_all_configure.service"
+    destination = "/etc/systemd/system"
   }
   connection {
     type        = "ssh"
     host        = data.oci_core_instance.app_instance[count.index].public_ip
     user        = "ubuntu"
     private_key = tls_private_key.ssh_key.private_key_pem
+
   }
 }
 
@@ -243,9 +249,14 @@ resource "null_resource" "media_secondary_vnic_copy_script" {
   count = local.media_secondary_vnic_config
 
   depends_on = [oci_core_instance_pool.media_instance_pool ]
+
   provisioner "file" {
     source      = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/home/ubuntu/secondary_vnic_config.sh"
+    destination = "/home/ubuntu/"
+  }
+  provisioner "file" {
+    source      = "${path.module}/cloudinit/secondary_vnic_all_configure.service"
+    destination = "/etc/systemd/system"
   }
   connection {
     type        = "ssh"
@@ -262,16 +273,12 @@ resource "null_resource" "app_secondary_vnic_exec" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/secondary_vnic_config.sh",
-      #"sudo /home/ubuntu/secondary_vnic_config.sh -c /home/ubuntu/secondary_vnic_config.sh > /home/ubuntu/debug.log 2>&1",
-      #"sudo /home/ubuntu/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /home/ubuntu//debug.log 2>&1",
-      "sudo /home/ubuntu//secondary_vnic_config.sh -c",
-      # "sudo ip link set dev ens340np0 mtu 9000",
-      # "sudo ip link add link ens340np0 ens340np0.${local.secondary_vlan_id} address ${local.secondary_mac_address} type macvlan",
-      # "sudo ip link add link ens340np0.${local.secondary_vlan_id} name ens340np0v${local.secondary_vlan_id} type vlan id ${local.secondary_vlan_id}",
-      # "sudo ip addr add ${local.secondary_private_ip}/24 brd 10.1.21.255 dev ens340np0v${local.secondary_vlan_id} metric 100",
-      # "sudo ip link set dev ens340np0.${local.secondary_vlan_id} mtu 9000",
-      # "sudo ip link set ens340np0.${local.secondary_vlan_id} up"
+      "sudo mkdir -p /opt/secondary_vnic",
+      "sudo mv /home/ubuntu/secondary_vnic_all_configure.sh /opt/secondary_vnic/",
+      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_config.sh",
+      "sudo systemctl deamon-reload",
+      "sudo systemctl enable secondary_vnic_all_configure.service",
+      "sudo systemctl start secondary_vnic_all_configure.service",
     ]
     connection {
       type        = "ssh"
@@ -289,16 +296,13 @@ resource "null_resource" "media_secondary_vnic_exec" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/secondary_vnic_config.sh",
-      #"sudo /home/ubuntu/secondary_vnic_config.sh -c /home/ubuntu/secondary_vnic_config.sh > /home/ubuntu/debug.log 2>&1",
-      #"sudo /home/ubuntu/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /home/ubuntu/debug.log 2>&1",
-      "sudo /home/ubuntu/secondary_vnic_config.sh -c",
-      # "sudo ip link set dev ens340np0 mtu 9000",
-      # "sudo ip link add link ens340np0 ens340np0.${local.secondary_vlan_id} address ${local.secondary_mac_address} type macvlan",
-      # "sudo ip link add link ens340np0.${local.secondary_vlan_id} name ens340np0v${local.secondary_vlan_id} type vlan id ${local.secondary_vlan_id}",
-      # "sudo ip addr add ${local.secondary_private_ip}/24 brd 10.1.21.255 dev ens340np0v${local.secondary_vlan_id} metric 100",
-      # "sudo ip link set dev ens340np0.${local.secondary_vlan_id} mtu 9000",
-      # "sudo ip link set ens340np0.${local.secondary_vlan_id} up"
+      "sudo mkdir -p /opt/secondary_vnic",
+      "sudo mv /home/ubuntu/secondary_vnic_all_configure.sh /opt/secondary_vnic/",
+      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_config.sh",
+      "sudo systemctl deamon-reload",
+      "sudo systemctl enable secondary_vnic_all_configure.service",
+      "sudo systemctl start secondary_vnic_all_configure.service",
+
     ]
     connection {
       type        = "ssh"

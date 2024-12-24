@@ -35,7 +35,7 @@
 
 ### Networking ###
 region                 = "us-phoenix-1"
-ad_number              = 2
+ad_number              = 1
 subnet_cidr_block_list = ["10.1.20.0/24", "10.1.21.0/24"] # 2 subnets
 fault_domains          = ["FAULT-DOMAIN-1"]
 
@@ -51,7 +51,7 @@ vlz_rest_apigw      = "https://1okycdcug2.execute-api.us-east-1.amazonaws.com/de
 
 ### Media ###
 media_image_id             = "ocid1.image.oc1.phx.aaaaaaaab5wh7snb7xzrzgr5dk3zj5uov3kkdjugtapdblzqocncabhtngva"
-media_num_of_instances     = 1
+media_num_of_instances     = 3
 media_shape                = "BM.DenseIO.E4.128"
 media_num_of_ocpus         = 8
 media_memory_in_gbs        = 128
@@ -62,7 +62,7 @@ media_secondary_vnic_index = 1
 
 ### App ###
 app_image_id             = "ocid1.image.oc1.phx.aaaaaaaab5wh7snb7xzrzgr5dk3zj5uov3kkdjugtapdblzqocncabhtngva"
-app_num_of_instances     = 1
+app_num_of_instances     = 3
 app_shape                = "BM.DenseIO.E4.128"
 app_num_of_ocpus         = 8
 app_memory_in_gbs        = 128

@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure secondary NIC
+After=network.target
+Wants=network.target
+ 
+[Service]
+ExecStart=/opt/secondary_vnic/secondary_vnic_all_configure.sh -c
+Type=oneshot
+RemainAfterExit=true
+ 
+[Install]
+WantedBy=default.target
