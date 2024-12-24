@@ -93,6 +93,11 @@ variable "media_use_placement_group" {
   description = "Use Cluster Placement Group or not"
 }
 
+variable "media_secondary_vnic_index" {
+  description = "nic_index -> This attaches the VNIC to the second physical NIC if 1"
+  type = number
+}
+
 ### App ###
 
 variable "app_image_id" {
@@ -127,7 +132,13 @@ variable "app_num_of_instances" {
   type        = number
   description = "Number of instances to be created"
 }
+
 variable "app_use_placement_group" {
   type        = bool
   description = "Use Cluster Placement Group or not"
+}
+
+variable "app_secondary_vnic_index" {
+  description = "nic_index -> This attaches the VNIC to the second physical NIC if 1"
+  type = number
 }

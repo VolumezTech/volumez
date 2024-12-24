@@ -105,6 +105,7 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
           assign_public_ip          = true
           display_name              = "vlz-second-vnic-${random_string.deploy_id.result}"
         }
+        nic_index = var.media_secondary_vnic_index
         display_name = "vlz-second-vnic-${random_string.deploy_id.result}"
       }
     }
@@ -191,6 +192,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
           assign_public_ip          = true
           display_name              = "vlz-second-vnic-${random_string.deploy_id.result}"
         }
+        nic_index = var.app_secondary_vnic_index
         display_name = "vlz-second-vnic-${random_string.deploy_id.result}"
       }
     }
@@ -227,7 +229,7 @@ resource "null_resource" "app_secondary_vnic_copy_script" {
   depends_on = [oci_core_instance_pool.app_instance_pool]
   provisioner "file" {
     source = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/tmp/secondary_vnic_config.sh"
+    destination = "/home/ubuntu/secondary_vnic_config.sh"
   }
   connection {
     type        = "ssh"
@@ -243,7 +245,7 @@ resource "null_resource" "media_secondary_vnic_copy_script" {
   depends_on = [oci_core_instance_pool.media_instance_pool ]
   provisioner "file" {
     source      = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/tmp/secondary_vnic_config.sh"
+    destination = "/home/ubuntu/secondary_vnic_config.sh"
   }
   connection {
     type        = "ssh"
@@ -260,10 +262,10 @@ resource "null_resource" "app_secondary_vnic_exec" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/secondary_vnic_config.sh",
-      #"sudo /tmp/secondary_vnic_config.sh -c /tmp/secondary_vnic_config.sh > /tmp/debug.log 2>&1",
-      #"sudo /tmp/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /tmp/debug.log 2>&1",
-      "sudo /tmp/secondary_vnic_config.sh -c",
+      "chmod +x /home/ubuntu/secondary_vnic_config.sh",
+      #"sudo /home/ubuntu/secondary_vnic_config.sh -c /home/ubuntu/secondary_vnic_config.sh > /home/ubuntu/debug.log 2>&1",
+      #"sudo /home/ubuntu/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /home/ubuntu//debug.log 2>&1",
+      "sudo /home/ubuntu//secondary_vnic_config.sh -c",
       # "sudo ip link set dev ens340np0 mtu 9000",
       # "sudo ip link add link ens340np0 ens340np0.${local.secondary_vlan_id} address ${local.secondary_mac_address} type macvlan",
       # "sudo ip link add link ens340np0.${local.secondary_vlan_id} name ens340np0v${local.secondary_vlan_id} type vlan id ${local.secondary_vlan_id}",
@@ -287,10 +289,10 @@ resource "null_resource" "media_secondary_vnic_exec" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/secondary_vnic_config.sh",
-      #"sudo /tmp/secondary_vnic_config.sh -c /tmp/secondary_vnic_config.sh > /tmp/debug.log 2>&1",
-      #"sudo /tmp/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /tmp/debug.log 2>&1",
-      "sudo /tmp/secondary_vnic_config.sh -c",
+      "chmod +x /home/ubuntu/secondary_vnic_config.sh",
+      #"sudo /home/ubuntu/secondary_vnic_config.sh -c /home/ubuntu/secondary_vnic_config.sh > /home/ubuntu/debug.log 2>&1",
+      #"sudo /home/ubuntu/secondary_vnic_config.sh -c ${lookup(data.oci_core_private_ips.app_vnic2_ip.private_ips[0], "id")} > /home/ubuntu/debug.log 2>&1",
+      "sudo /home/ubuntu/secondary_vnic_config.sh -c",
       # "sudo ip link set dev ens340np0 mtu 9000",
       # "sudo ip link add link ens340np0 ens340np0.${local.secondary_vlan_id} address ${local.secondary_mac_address} type macvlan",
       # "sudo ip link add link ens340np0.${local.secondary_vlan_id} name ens340np0v${local.secondary_vlan_id} type vlan id ${local.secondary_vlan_id}",
