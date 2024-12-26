@@ -87,6 +87,14 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
         boot_volume_size_in_gbs = 60
         image_id                = var.media_image_id
       }
+
+      create_vnic_details {
+        subnet_id                 = oci_core_subnet.vlz_subnet[0].id
+        assign_private_dns_record = true
+        assign_public_ip          = true
+        display_name              = "vlz-prime-vnic-${random_string.deploy_id.result}"
+      }
+
       launch_options {
         network_type = "VFIO"
       }
@@ -174,7 +182,6 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 
       launch_options {
         network_type = "VFIO"
-
       }
 
       metadata = {
