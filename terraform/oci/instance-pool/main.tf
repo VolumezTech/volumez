@@ -113,16 +113,15 @@ resource "oci_core_instance_configuration" "media_instance_configuration" {
 }
 
 resource "oci_core_instance_pool" "media_instance_pool" {
-  #for_each = zipmap(range(local.num_of_subnets), oci_core_subnet.vlz_subnet.*.id)
-  count = local.num_of_instance_pools
+  count = local.media_num_of_instance_pools
 
   compartment_id            = var.tenancy_ocid
   instance_configuration_id = oci_core_instance_configuration.media_instance_configuration.id
-  display_name              = format("media-instance-pool-${random_string.deploy_id.result}-%s", count.index)
+  display_name              = format("media-instance-pool-${random_string.deploy_id.result}-%s", 0)
   
   placement_configurations {
     availability_domain = data.oci_identity_availability_domain.ad.name
-    primary_subnet_id   = oci_core_subnet.vlz_subnet[count.index].id
+    primary_subnet_id   = oci_core_subnet.vlz_subnet[0].id
     fault_domains       = local.fault_domains
     dynamic "secondary_vnic_subnets" {
       for_each = length(var.subnet_cidr_block_list) > 1 ? [1] : []
@@ -132,7 +131,7 @@ resource "oci_core_instance_pool" "media_instance_pool" {
       }
     }
   }
-  size = local.instances_per_pool_list[count.index]
+  size = var.media_num_of_instances
 
   timeouts {
     create = "20m"
@@ -200,7 +199,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 }
 
 resource "oci_core_instance_pool" "app_instance_pool" {
-  count                     = var.app_num_of_instances > 0 ? var.app_num_of_instances : 0
+  count                     = local.app_num_of_instance_pools
   compartment_id            = var.tenancy_ocid
   instance_configuration_id = oci_core_instance_configuration.app_instance_configuration.id
   display_name              = "app-instance-pool-${random_string.deploy_id.result}"
@@ -230,11 +229,11 @@ resource "null_resource" "app_secondary_vnic_copy_script" {
 
   provisioner "file" {
     source = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/home/ubuntu/"
+    destination = "/var/tmp/secondary_vnic_all_configure.sh"
   }
   provisioner "file" {
     source      = "${path.module}/cloudinit/secondary_vnic_all_configure.service"
-    destination = "/etc/systemd/system"
+    destination = "/var/tmp/secondary_vnic_all_configure.service"
   }
   connection {
     type        = "ssh"
@@ -252,11 +251,11 @@ resource "null_resource" "media_secondary_vnic_copy_script" {
 
   provisioner "file" {
     source      = "${path.module}/cloudinit/secondary_vnic_all_configure.sh"
-    destination = "/home/ubuntu/"
+    destination = "/var/tmp/secondary_vnic_all_configure.sh"
   }
   provisioner "file" {
     source      = "${path.module}/cloudinit/secondary_vnic_all_configure.service"
-    destination = "/etc/systemd/system"
+    destination = "/var/tmp/secondary_vnic_all_configure.service"
   }
   connection {
     type        = "ssh"
@@ -274,9 +273,10 @@ resource "null_resource" "app_secondary_vnic_exec" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /opt/secondary_vnic",
-      "sudo mv /home/ubuntu/secondary_vnic_all_configure.sh /opt/secondary_vnic/",
-      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_config.sh",
-      "sudo systemctl deamon-reload",
+      "sudo mv /var/tmp/secondary_vnic_all_configure.sh /opt/secondary_vnic/",
+      "sudo mv /var/tmp/secondary_vnic_all_configure.service /etc/systemd/system/",
+      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_all_configure.sh",
+      "sudo systemctl daemon-reload",
       "sudo systemctl enable secondary_vnic_all_configure.service",
       "sudo systemctl start secondary_vnic_all_configure.service",
     ]
@@ -297,9 +297,10 @@ resource "null_resource" "media_secondary_vnic_exec" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /opt/secondary_vnic",
-      "sudo mv /home/ubuntu/secondary_vnic_all_configure.sh /opt/secondary_vnic/",
-      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_config.sh",
-      "sudo systemctl deamon-reload",
+      "sudo mv /var/tmp/secondary_vnic_all_configure.sh /opt/secondary_vnic/secondary_vnic_all_configure.sh",
+      "sudo mv /var/tmp/secondary_vnic_all_configure.service /etc/systemd/system/secondary_vnic_all_configure.service",
+      "sudo chmod +x /opt/secondary_vnic/secondary_vnic_all_configure.sh",
+      "sudo systemctl daemon-reload",
       "sudo systemctl enable secondary_vnic_all_configure.service",
       "sudo systemctl start secondary_vnic_all_configure.service",
 

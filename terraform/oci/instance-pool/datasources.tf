@@ -41,14 +41,14 @@ data "oci_core_instance_pool_instances" "app_pool" {
 data "oci_core_instance" "app_instance" {
   count = var.app_num_of_instances > 0 ? var.app_num_of_instances : 0
 
-  instance_id = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
+  instance_id = data.oci_core_instance_pool_instances.app_pool[0].instances[count.index].id
 }
 
 data "oci_core_vnic_attachments" "app_vnic2_attachments" {
   count = local.app_secondary_vnic_config
 
   compartment_id = var.tenancy_ocid
-  instance_id    = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
+  instance_id    = data.oci_core_instance_pool_instances.app_pool[0].instances[count.index].id
 
   filter {
     name   = "subnet_id"
@@ -80,5 +80,5 @@ data "oci_core_instance_pool_instances" "media_pool" {
 
 data "oci_core_instance" "media_instance" {
   count = var.media_num_of_instances > 0 ? var.media_num_of_instances : 0
-  instance_id = data.oci_core_instance_pool_instances.media_pool[count.index].instances[0].id
+  instance_id = data.oci_core_instance_pool_instances.media_pool[0].instances[count.index].id
 }
