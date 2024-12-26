@@ -5,8 +5,8 @@ subnet_cidr_block_list = ["10.1.20.0/24", "10.1.21.0/24"] # 2 subnets
 fault_domains          = ["FAULT-DOMAIN-1"]
 
 ### Credentials ###
-tenancy_ocid        = "ocid1.tenancy.oc1..aaaaaaaaij7gdgmcldaneftxyrhxiwpnaecvenjb42423cxhxmewlf65ca2q"
-compartment_ocid    = "ocid1.tenancy.oc1..aaaaaaaaij7gdgmcldaneftxyrhxiwpnaecvenjb42423cxhxmewlf65ca2q"
+tenancy_ocid        = ""
+compartment_ocid    = ""
 config_file_profile = "DEFAULT"
 
 ### VLZ ###
