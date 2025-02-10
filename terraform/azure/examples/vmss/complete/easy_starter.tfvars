@@ -1,3 +1,5 @@
+subscription_id = ""  // Please enter the subscription id
+
 #### Resource Group ###
 ### IMPORTANT: If you wish to create a VMSS in a new resource group, you must set the resource_group_location and resource_prefix. 
 ### If you wish to use an existing resource group, you must set the target_resource_group_location and target_resource_group_name.
@@ -5,7 +7,7 @@
 
 ### 1.Create Resource Group (if set will create a new resource group for this VMSS)###
 resource_group_location = "eastus"
-resource_prefix = "volumez"
+resource_prefix = ""
 
 ### 2.Target Resource Group (create the VMSS in an existing resource group) ###
 target_resource_group_location = ""
@@ -39,5 +41,5 @@ media_image_offer = "0001-com-ubuntu-server-jammy"
 media_image_sku = "22_04-lts-gen2"
 media_image_version = "latest"
 
-### Tenant Token (JWT Access Token) - Can retreive from Volumez portal under Developer Info ###
+### CSI Driver Token (JWT Access Token) - Can retreive from Volumez portal under Developer Info ###
 vlz_refresh_token = ""

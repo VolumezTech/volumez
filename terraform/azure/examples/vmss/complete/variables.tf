@@ -1,3 +1,8 @@
+variable subscription_id {
+  type        = string
+  description = "Please enter the subscription id"
+}
+
 ###############
 ### Network ###
 ###############
