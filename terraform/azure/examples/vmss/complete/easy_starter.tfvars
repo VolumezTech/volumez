@@ -7,7 +7,7 @@ subscription_id = ""  // Please enter the subscription id
 
 ### 1.Create Resource Group (if set will create a new resource group for this VMSS)###
 resource_group_location = "eastus"
-resource_prefix = ""
+resource_prefix = "volumez"
 
 ### 2.Target Resource Group (create the VMSS in an existing resource group) ###
 target_resource_group_location = ""
