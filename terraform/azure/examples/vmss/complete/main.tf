@@ -135,6 +135,8 @@ module "vmss" {
   media_image_sku               = var.media_image_sku
   media_image_version           = var.media_image_version
   subnet_id                     = var.target_subnet_id != null ? var.target_subnet_id : azurerm_subnet.this[0].id
+  apigw_endpoint                = var.apigw_endpoint
+  vlzconnector_repo             = var.vlzconnector_repo
 
   depends_on = [ azurerm_nat_gateway_public_ip_prefix_association.nat_ips, azurerm_subnet_nat_gateway_association.this, azurerm_subnet.this, module.resource-group ]
 }

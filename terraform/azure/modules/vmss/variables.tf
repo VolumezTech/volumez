@@ -98,3 +98,13 @@ variable "public_key" {
     default = null
   
 }
+
+variable "apigw_endpoint" {
+    type = string
+    default = "https://api.volumez.com"
+}
+
+variable "vlzconnector_repo" {
+    type = string
+    default = "https://signup.volumez.com/connector/ubuntu"
+}

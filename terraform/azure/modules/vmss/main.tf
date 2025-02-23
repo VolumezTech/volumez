@@ -35,11 +35,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "this" {
             #!/bin/bash
 
             sudo apt-get install -y jq
-            echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] https://signup.volumez.com/connector/ubuntu stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
+            echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${var.vlzconnector_repo} stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
             sudo mkdir -p /opt/vlzconnector
             refreshtoken=${var.vlz_refresh_token} 
-            idtoken=`curl https://api.volumez.com/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
-            tenanttoken=`curl https://api.volumez.com/tenant/token -H "authorization:$idtoken" -H 'content-type: application/json'  | jq -r ".AccessToken"`
+            idtoken=`curl ${var.apigw_endpoint}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
+            tenanttoken=`curl ${var.apigw_endpoint}/tenant/token -H "authorization:$idtoken" -H 'content-type: application/json'  | jq -r ".AccessToken"`
             echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
             sudo apt update
             sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector
@@ -102,11 +102,11 @@ custom_data = base64encode(
           #!/bin/bash
 
           sudo apt-get install -y jq
-          echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] https://signup.volumez.com/connector/ubuntu stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
+          echo "deb [arch="$(dpkg --print-architecture)" trusted=yes] ${var.vlzconnector_repo} stable main" | sudo tee  /etc/apt/sources.list.d/vlzconnector.list
           sudo mkdir -p /opt/vlzconnector
           refreshtoken=${var.vlz_refresh_token} 
-          idtoken=`curl https://api.volumez.com/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
-          tenanttoken=`curl https://api.volumez.com/tenant/token -H "authorization:$idtoken" -H 'content-type: application/json'  | jq -r ".AccessToken"`
+          idtoken=`curl ${var.apigw_endpoint}/tenant/apiaccess/credentials/refresh -H "refreshtoken:$refreshtoken" | jq -r ".IdToken"`
+          tenanttoken=`curl ${var.apigw_endpoint}/tenant/token -H "authorization:$idtoken" -H 'content-type: application/json'  | jq -r ".AccessToken"`
           echo -n $tenanttoken | sudo tee /opt/vlzconnector/tenantToken
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector

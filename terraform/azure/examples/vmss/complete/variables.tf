@@ -8,8 +8,20 @@ variable subscription_id {
 ###############
 
 variable "vlz_refresh_token" {
-    description = "Refresh token to access Cognito and pull the connector"
-    type        = string
+  description = "Refresh token to access Cognito and pull the connector"
+  type        = string
+}
+
+variable "apigw_endpoint" {
+  description = "API Gateway endpoint"
+  type        = string
+  default     = "https://api.volumez.com"
+} 
+
+variable "vlzconnector_repo" {
+  description = "Volumez connector repository"
+  type        = string
+  default     = "https://signup.volumez.com/connector/ubuntu"
 }
 
 variable "resource_group_location" {
