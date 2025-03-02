@@ -300,7 +300,7 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm upgrade volumez-csi . -n vlz-csi-driver --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
@@ -445,7 +445,7 @@ If you had already added this repo earlier, run `helm repo update` to retrieve t
 You can then run `helm search repo volumez-csi` to see the charts.<br/>
 
 ```
-helm upgrade volumez-csi . -n vlz-csi-driver --set certmanager.installCRDs=false --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+helm upgrade volumez-csi . -n vlz-csi-driver --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
 ```
 
 > Uninstall CSI driver
