@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tenant_token=$1
-signup_domain=$2 # default signup.volumez.com
+vlz_signup_domain=$2
 
 package_not_found () {
     echo "<><><> Package not Found for $1 - Exiting" 
@@ -36,23 +36,23 @@ fi
 echo "<><><> Running connector deploy on $OS"
 
 if [[ "$OS" = "Ubuntu" ]]; then
-    sudo curl --fail https://${signup_domain}/connector/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS
+    sudo curl --fail ${vlz_signup_domain}/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
     sudo apt update
     sudo DEBIAN_FRONTEND=noninteractive apt install -q -y vlzconnector || failed_vlzconnector_install $OS
 elif [[ "$OS" = "Amazon Linux" ]]; then
-    sudo curl --fail https://${signup_domain}/connector/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS
+    sudo curl --fail ${vlz_signup_domain}/amzn/amzn.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
     sudo yum -y install vlzconnector || failed_vlzconnector_install $OS
 elif [[ "$OS" = "SLES" ]]; then
-    sudo curl --fail https://${signup_domain}/connector/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS
+    sudo curl --fail ${vlz_signup_domain}/sles/sles.repo -o /etc/zypp/repos.d/volumez.repo || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
     sudo zypper --non-interactive install -y vlzconnector || failed_vlzconnector_install $OS
 elif [[ "$OS" = "Red Hat Enterprise Linux" ]]; then
-    sudo curl --fail https://${signup_domain}/connector/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS
+    sudo curl --fail ${vlz_signup_domain}/rhel/rhel.repo -o /etc/yum.repos.d/volumez.repo || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken
     sudo yum -y install '--exclude=kernel*' --nobest vlzconnector || failed_vlzconnector_install $OS
