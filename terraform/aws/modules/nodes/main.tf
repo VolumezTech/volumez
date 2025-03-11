@@ -53,6 +53,6 @@ resource "aws_instance" "this" {
     Terraform = "true"
     Owner     = data.aws_caller_identity.current.user_id
   }
-  user_data = base64encode(templatefile("../../../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, signup_domain = var.signup_domain }))
+  user_data = base64encode(templatefile("../../../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, vlz_signup_domain = var.vlz_signup_domain }))
 
 }

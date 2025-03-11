@@ -157,7 +157,7 @@ module "app_nodes" {
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.app_node_name_prefix
-  signup_domain         = var.signup_domain
+  vlz_signup_domain     = var.vlz_signup_domain
   resources_name_prefix = local.resource_prefix
 
   depends_on = [
@@ -183,7 +183,7 @@ module "media_nodes" {
   path_to_pem           = var.path_to_pem
   tenant_token          = var.tenant_token
   app_node_name_prefix  = var.media_node_name_prefix
-  signup_domain         = var.signup_domain
+  vlz_signup_domain     = var.vlz_signup_domain
   resources_name_prefix = local.resource_prefix
 
   depends_on = [

@@ -31,10 +31,10 @@ variable "placement_group_strategy" {
   default = "cluster"
 }
 
-variable "signup_domain" {
+variable "vlz_signup_domain" {
   description = "signup url to take vlzconnector from"
   type        = string
-  default     = "signup.volumez.com"
+  default     = "https://signup.volumez.com/connector"
 }
 
 ### Optional VPC and Subnet IDs ###

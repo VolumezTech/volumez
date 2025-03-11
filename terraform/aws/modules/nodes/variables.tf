@@ -70,8 +70,7 @@ variable "tenant_token" {
   type        = string
 }
 
-variable "signup_domain" {
+variable "vlz_signup_domain" {
   description = "signup url to take vlzconnector from"
   type        = string
-  default     = "signup.volumez.com"
 }
