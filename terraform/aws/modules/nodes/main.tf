@@ -37,6 +37,8 @@ resource "aws_instance" "this" {
   key_name             = var.key_name
   iam_instance_profile = var.iam_role
   placement_group      = var.num_of_zones == 1 || count.index >= length(var.placement_group_ids) ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
+  disable_api_termination = true
+  
   network_interface {
     network_interface_id = var.pub_eni_list[count.index]
     device_index         = 0

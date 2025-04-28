@@ -3,6 +3,13 @@ resource "azurerm_resource_group" "this" {
   location = var.resource_group_location
 }
 
+resource "azurerm_management_lock" "lock_rg" {
+  name       = "${azurerm_resource_group.this.name}-lock"
+  scope      = azurerm_resource_group.this.id
+  lock_level = "CanNotDelete"
+  notes      = "This lock prevents accidental deletion of the resource group."
+}
+
 resource "azurerm_virtual_network" "this" {
   name                = "${var.resource_prefix}-${var.random_string}-vnet"
   location            = azurerm_resource_group.this.location
