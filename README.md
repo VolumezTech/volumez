@@ -278,14 +278,17 @@ Configure kubectl so that you can connect to an EKS cluster:
 ```aws eks --region <region> update-kubeconfig --name <cluster_name>```  
 **region** and **cluster_name** parameters can be found in Terraform's output
 
-> Deploy CSI driver deployment with helm 
+> Deploy CSI driver with helm 
 ```
-helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
+helm repo add volumez-csi https://volumeztech.github.io/helm-csi --force-update
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=[YOUR_CSI_TOKEN] -n vlz-csi-driver --create-namespace
 ```
 
+For detailed configuration options, please refer to the [volumez-csi chart README](https://github.com/VolumezTech/helm-csi/blob/main/charts/volumez-csi/README.md).
+
 #### Install Only on Specific Node/Node-Group ####
-To install the volumez-csi on specific node or nodegroup, label the node/nodegroup and add the following to the end of install command (fill in the correct values instead of "label-key" and "label-values"):
+To install `volumez-csi` on a specific node or node group, first label the node(s) appropriately.
+Then, add the following flag to the end of your helm install command, replacing `<label-key>` and `<label-values>` with your actual labels:
 ```bash
 --set-json 'csiNodeVlzplugin.affinity={"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"<label-key>","operator":"In","values":["<label-values>"]}]}]}}}'
 ```
@@ -296,11 +299,12 @@ i.e:
 
 > Upgrade CSI driver
 
-If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
-You can then run `helm search repo volumez-csi` to see the charts.<br/>
+If you previously added this repository, run `helm repo update` to fetch the latest package versions.
+Afterwards, you can run `helm search repo volumez-csi -l` to view the available charts.<br/>
+To upgrade the chart:
 
-```
-helm upgrade volumez-csi . -n vlz-csi-driver --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```bash
+helm upgrade volumez-csi volumez-csi/volumez-csi -n vlz-csi-driver 
 ```
 
 > Uninstall CSI driver
@@ -423,14 +427,17 @@ Configure kubectl so that you can connect to an AKS cluster:
 ```az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>```  
 **resource-group-name** and **aks-cluster-name** parameters can be found in Terraform's output
 
-> Deploy CSI driver deployment with helm 
-```
-helm repo add volumez-csi https://volumeztech.github.io/helm-csi
-helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=eyJjdHkiOiJKV1QiLC -n vlz-csi-driver --create-namespace
+> Deploy CSI driver with helm 
+```bash
+helm repo add volumez-csi https://volumeztech.github.io/helm-csi --force-update
+helm install volumez-csi volumez-csi/volumez-csi --set vlzAuthToken=[YOUR_CSI_TOKEN] -n vlz-csi-driver --create-namespace
 ```
 
+For detailed configuration options, please refer to the [volumez-csi chart README](https://github.com/VolumezTech/helm-csi/blob/main/charts/volumez-csi/README.md).
+
 #### Install Only on Specific Node/Node-Group ####
-To install the volumez-csi on specific node or nodegroup, label the node/nodegroup and add the following to the end of install command (fill in the correct values instead of "label-key" and "label-values"):
+To install `volumez-csi` on a specific node or node group, first label the node(s) appropriately.
+Then, add the following flag to the end of your helm install command, replacing `<label-key>` and `<label-values>` with your actual labels:
 ```bash
 --set-json 'csiNodeVlzplugin.affinity={"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"<label-key>","operator":"In","values":["<label-values>"]}]}]}}}'
 ```
@@ -441,15 +448,16 @@ i.e:
 
 > Upgrade CSI driver
 
-If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
-You can then run `helm search repo volumez-csi` to see the charts.<br/>
+If you previously added this repository, run `helm repo update` to fetch the latest package versions.
+Afterwards, you can run `helm search repo volumez-csi -l` to view the available charts.<br/>
+To upgrade the chart:
 
-```
-helm upgrade volumez-csi . -n vlz-csi-driver --set vlzAuthToken=eyJjdHkiOiJKV1QiLC
+```bash
+helm upgrade volumez-csi volumez-csi/volumez-csi -n vlz-csi-driver 
 ```
 
 > Uninstall CSI driver
-```
+```bash
 helm uninstall volumez-csi -n vlz-csi-driver
 ```
 
