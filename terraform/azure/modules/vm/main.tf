@@ -52,5 +52,5 @@ resource "azurerm_linux_virtual_machine" "this" {
     azurerm_network_interface.this
   ]
 
-  custom_data = base64encode(templatefile("../../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, signup_domain = var.signup_domain }))
+  custom_data = base64encode(templatefile("../../../../scripts/deploy_connector.sh", { tenant_token = var.tenant_token, vlz_signup_domain = var.signup_domain }))
 }

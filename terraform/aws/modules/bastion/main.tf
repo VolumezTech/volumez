@@ -87,9 +87,10 @@ data "aws_ami" "bastion_ami" {
 
 
 resource "aws_instance" "bastion" {
-  instance_type        = var.bastion_ec2_type
-  ami                  = data.aws_ami.bastion_ami.id
-  key_name             = var.key_pair
+  instance_type           = var.bastion_ec2_type
+  ami                     = data.aws_ami.bastion_ami.id
+  key_name                = var.key_pair
+  disable_api_termination = var.ec2_disable_api_termination
 
   ebs_block_device {
     device_name           = "/dev/xvda"

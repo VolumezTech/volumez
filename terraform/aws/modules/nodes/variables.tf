@@ -74,3 +74,9 @@ variable "vlz_signup_domain" {
   description = "signup url to take vlzconnector from"
   type        = string
 }
+
+variable "ec2_disable_api_termination" {
+  description = "Disable API termination for the EC2 instance"
+  type        = bool
+  default     = true
+}
