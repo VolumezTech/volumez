@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "this" {
 resource "azurerm_management_lock" "lock_rg" {
   name       = "${azurerm_resource_group.this.name}-lock"
   scope      = azurerm_resource_group.this.id
-  lock_level = "CanNotDelete"
+  lock_level = var.resource_group_lock_level
   notes      = "This lock prevents accidental deletion of the resource group."
 }
 

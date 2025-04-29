@@ -21,3 +21,8 @@ variable "address_prefixes" {
   type    = list(any)
   default = ["10.1.0.0/24"]
 }
+
+variable "resource_group_lock_level" {
+  type    = string
+  default = "CanNotDelete"
+}

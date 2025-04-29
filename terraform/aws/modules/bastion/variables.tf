@@ -37,5 +37,10 @@ variable "deployment_tag_name" {
 variable "resources_name_prefix" {
   description = "suffix to add to the resources names"
   default     = "Volumez"
+}
 
+variable "ec2_disable_api_termination" {
+  description = "Disable API termination for the EC2 instance"
+  type        = bool
+  default     = true
 }

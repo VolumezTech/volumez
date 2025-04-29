@@ -31,23 +31,23 @@ data "aws_ami" "rhel" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_instance" "this" {
-  count                = var.num_of_nodes
-  instance_type        = var.node_type
-  ami                  = var.ami_id == "default" ? data.aws_ami.rhel.id : var.ami_id
-  key_name             = var.key_name
-  iam_instance_profile = var.iam_role
-  placement_group      = var.num_of_zones == 1 || count.index >= length(var.placement_group_ids) ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
-  disable_api_termination = true
-  
+  count                   = var.num_of_nodes
+  instance_type           = var.node_type
+  ami                     = var.ami_id == "default" ? data.aws_ami.rhel.id : var.ami_id
+  key_name                = var.key_name
+  iam_instance_profile    = var.iam_role
+  placement_group         = var.num_of_zones == 1 || count.index >= length(var.placement_group_ids) ? var.placement_group_ids[0] : var.placement_group_ids[count.index % var.num_of_zones]
+  disable_api_termination = var.ec2_disable_api_termination
+
   network_interface {
     network_interface_id = var.pub_eni_list[count.index]
     device_index         = 0
   }
 
   root_block_device {
-    volume_type = "gp3"
+    volume_type           = "gp3"
     delete_on_termination = true
-    
+
   }
 
   tags = {
