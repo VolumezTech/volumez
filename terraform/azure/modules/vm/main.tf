@@ -5,7 +5,7 @@ resource "azurerm_network_interface" "this" {
   name                          = "nic-${var.vm_type}-${count.index}"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
-  enable_accelerated_networking = true
+  accelerated_networking_enabled = true
 
   ip_configuration {
     name                          = "pubConfiguration"

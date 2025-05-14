@@ -1,5 +1,6 @@
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 resource "random_string" "this" {
@@ -62,7 +63,7 @@ resource "azurerm_proximity_placement_group" "this" {
 #######
 module "media-vm" {
   source = "../../../modules/vm"
-
+  subscription_id = var.subscription_id
   num_of_vm               = var.media_node_count
   vm_type                 = "${var.resource_prefix}-${random_string.this.result}-media"
   vm_size                 = var.media_node_type
@@ -90,7 +91,7 @@ module "media-vm" {
 }
 module "app-vm" {
   source = "../../../modules/vm"
-
+  subscription_id = var.subscription_id
   num_of_vm               = var.app_node_count
   vm_type                 = "${var.resource_prefix}-${random_string.this.result}-app"
   vm_size                 = var.app_node_type
