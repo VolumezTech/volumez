@@ -1,6 +1,10 @@
 ###############
 ### Network ###
 ###############
+variable "subscription_id" {
+  type = string
+}
+
 variable "resource_prefix" {
   description = "Resource group name prefix"
   type    = string

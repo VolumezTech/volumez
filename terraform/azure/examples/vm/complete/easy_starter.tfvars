@@ -12,5 +12,5 @@ app_image_sku = "8_7"
 app_image_version = "latest"
 resource_prefix = "volumez"
 resource_group_location = "eastus"
-deploy_bastion = true
+deploy_bastion = false
 zones = ["1", "2"]

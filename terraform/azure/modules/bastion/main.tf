@@ -25,7 +25,7 @@ resource "azurerm_public_ip" "azb-publicIP" {
 # Create Azure Bastion Host
 resource "azurerm_bastion_host" "azb-host" {
   
-  name                = "azb-host"
+  name                = "${var.rg-name}-azb-host"
   location            = var.location
   resource_group_name = var.rg-name
 
