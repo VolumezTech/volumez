@@ -36,6 +36,7 @@ fi
 echo "<><><> Running connector deploy on $OS"
 
 if [[ "$OS" = "Ubuntu" ]]; then
+    sudo kill -9 $(pgrep -f dpkg) || true
     sudo curl --fail ${vlz_signup_domain}/ubuntu/vlzconnector.list -o /etc/apt/sources.list.d/vlzconnector.list || package_not_found $OS
     sudo mkdir -p /opt/vlzconnector
     echo -n ${tenant_token} | sudo tee -a /opt/vlzconnector/tenantToken

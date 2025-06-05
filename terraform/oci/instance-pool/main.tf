@@ -121,7 +121,7 @@ resource "oci_core_instance_pool" "media_instance_pool" {
   size = local.instances_per_pool_list[count.index]
 
   timeouts {
-    create = "10m"
+    create = "30m"
   }
 }
 
