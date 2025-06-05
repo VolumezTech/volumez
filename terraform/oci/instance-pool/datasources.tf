@@ -2,6 +2,18 @@ locals {
   operator_template = "${path.module}/cloudinit/deploy_connector.template.yaml"
 }
 
+data "oci_core_vcn" "vlz_vcn" {
+  count = local.create_vcn ? 0 : 1
+
+  vcn_id = var.vcn_id
+}
+
+data "oci_core_subnet" "vlz_subnet" {
+  count = local.num_of_subnets == 0 ? 1 : 0
+
+  subnet_id = var.subnet_id
+}
+
 data "oci_identity_availability_domains" "ads" {
   compartment_id = var.tenancy_ocid
 }
@@ -30,43 +42,43 @@ data "cloudinit_config" "operator" {
 }
 
 ### App Data ###
-data "oci_core_instance_pool_instances" "app_pool" {
-  depends_on = [oci_core_instance_pool.app_instance_pool]
-  count      = var.app_num_of_instances > 0 ? 1 : 0
+# data "oci_core_instance_pool_instances" "app_pool" {
+#   depends_on = [oci_core_instance_pool.app_instance_pool]
+#   count      = var.app_num_of_instances > 0 ? 1 : 0
 
-  compartment_id   = var.tenancy_ocid
-  instance_pool_id = oci_core_instance_pool.app_instance_pool[0].id
-}
+#   compartment_id   = var.tenancy_ocid
+#   instance_pool_id = oci_core_instance_pool.app_instance_pool[0].id
+# }
 
-data "oci_core_instance" "app_instance" {
-  count = var.app_num_of_instances > 0 ? 1 : 0
+# data "oci_core_instance" "app_instance" {
+#   count = var.app_num_of_instances > 0 ? 1 : 0
 
-  instance_id = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
-}
+#   instance_id = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
+# }
 
-data "oci_core_vnic_attachments" "app_vnic2_attachments" {
-  count = local.secondary_vnic_config
+# data "oci_core_vnic_attachments" "app_vnic2_attachments" {
+#   count = local.secondary_vnic_config
 
-  compartment_id = var.tenancy_ocid
-  instance_id    = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
+#   compartment_id = var.tenancy_ocid
+#   instance_id    = data.oci_core_instance_pool_instances.app_pool[count.index].instances[0].id
 
-  filter {
-    name   = "subnet_id"
-    values = [oci_core_subnet.vlz_subnet[1].id]
-  }
-}
+#   filter {
+#     name   = "subnet_id"
+#     values = [oci_core_subnet.vlz_subnet[1].id]
+#   }
+# }
 
 #VNIC object by OCID
-data "oci_core_vnic" "app_vnic2_id" {
-  count = local.secondary_vnic_config
+# data "oci_core_vnic" "app_vnic2_id" {
+#   count = local.secondary_vnic_config
 
-  vnic_id = lookup(data.oci_core_vnic_attachments.app_vnic2_attachments[count.index].vnic_attachments[0], "vnic_id")
-}
+#   vnic_id = lookup(data.oci_core_vnic_attachments.app_vnic2_attachments[count.index].vnic_attachments[0], "vnic_id")
+# }
 
-data "oci_core_private_ips" "app_vnic2_ip" {
-  count   = local.secondary_vnic_config
-  vnic_id = data.oci_core_vnic.app_vnic2_id[count.index].id
-}
+# data "oci_core_private_ips" "app_vnic2_ip" {
+#   count   = local.secondary_vnic_config
+#   vnic_id = data.oci_core_vnic.app_vnic2_id[count.index].id
+# }
 
 ### Media Data ###
 

@@ -1,11 +1,3 @@
-# provider "oci" {
-#   tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaaij7gdgmcldaneftxyrhxiwpnaecvenjb42423cxhxmewlf65ca2q"
-#   user_ocid = "ocid1.user.oc1..aaaaaaaaorw7kon5ty2mioqixqjl2ampifttqefph4fqtxeobu3ncpn3gfaa" 
-#   private_key_path = "/Users/nk/.oci/oci.pem"
-#   fingerprint = "03:e2:d5:5e:a8:52:de:25:01:fa:6a:35:35:ae:5d:db"
-#   region = "us-chicago-1"
-# }
-
 terraform {
   required_providers {
     oci = {
@@ -16,7 +8,9 @@ terraform {
   }
 }
 provider "oci" {
-  auth = "SecurityToken"
-  config_file_profile = var.config_file_profile
-  region = var.region
+  tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaaa3bldyp5nfksjriezjrp25hfvsspqabpigd25bajgtkwmtzdu44a"
+  user_ocid = "ocid1.user.oc1..aaaaaaaagwxkesqykgxvl6brrotmo6i5dqhveb2lo2di22huj76zrxtbgzkq" 
+  private_key_path = "/Users/itayginor/.oci/oci_api_key.pem"
+  fingerprint = "ce:cd:d6:b5:0c:53:c2:00:a9:f4:bc:85:de:83:8c:99"
+  region = "uk-london-1"
 }

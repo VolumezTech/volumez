@@ -1,6 +1,18 @@
 variable "region" {
   type    = string
-  default = "us-chicago-1"
+  default = "us-ashburn-1"
+}
+
+variable "vcn_id" {
+  type        = string
+  description = "value of the vcn OCID"
+  default     = ""
+}
+
+variable "subnet_id" {
+  type        = string
+  description = "value of the subnet OCID"
+  default     = ""
 }
 
 variable "ad_number" {
