@@ -54,8 +54,14 @@ variable "allowed_ssh_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "create_iam_instance_profile" {
+  description = "Create the minimal IAM role/instance profile the HA floating IPs (VIPs) require on AWS (ec2:AssignPrivateIpAddresses, UnassignPrivateIpAddresses, DescribeNetworkInterfaces, DescribeInstances) and attach it to media + gateway nodes. Requires the Terraform principal to have IAM create/PassRole permissions. Artifact downloads need no node credentials."
+  type        = bool
+  default     = true
+}
+
 variable "iam_instance_profile_name" {
-  description = "Optional IAM instance profile name to attach to all nodes (minimum: secretsmanager:GetSecretValue on matrix/* secrets). Leave empty for none — recent Volumez installs stage artifact credentials automatically and require no instance profile."
+  description = "Bring-your-own IAM instance profile name for the cluster nodes (overrides create_iam_instance_profile). Must include the EC2 VIP permissions listed on create_iam_instance_profile."
   type        = string
   default     = ""
 }

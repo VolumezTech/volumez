@@ -252,7 +252,7 @@ volumez/terraform/aws/examples/matrix-cluster/easy_starter
 7. `enable_ad_dc`                 - Windows Server 2022 Domain Controller (default true)
 8. `allowed_ssh_cidrs`            - external access CIDRs (default `["0.0.0.0/0"]` — narrow for long-lived envs)
 9. `key_name`                     - existing EC2 key pair; leave empty to auto-generate one
-10. `iam_instance_profile_name`   - optional IAM instance profile for all nodes (minimum policy: `secretsmanager:GetSecretValue` on `matrix/*`); empty = none — recent Volumez installs stage artifact credentials automatically and need no instance profile
+10. `create_iam_instance_profile` - default true: creates a minimal IAM role for the cluster's HA floating IPs and attaches it to media + gateway nodes. On AWS, VIP failover must register the moving IP with the VPC via the EC2 API, so the nodes need exactly these permissions: `ec2:AssignPrivateIpAddresses`, `ec2:UnassignPrivateIpAddresses`, `ec2:DescribeNetworkInterfaces`, `ec2:DescribeInstances`. Nothing else — artifact downloads need no node credentials. Requires the account/user running Terraform to be allowed to create IAM roles; set it to false and pass `iam_instance_profile_name` to bring your own role instead.
 
 ### Usage ###
 > Create

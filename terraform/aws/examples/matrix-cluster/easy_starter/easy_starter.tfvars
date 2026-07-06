@@ -16,8 +16,11 @@ resources_name_prefix = "VolumezMatrix"
 # connects from for anything longer-lived, e.g. ["203.0.113.7/32"].
 allowed_ssh_cidrs = ["0.0.0.0/0"]
 
-# Optional IAM instance profile for all nodes (see README); empty = none
-iam_instance_profile_name = ""
+# IAM for HA floating IPs (VIPs): created automatically with the minimal
+# EC2 permissions and attached to media + gateway nodes. Set to false and
+# fill iam_instance_profile_name to bring your own role instead.
+create_iam_instance_profile = true
+iam_instance_profile_name   = ""
 
 # Network (defaults match the layout the Matrix installation expects —
 # coordinate with Volumez before changing the service network)

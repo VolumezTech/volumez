@@ -40,6 +40,11 @@ locals {
   client_ami  = var.client_node_ami == "default" ? data.aws_ami.rhel10.id : var.client_node_ami
 
   key_name = local.create_ssh_key ? module.ssh_key[0].key_name : var.key_name
+
+  # Cluster nodes (media + gateways) get the VIP instance profile: an
+  # explicit iam_instance_profile_name wins, else the profile created here.
+  create_iam       = var.iam_instance_profile_name == "" && var.create_iam_instance_profile
+  cluster_node_iam = var.iam_instance_profile_name != "" ? var.iam_instance_profile_name : (local.create_iam ? aws_iam_instance_profile.cluster_node[0].name : "")
 }
 
 # Official Rocky Linux 10 AMI (Rocky Enterprise Software Foundation).
@@ -104,6 +109,60 @@ module "network" {
   create_bpa_exclusion  = var.create_bpa_exclusion
 }
 
+# Minimal IAM instance profile for the cluster's floating IPs (HA VIPs).
+# On AWS, Pacemaker's awsvip agent must register a moving VIP with the VPC
+# via the EC2 API — these four permissions are all it needs. Artifact
+# downloads need NO node credentials (the Volumez install stages those).
+# Set create_iam_instance_profile = false and/or iam_instance_profile_name
+# to bring your own role instead.
+resource "aws_iam_role" "cluster_node" {
+  count = local.create_iam ? 1 : 0
+
+  name = "${local.resource_prefix}-node-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+
+  tags = {
+    Name      = "${local.resource_prefix}-node-role"
+    Terraform = "true"
+  }
+}
+
+resource "aws_iam_role_policy" "cluster_vip" {
+  count = local.create_iam ? 1 : 0
+
+  name = "${local.resource_prefix}-vip"
+  role = aws_iam_role.cluster_node[0].id
+  # ENI ARNs don't exist before apply, so the resource scope is "*";
+  # the actions are limited to what VIP failover requires.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "ec2:AssignPrivateIpAddresses",
+        "ec2:UnassignPrivateIpAddresses",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeInstances"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "cluster_node" {
+  count = local.create_iam ? 1 : 0
+
+  name = "${local.resource_prefix}-node-profile"
+  role = aws_iam_role.cluster_node[0].name
+}
+
 # Cluster placement group: keeps node-to-node latency low. Requires capacity
 # for all nodes in one AZ — set avoid_pg = true if placement fails.
 resource "aws_placement_group" "cluster" {
@@ -136,7 +195,7 @@ module "media_nodes" {
   assign_public_ip     = var.assign_public_ips
   placement_group_name = local.create_pg ? aws_placement_group.cluster[0].name : ""
   root_volume_size_gb  = var.root_volume_size_gb
-  iam_instance_profile = var.iam_instance_profile_name
+  iam_instance_profile = local.cluster_node_iam
 }
 
 # Optional gateway nodes — service IPs 192.168.100.50 + index
@@ -157,7 +216,7 @@ module "gateway_nodes" {
   assign_public_ip     = var.assign_public_ips
   placement_group_name = local.create_pg ? aws_placement_group.cluster[0].name : ""
   root_volume_size_gb  = var.root_volume_size_gb
-  iam_instance_profile = var.iam_instance_profile_name
+  iam_instance_profile = local.cluster_node_iam
 }
 
 # Optional Linux client (load generator) — service IP 192.168.100.210+,
@@ -179,7 +238,7 @@ module "client_nodes" {
   assign_public_ip     = var.assign_public_ips
   placement_group_name = ""
   root_volume_size_gb  = var.root_volume_size_gb
-  iam_instance_profile = var.iam_instance_profile_name
+  iam_instance_profile = var.iam_instance_profile_name # clients host no VIPs
 }
 
 # Optional Active Directory Domain Controller — management network only
