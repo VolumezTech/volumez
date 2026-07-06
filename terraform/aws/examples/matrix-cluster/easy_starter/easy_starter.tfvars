@@ -53,5 +53,8 @@ client_node_ami         = "default" # latest official RHEL 10
 client_node_name_prefix = "client"
 
 # Active Directory Domain Controller (Windows Server 2022, mgmt network only)
-enable_ad_dc      = true
-ad_admin_password = "" # REQUIRED when enable_ad_dc = true (RDP/WinRM login)
+enable_ad_dc = true
+# REQUIRED when enable_ad_dc = true (RDP/WinRM login). Set it here or via the
+# TF_VAR_ad_admin_password environment variable (a value set here overrides
+# the environment variable):
+# ad_admin_password = "..."

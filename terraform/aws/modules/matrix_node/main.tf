@@ -50,6 +50,25 @@ resource "aws_instance" "node" {
     preserve_hostname: true
     runcmd:
       - hostnamectl set-hostname ${var.hostname_prefix}-${count.index}
+      - |
+        # Expand an LVM root to fill the EBS volume — cloud-init growpart only
+        # handles plain-partition roots, so LVM-based images boot with the
+        # image's original root size. No-op when the root is not LVM.
+        ROOT_SRC=$(findmnt -n -o SOURCE /)
+        case "$ROOT_SRC" in
+        /dev/mapper/*)
+          VG=$(lvs --noheadings -o vg_name "$ROOT_SRC" 2>/dev/null | tr -d ' ')
+          PV=$(pvs --noheadings -o pv_name -S vg_name="$VG" 2>/dev/null | tr -d ' ')
+          if [ -n "$PV" ]; then
+            DISK="$${PV%p[0-9]*}"
+            PART="$${PV##*p}"
+            growpart "$DISK" "$PART" || true
+            pvresize "$PV" || true
+            lvextend -l +100%FREE "$ROOT_SRC" || true
+            xfs_growfs / || resize2fs "$ROOT_SRC" || true
+          fi
+          ;;
+        esac
       - grubby --update-kernel=ALL --args="net.ifnames=0 biosdevname=0"
       - sed -i 's/^interface-name=.*/interface-name=eth0/' /etc/NetworkManager/system-connections/*.nmconnection || true
     power_state:
