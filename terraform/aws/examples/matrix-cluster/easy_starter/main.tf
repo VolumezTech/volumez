@@ -196,6 +196,7 @@ module "media_nodes" {
   placement_group_name = local.create_pg ? aws_placement_group.cluster[0].name : ""
   root_volume_size_gb  = var.root_volume_size_gb
   iam_instance_profile = local.cluster_node_iam
+  use_elastic_ip       = var.use_elastic_ips
 }
 
 # Optional gateway nodes — service IPs 192.168.100.50 + index
@@ -217,6 +218,7 @@ module "gateway_nodes" {
   placement_group_name = local.create_pg ? aws_placement_group.cluster[0].name : ""
   root_volume_size_gb  = var.root_volume_size_gb
   iam_instance_profile = local.cluster_node_iam
+  use_elastic_ip       = var.use_elastic_ips
 }
 
 # Optional Linux client (load generator) — service IP 192.168.100.210+,
@@ -239,6 +241,7 @@ module "client_nodes" {
   placement_group_name = ""
   root_volume_size_gb  = var.root_volume_size_gb
   iam_instance_profile = var.iam_instance_profile_name # clients host no VIPs
+  use_elastic_ip       = var.use_elastic_ips
 }
 
 # Optional Active Directory Domain Controller — management network only
@@ -254,4 +257,5 @@ module "ad_dc" {
   assign_public_ip     = var.assign_public_ips
   admin_password       = var.ad_admin_password
   iam_instance_profile = var.iam_instance_profile_name
+  use_elastic_ip       = var.use_elastic_ips
 }

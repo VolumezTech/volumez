@@ -86,3 +86,22 @@ resource "aws_instance" "dc" {
     }
   }
 }
+
+# Static management IP (Elastic IP) — survives stop/start
+resource "aws_eip" "mgmt" {
+  count = var.enabled && var.use_elastic_ip && var.assign_public_ip ? 1 : 0
+
+  domain = "vpc"
+
+  tags = {
+    Name      = "${var.hostname}-eip"
+    Terraform = "true"
+  }
+}
+
+resource "aws_eip_association" "mgmt" {
+  count = var.enabled && var.use_elastic_ip && var.assign_public_ip ? 1 : 0
+
+  instance_id   = aws_instance.dc[0].id
+  allocation_id = aws_eip.mgmt[0].id
+}

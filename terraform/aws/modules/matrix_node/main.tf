@@ -105,3 +105,24 @@ resource "aws_network_interface_attachment" "service" {
   network_interface_id = aws_network_interface.service[count.index].id
   device_index         = 1
 }
+
+# Static management IPs (Elastic IPs) — survive instance stop/start, so the
+# node mapping handed to Volumez stays valid when the environment is powered
+# off and on. Auto-assigned public IPs would change on every start.
+resource "aws_eip" "mgmt" {
+  count = var.use_elastic_ip && var.assign_public_ip ? var.num_of_nodes : 0
+
+  domain = "vpc"
+
+  tags = {
+    Name      = "${var.hostname_prefix}-${count.index}-eip"
+    Terraform = "true"
+  }
+}
+
+resource "aws_eip_association" "mgmt" {
+  count = var.use_elastic_ip && var.assign_public_ip ? var.num_of_nodes : 0
+
+  instance_id   = aws_instance.node[count.index].id
+  allocation_id = aws_eip.mgmt[count.index].id
+}

@@ -76,3 +76,9 @@ variable "iam_instance_profile" {
   type        = string
   default     = ""
 }
+
+variable "use_elastic_ip" {
+  description = "Attach an Elastic IP to each node's management interface so the public IP survives stop/start. Only applies when assign_public_ip is true."
+  type        = bool
+  default     = true
+}

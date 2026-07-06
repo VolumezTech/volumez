@@ -272,6 +272,21 @@ terraform output -raw custom_ips_csv
 
 Increase `media_node_count` (new nodes continue the service-IP sequence) and re-apply, then send the updated `custom_ips_csv` to Volumez.
 
+> Power off / on
+
+The nodes' public (management) addresses are Elastic IPs by default (`use_elastic_ips = true`), so you can stop the instances when the environment is idle and start them later — **all IPs, hostnames and the `custom_ips_csv` mapping stay valid**:
+```
+IDS=$(aws ec2 describe-instances --region us-west-2 \
+  --filters "Name=tag:Name,Values=media-*,gateway-*,client-*,*-ad-dc" "Name=instance-state-name,Values=running" \
+  --query 'Reservations[].Instances[].InstanceId' --output text)
+aws ec2 stop-instances --instance-ids $IDS
+# later:
+aws ec2 start-instances --instance-ids $IDS
+```
+Two caveats:
+* **Stopping media nodes erases the storage tier** — DAOS data lives on local NVMe instance-store, which AWS discards on stop. Power off only when losing cluster data is acceptable (e.g. between test sessions); the Matrix software install must be re-run after start.
+* Elastic IP quota: you need one EIP per public node (default 7). The default AWS quota is 5 per region — request an increase before the first apply, or set `use_elastic_ips = false` to fall back to auto-assigned (non-stable) IPs.
+
 > Destroy
 ```
 terraform destroy -var-file="easy_starter.tfvars"

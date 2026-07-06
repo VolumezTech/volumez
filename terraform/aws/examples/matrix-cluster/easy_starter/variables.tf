@@ -206,3 +206,9 @@ variable "ad_admin_password" {
   sensitive   = true
   default     = ""
 }
+
+variable "use_elastic_ips" {
+  description = "Use Elastic IPs for the nodes' public (management) addresses so they survive stop/start of the environment. Requires EC2 Elastic IP quota >= total node count in the region (default account quota is 5 — request an increase for larger clusters)."
+  type        = bool
+  default     = true
+}

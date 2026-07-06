@@ -7,7 +7,9 @@ output "hostnames" {
 }
 
 output "public_ips" {
-  value = aws_instance.node[*].public_ip
+  # With Elastic IPs the EIP is the stable public address; the instance's
+  # own public_ip attribute reflects the pre-association auto-assigned one.
+  value = var.use_elastic_ip && var.assign_public_ip ? aws_eip.mgmt[*].public_ip : aws_instance.node[*].public_ip
 }
 
 output "private_ips" {
