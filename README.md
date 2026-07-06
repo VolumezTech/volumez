@@ -22,6 +22,7 @@ This is a guide of how you can create AWS/Azure environments (EKS/AKS or EC2/VM)
 
 # Get Started
 * [AWS EC2 environment](#ec2)  
+* [AWS Matrix cluster environment](#matrix-cluster)  
 * [AWS EKS environment](#eks)  
 * [Azure VM environment](#vm)  
 * [Azure AKS environment](#aks)  
@@ -212,6 +213,80 @@ No default values, the following should be set in order to execute the terraform
 6. media_node_type          - Media EC2 type
 7. app_node_count           - number of performance hosts
 8. app_node_type            - EC2 type for application node
+
+## Matrix Cluster
+---
+Provisions an AWS environment ready for the **Volumez Matrix** software installation. Unlike the [EC2 connector example](#ec2), this builds a storage cluster with a dedicated cluster interconnect — you create the infrastructure with this Terraform, then hand the node mapping to Volumez, and Volumez runs the installation onto it.
+
+### Path to Project ###
+```
+volumez/terraform/aws/examples/matrix-cluster/easy_starter
+```
+
+### What it builds ###
+* **Two VPCs per environment** (self-contained, no peering needed):
+  * Management network (default `10.0.0.0/16`, subnet `10.0.80.0/24`) — each node's `eth0`, public IP + SSH.
+  * Service network (default `192.168.0.0/16`, subnet `192.168.100.0/24`) — each node's `eth1`, private, carries all cluster traffic.
+* **Media (storage) nodes** — Rocky Linux 10 on NVMe instance-store types (`r8idn`/`r8id`/`i4i` families), one AZ, cluster placement group. Service IPs are assigned **in order**: `192.168.100.4`, `.5`, `.6`, ...
+* **Gateway nodes (optional)** — service IPs `192.168.100.50`, `.51`, ...
+* **Linux client (load generator, optional)** — RHEL 10, `m6i.4xlarge`, dual-NIC with service IP `192.168.100.210`, not in the placement group.
+* **AD Domain Controller (optional)** — Windows Server 2022, `m5.xlarge`, management network only, 256 GB encrypted root, WinRM (5985) + RDP (3389) enabled, Administrator password set from `ad_admin_password`.
+* Security: cluster-internal traffic is open within the two private CIDRs (the cluster runs storage, HA and protocol services on many ports); external access is controlled by `allowed_ssh_cidrs` — **default `0.0.0.0/0` (open to the internet; key-only SSH)**, narrow it for anything longer-lived. Source/destination check is disabled on all cluster node interfaces (required for the cluster's floating IPs) — keep it that way.
+
+### Prerequisite ###
+1. EC2 quota for the chosen media node type in the target region/AZ (default: 5 × `r8idn.32xlarge` in `us-west-2a` — the only US AZ with confirmed capacity for a 5-node cluster of this type; us-east-1/us-east-2 are out of capacity).
+2. The Volumez-validated Rocky Linux 10 AMI (`ami-07a...`, us-west-2) shared to your AWS account by Volumez — or set `media_node_ami = "default"` to use the latest official Rocky Linux 10 image instead.
+3. Terraform AWS provider ≥ 5.80 (pinned in the example).
+4. If your AWS account enforces VPC Block Public Access, the example creates an exclusion for the management VPC (`create_bpa_exclusion = true`, default).
+
+### Inputs ###
+> Mandatory:
+1. `ad_admin_password` - Administrator password for the Domain Controller (only when `enable_ad_dc = true`, the default; set `enable_ad_dc = false` to skip the DC)
+> Common options (edit easy_starter.tfvars):
+1. `region` / `target_az`         - default `us-west-2` / `a`
+2. `media_node_count`             - number of storage nodes (default 5); scale the cluster by changing this and re-applying
+3. `media_node_type`              - default `r8idn.32xlarge` (must have local NVMe instance-store)
+4. `media_node_ami`               - default: the Volumez-validated Rocky Linux 10 image (us-west-2, shared by Volumez); `"default"` = latest official Rocky Linux 10
+5. `gateway_node_count`           - optional gateway nodes (default 0)
+6. `client_node_count`            - Linux client / load generator (default 1, RHEL 10 `m6i.4xlarge`)
+7. `enable_ad_dc`                 - Windows Server 2022 Domain Controller (default true)
+8. `allowed_ssh_cidrs`            - external access CIDRs (default `["0.0.0.0/0"]` — narrow for long-lived envs)
+9. `key_name`                     - existing EC2 key pair; leave empty to auto-generate one
+10. `iam_instance_profile_name`   - optional IAM instance profile for all nodes (minimum policy: `secretsmanager:GetSecretValue` on `matrix/*`); empty = none — recent Volumez installs stage artifact credentials automatically and need no instance profile
+
+### Usage ###
+> Create
+```
+terraform init
+terraform apply -var-file="easy_starter.tfvars"
+```
+
+> Hand off to Volumez
+
+When the apply completes, copy the `custom_ips_csv` output and deliver it to Volumez together with SSH access (key pair + `allowed_ssh_cidrs` covering Volumez's network). It contains one row per node — `role,mgmt_ip,service_ip,hostname,node_ip` — which is exactly what the Volumez Matrix installation consumes:
+```
+terraform output -raw custom_ips_csv
+```
+
+> Scale
+
+Increase `media_node_count` (new nodes continue the service-IP sequence) and re-apply, then send the updated `custom_ips_csv` to Volumez.
+
+> Destroy
+```
+terraform destroy -var-file="easy_starter.tfvars"
+```
+
+### SSH To Node ###
+```
+terraform output -raw ssh_private_key > ssh_key; chmod 400 ssh_key
+ssh -i ssh_key ec2-user@<node public IP from the media_nodes output>
+```
+
+### Notes ###
+* Default SSH user is `ec2-user` on the Volumez-provided image, or `rocky` when using the official Rocky Linux 10 AMI (`media_node_ami = "default"`). Passwordless sudo is enabled on both.
+* If you add your own network filtering, cluster nodes must keep full reachability on the service network — the storage layer uses ports 31416-31420, 10001 and 9191 among others.
+* All cluster nodes must be in a single AZ. If placement-group capacity fails the apply, set `avoid_pg = true` or try another AZ.
 
 ## EKS
 ---
