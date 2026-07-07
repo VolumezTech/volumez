@@ -123,6 +123,9 @@ resource "aws_eip" "mgmt" {
 resource "aws_eip_association" "mgmt" {
   count = var.use_elastic_ip && var.assign_public_ip ? var.num_of_nodes : 0
 
-  instance_id   = aws_instance.node[count.index].id
-  allocation_id = aws_eip.mgmt[count.index].id
+  # Associate with the primary ENI explicitly — instance_id association
+  # fails with InvalidInstanceID once the eth1 service ENI is attached
+  # ("multiple interfaces attached ... specify an interface ID").
+  network_interface_id = aws_instance.node[count.index].primary_network_interface_id
+  allocation_id        = aws_eip.mgmt[count.index].id
 }
